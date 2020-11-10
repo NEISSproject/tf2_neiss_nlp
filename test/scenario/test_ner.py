@@ -23,10 +23,10 @@ from tensorflow.python.keras.backend import clear_session
 
 from test.util.training import single_train_iter, resume_training, lav_test_case
 from test.util.workdir import get_workdir
-from tfaip.scenario.nlp.data.ner import NERData, NERDataParams
-from tfaip.scenario.nlp.ner.scenario import Scenario
-from tfaip.scenario.nlp.util.nlp_helper import load_txt_conll
-from tfaip.scenario.nlp.util.tools.ner_data_generator import txt2json
+from tfneissnlp.data.ner import NERData, NERDataParams
+from tfneissnlp.ner.scenario import Scenario
+from tfneissnlp.util.nlp_helper import load_txt_conll
+from tfneissnlp.util.tools.ner_data_generator import txt2json
 
 
 def get_ler_data_params():

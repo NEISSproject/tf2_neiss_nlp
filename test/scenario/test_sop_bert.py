@@ -22,35 +22,35 @@ from tensorflow.python.keras.backend import clear_session
 
 from test.util.training import single_train_iter, resume_training, lav_test_case
 from test.util.workdir import get_workdir
-from tfaip.scenario.nlp.bert_pretraining.nsp.scenario import Scenario
-from tfaip.scenario.nlp.data.nsp import NSPDataParams, NSPData
+from tfneissnlp.bert_pretraining.sop.scenario import Scenario
+from tfneissnlp.data.sop import SOPData, SOPDataParams
 
 
 def get_dewiki_data_params():
-    return NSPDataParams(
-        train_lists=[get_workdir(__file__, 'lists', 'dewebcrawl_msen_nsp_debug.lst')], train_list_ratios=[1],
+    return SOPDataParams(
+        train_lists=[get_workdir(__file__, 'lists', 'dewebcrawl_msen_debug.lst')], train_list_ratios=[1],
         train_batch_size=1,
-        val_list=get_workdir(__file__, 'lists', 'dewebcrawl_msen_nsp_debug.lst'), val_batch_size=1,
+        val_list=get_workdir(__file__, 'lists', 'dewebcrawl_msen_debug.lst'), val_batch_size=1,
         tokenizer=get_workdir(__file__, 'data', 'tokenizer', 'tokenizer_de'), random_seed=123,
         train_num_processes=1, val_num_processes=1,
     )
 
 
 def get_dewiki_data_params_wwm():
-    return NSPDataParams(
-        train_lists=[get_workdir(__file__, 'lists', 'dewebcrawl_msen_nsp_debug.lst')], train_list_ratios=[1],
+    return SOPDataParams(
+        train_lists=[get_workdir(__file__, 'lists', 'dewebcrawl_msen_debug.lst')], train_list_ratios=[1],
         train_batch_size=1,
-        val_list=get_workdir(__file__, 'lists', 'dewebcrawl_msen_nsp_debug.lst'), val_batch_size=1,
+        val_list=get_workdir(__file__, 'lists', 'dewebcrawl_msen_debug.lst'), val_batch_size=1,
         tokenizer=get_workdir(__file__, 'data', 'tokenizer', 'tokenizer_de'), random_seed=123, whole_word_masking=True,
         train_num_processes=1, val_num_processes=1,
     )
 
 
 def get_dewiki_seg_data_params():
-    return NSPDataParams(
-        train_lists=[get_workdir(__file__, 'lists', 'dewebcrawl_nsp_debug.lst')], train_list_ratios=[1],
+    return SOPDataParams(
+        train_lists=[get_workdir(__file__, 'lists', 'dewebcrawl_seg_debug.lst')], train_list_ratios=[1],
         train_batch_size=1,
-        val_list=get_workdir(__file__, 'lists', 'dewebcrawl_nsp_debug.lst'), val_batch_size=1,
+        val_list=get_workdir(__file__, 'lists', 'dewebcrawl_seg_debug.lst'), val_batch_size=1,
         tokenizer=get_workdir(__file__, 'data', 'tokenizer', 'tokenizer_de'), random_seed=123, segment_train=True,
         train_num_processes=1, val_num_processes=1,
     )
@@ -62,12 +62,12 @@ def get_default_scenario_params():
     return params
 
 
-class TestNSPData(unittest.TestCase):
+class TestSOPData(unittest.TestCase):
     def setUp(self) -> None:
         os.chdir(get_workdir(__file__))
 
     def test_data_loading(self):
-        with NSPData(get_dewiki_data_params()) as data:
+        with SOPData(get_dewiki_data_params()) as data:
             train_data = next(data.get_train_data().as_numpy_iterator())
             val_data = next(data.get_val_data().as_numpy_iterator())
             for batch in [train_data, val_data]:
@@ -77,12 +77,12 @@ class TestNSPData(unittest.TestCase):
                 self.assertTrue('text' in batch[0])
                 self.assertTrue('mask_mlm' in batch[0])
                 self.assertTrue('tgt_mlm' in batch[1])
-                self.assertTrue('tgt_nsp' in batch[1])
+                self.assertTrue('tgt_sop' in batch[1])
                 self.assertEqual(len(batch[0]['mask_mlm'].shape), len(batch[1]['tgt_mlm'].shape))
         clear_session()
 
     def test_data_loading_wwm(self):
-        with NSPData(get_dewiki_data_params_wwm()) as data:
+        with SOPData(get_dewiki_data_params_wwm()) as data:
             train_data = next(data.get_train_data().as_numpy_iterator())
             val_data = next(data.get_val_data().as_numpy_iterator())
             for batch in [train_data, val_data]:
@@ -92,12 +92,12 @@ class TestNSPData(unittest.TestCase):
                 self.assertTrue('text' in batch[0])
                 self.assertTrue('mask_mlm' in batch[0])
                 self.assertTrue('tgt_mlm' in batch[1])
-                self.assertTrue('tgt_nsp' in batch[1])
+                self.assertTrue('tgt_sop' in batch[1])
                 self.assertEqual(len(batch[0]['mask_mlm'].shape), len(batch[1]['tgt_mlm'].shape))
         clear_session()
 
     def test_data_loading_seg(self):
-        with NSPData(get_dewiki_seg_data_params()) as data:
+        with SOPData(get_dewiki_seg_data_params()) as data:
             train_data = next(data.get_train_data().as_numpy_iterator())
             val_data = next(data.get_val_data().as_numpy_iterator())
             for batch in [train_data, val_data]:
@@ -107,12 +107,12 @@ class TestNSPData(unittest.TestCase):
                 self.assertTrue('text' in batch[0])
                 self.assertTrue('mask_mlm' in batch[0])
                 self.assertTrue('tgt_mlm' in batch[1])
-                self.assertTrue('tgt_nsp' in batch[1])
+                self.assertTrue('tgt_sop' in batch[1])
                 self.assertEqual(len(batch[0]['mask_mlm'].shape), len(batch[1]['tgt_mlm'].shape))
         clear_session()
 
 
-class TestNSPTrain(unittest.TestCase):
+class TestSOPTrain(unittest.TestCase):
     def setUp(self) -> None:
         clear_session()
         os.chdir(get_workdir(__file__))

@@ -17,6 +17,11 @@ Add `<path_to:tf2_neiss_nlp/tfneissnlp>` to the `TF_AIP_SCENARIOS` environment v
 * run `export TF_AIP_SCENARIOS=<path_to:tf2_neiss_nlp/tfneissnlp>:$TF_AIP_SCENARIOS` 
   in your shell or add it permanent to your virtual env activate script
 
+Run tests: 
+
+`cd tf2_neiss_nlp`
+`python -m unittest discover test`
+
 # Usage
 see [tf2_aip_base-wiki](http://gitea.planet-ai.de/pai/tf2_aip/wiki) for general information.
 

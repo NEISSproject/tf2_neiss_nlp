@@ -24,8 +24,8 @@ from test.util.training import single_train_iter, resume_training, lav_test_case
 from test.util.workdir import get_workdir
 from tfaip.base.scenario import ScenarioBaseParams
 from tfaip.base.trainer import TrainerParams
-from tfaip.scenario.nlp.bert_pretraining.mlm.scenario import Scenario
-from tfaip.scenario.nlp.data.mlm import MLMData, MLMDataParams
+from tfneissnlp.bert_pretraining.mlm.scenario import Scenario
+from tfneissnlp.data.mlm import MLMData, MLMDataParams
 
 
 def get_dewiki_data_params():
