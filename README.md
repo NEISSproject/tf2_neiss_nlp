@@ -11,9 +11,9 @@ it contains several pretraining tasks for bert models and fine tuning for named 
 
 First consider to clone and install [tfaip](https://github.com/Planet-AI-GmbH/tf2_aip_base) for development too.
 
-`pip install -r <path_to:tf2_neiss_nlp/requirements.txt>`
+`pip install -e <path_to:tf2_neiss_nlp>`
 
-Add `<path_to:tf2_neiss_nlp/tfneissnlp>` to the `TF_AIP_SCENARIOS` environment variable:
+And add `<path_to:tf2_neiss_nlp/tfneissnlp>` to the `TF_AIP_SCENARIOS` environment variable:
 * run `export TF_AIP_SCENARIOS=<path_to:tf2_neiss_nlp/tfneissnlp>:$TF_AIP_SCENARIOS` 
   in your shell or add it permanent to your virtual env activate script
 
