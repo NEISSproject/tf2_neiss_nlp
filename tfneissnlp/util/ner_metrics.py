@@ -19,7 +19,7 @@
 
 import tensorflow as tf
 from tensorflow.keras.metrics import Mean
-from tfneissnlp.util.ner_eval import Evaluator
+from tfneissnlp.util.thirdparty.ner_eval import Evaluator
 
 from tfneissnlp.util.stringmapper import get_sm
 
