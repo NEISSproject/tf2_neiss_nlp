@@ -24,6 +24,6 @@ Run tests:
 `python -m unittest discover test`
 
 # Usage
-see [tf2_aip_base-wiki](http://gitea.planet-ai.de/pai/tf2_aip/wiki) for general information.
+see [tf2_aip_base-wiki](https://github.com/Planet-AI-GmbH/tf2_aip_base/wiki) for general information.
 
 _Contributions are welcome, and they are greatly appreciated!_
