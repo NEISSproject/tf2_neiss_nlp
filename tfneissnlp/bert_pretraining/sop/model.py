@@ -1,6 +1,6 @@
-# Copyright 2020 The neiss authors. All Rights Reserved.
+# Copyright 2020 The tfaip authors. All Rights Reserved.
 #
-# This file is part of tf2_neiss_nlp.
+# This file is part of tfaip.
 #
 # tfaip is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by the
@@ -21,13 +21,12 @@ from typing import TYPE_CHECKING
 
 import tensorflow as tf
 import tensorflow.keras as keras
-from dataclasses_json import dataclass_json
-
 import tfneissnlp.util.transformer as transformers
+from dataclasses_json import dataclass_json
 from tfaip.base.model import GraphBase
 from tfaip.base.model.modelbase import SimpleMetric
-from tfneissnlp.bert_pretraining.mlm.model import ModelMLMParams, Model as ModelMLM
 from tfaip.util.typing import AnyNumpy
+from tfneissnlp.bert_pretraining.mlm.model import ModelMLMParams, Model as ModelMLM
 
 if TYPE_CHECKING:
     from tfneissnlp.data.sop import SOPData
@@ -50,7 +49,8 @@ class Model(ModelMLM):
             tags_sop = tags_sop[:, 0]
             sop_logits = tf.reduce_mean(tf.transpose(args[3], [0, 2, 1]), axis=-1)
             res_mlm = tf.losses.sparse_categorical_crossentropy(y_true=args[0], y_pred=args[1], from_logits=True)
-            res_sop = tf.expand_dims(tf.losses.sparse_categorical_crossentropy(y_true=tags_sop, y_pred=sop_logits, from_logits=True),-1)
+            res_sop = tf.expand_dims(
+                tf.losses.sparse_categorical_crossentropy(y_true=tags_sop, y_pred=sop_logits, from_logits=True), -1)
             return res_mlm + res_sop
 
         return {"softmax_cross_entropy": keras.layers.Lambda(loss_fn, name="softmax_cross_entropy")(
@@ -71,7 +71,22 @@ class Model(ModelMLM):
 
     def _print_evaluate(self, inputs: Dict[str, AnyNumpy], outputs: Dict[str, AnyNumpy], targets: Dict[str, AnyNumpy],
                         data: 'SOPData', print_fn):
-        pass
+        sentence = inputs['text']
+        pred = outputs['pred_ids_mlm']
+        preds_sop = outputs['pred_ids_sop']
+        tgt = targets['tgt_mlm']
+        mask = inputs['mask_mlm']
+        tgt_sop = targets['tgt_sop']
+        tokens_str, mask_str, tags_str, preds_str, preds_sop_str = data.print_sentence(sentence, mask, tgt, tgt_sop,
+                                                                                       pred,
+                                                                                       preds_sop=preds_sop)
+
+        print_fn(f'\n'
+                 f'in:  {tokens_str}\n'
+                 f'mask:{mask_str}\n'
+                 f'tgt: {tags_str}\n'
+                 f'pred:{preds_str}\n'
+                 f'{preds_sop_str}')
 
 
 class BERTSOP(GraphBase):

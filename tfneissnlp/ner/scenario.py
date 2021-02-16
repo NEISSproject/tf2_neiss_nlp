@@ -1,6 +1,6 @@
-# Copyright 2020 The neiss authors. All Rights Reserved.
+# Copyright 2020 The tfaip authors. All Rights Reserved.
 #
-# This file is part of tf2_neiss_nlp.
+# This file is part of tfaip.
 #
 # tfaip is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by the
@@ -19,7 +19,6 @@ from dataclasses import dataclass
 from typing import Type
 
 from dataclasses_json import dataclass_json
-
 from tfaip.base.model import ModelBase
 from tfaip.base.scenario import ScenarioBaseParams, ScenarioBase
 from tfneissnlp.data.ner import NERData
@@ -33,12 +32,13 @@ class ScenarioParams(ScenarioBaseParams):
 
 
 class Scenario(ScenarioBase):
+
     @classmethod
-    def model_cls(cls) -> Type['ModelBase']:
+    def model_cls(cls) -> Type['Model']:
         return Model
 
     @classmethod
-    def data_cls(cls) -> Type[NERData]:
+    def data_cls(cls) -> Type['NERData']:
         return NERData
 
     @staticmethod
@@ -51,6 +51,10 @@ class Scenario(ScenarioBase):
     def create_model(self) -> 'ModelBase':
         self._params.model_params.num_tags_ = self.data.get_num_tags()
         self._params.model_params.tags_fn_ = self._params.data_params.tags
+        self._params.model_params.bet_tagging_ = self._params.data_params.bet_tagging
         self._params.model_params.target_vocab_size_ = self.data.get_tokenizer().vocab_size + 3
         self._params.model_params.oov_id_ = self.data.get_tag_mapper().get_oov_id()
+        self._params.model_params.use_hf_model_ = self._params.data_params.use_hf_model
+        self._params.model_params.pretrained_hf_model_ = self._params.data_params.pretrained_hf_model
+        self._params.model_params.whole_word_attention_ = self._params.data_params.whole_word_attention
         return super(Scenario, self).create_model()

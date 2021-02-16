@@ -1,6 +1,6 @@
-# Copyright 2020 The neiss authors. All Rights Reserved.
+# Copyright 2020 The tfaip authors. All Rights Reserved.
 #
-# This file is part of tf2_neiss_nlp.
+# This file is part of tfaip.
 #
 # tfaip is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by the
@@ -17,16 +17,12 @@
 # ==============================================================================
 import argparse
 import csv
-import json
 import logging
-import os
-import random
 
 import pandas
-
+from tfaip.util.argument_parser import add_args_group
 from tfneissnlp.data.ner import NERData, NERDataParams
 from tfneissnlp.util.ner_eval import Evaluator
-from tfaip.util.argument_parser import add_args_group
 
 logger = logging.getLogger(__name__)
 

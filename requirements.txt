@@ -9,3 +9,5 @@ xlrd
 pytest
 PyYAML
 tfaip
+seqeval
+transformers

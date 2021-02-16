@@ -1,6 +1,6 @@
-# Copyright 2020 The neiss authors. All Rights Reserved.
+# Copyright 2020 The tfaip authors. All Rights Reserved.
 #
-# This file is part of tf2_neiss_nlp.
+# This file is part of tfaip.
 #
 # tfaip is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by the
@@ -23,10 +23,9 @@ from dataclasses import dataclass
 
 import tensorflow as tf
 from dataclasses_json import dataclass_json
-
+from tfaip.util.argument_parser import add_args_group
 from tfneissnlp.data.mlm import MLMDataParams, MLMData
 from tfneissnlp.data.worker.nsp import NSPWorker
-from tfaip.util.argument_parser import add_args_group
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +35,7 @@ MODULE_NAME = os.path.basename(__file__)
 @dataclass_json
 @dataclass
 class NSPDataParams(MLMDataParams):
-    segment_train: bool=False
+    segment_train: bool = False
     max_words_text_part: int = 60  # 'maximum number of words in a text part of the input function'
 
 
@@ -49,10 +48,15 @@ class NSPData(MLMData):
         return NSPWorker
 
     def _input_layer_specs(self):
-        return {
+        dict = {
             'text': tf.TensorSpec(shape=[None], dtype='int32', name='text'),
+            'seq_length': tf.TensorSpec(shape=[None], dtype='int32', name='seq_length'),
             'mask_mlm': tf.TensorSpec(shape=[None], dtype='int32', name='mask_mlm'),
         }
+        if self._params.whole_word_attention:
+            dict['word_length_vector'] = tf.TensorSpec(shape=[None], dtype='int32', name='word_length_vector')
+            dict['segment_ids'] = tf.TensorSpec(shape=[None], dtype='int32', name='segment_ids')
+        return dict
 
     def _target_layer_specs(self):
         return {
@@ -62,25 +66,32 @@ class NSPData(MLMData):
 
     def get_shapes_types_defaults(self):
 
-        input_shapes = {'text': [None], 'mask_mlm': [None]}
+        input_shapes = {'text': [None], 'seq_length': [None], 'mask_mlm': [None]}
 
-        tgt_shapes = {'tgt_mlm': [None],'tgt_nsp':[None]}
+        tgt_shapes = {'tgt_mlm': [None], 'tgt_nsp': [None]}
 
-        input_types = {'text': tf.int32, 'mask_mlm': tf.int32}
+        input_types = {'text': tf.int32, 'seq_length': tf.int32, 'mask_mlm': tf.int32}
 
-        tgt_types = {'tgt_mlm': tf.int32,'tgt_nsp':tf.int32}
+        tgt_types = {'tgt_mlm': tf.int32, 'tgt_nsp': tf.int32}
 
-        input_defaults = {'text': 0, 'mask_mlm': 0}
+        input_defaults = {'text': 0, 'seq_length': 0, 'mask_mlm': 0}
 
-        tgt_defaults = {'tgt_mlm': 0,'tgt_nsp':0}
+        tgt_defaults = {'tgt_mlm': 0, 'tgt_nsp': 0}
+
+        if self._params.whole_word_attention:
+            input_shapes['word_length_vector'] = [None]
+            input_shapes['segment_ids'] = [None]
+            input_types['word_length_vector'] = tf.int32
+            input_types['segment_ids'] = tf.int32
+            input_defaults['word_length_vector'] = 0
+            input_defaults['segment_ids'] = -1
 
         self._shapes = input_shapes, tgt_shapes
         self._types = input_types, tgt_types
         self._defaults = input_defaults, tgt_defaults
 
-
     def print_sentence(self, sentence, masked_index, target_mlm, target_nsp, preds_mlm=None, preds_nsp=None):
-        super_res_tuple = super(NSPData,self).print_sentence(sentence, masked_index, target_mlm, preds_mlm)
+        super_res_tuple = super(NSPData, self).print_sentence(sentence, masked_index, target_mlm, preds_mlm)
         nsp_str = f"NSP-TGT: {target_nsp}; NSP-PRED: {preds_nsp if preds_nsp != None else '-'}"
         lst = [x for x in super_res_tuple]
         lst.extend(nsp_str)
@@ -115,7 +126,7 @@ def debug_eval(main_params):
             # backward = backward_gen.__iter__().__next__()
             forward = forward_gen.__iter__().__next__()
             print_tuple = input_fn.print_sentence(forward[0]['text'], forward[0]['masked_index'],
-                                                  forward[1]['tgt_mlm'],forward[1]['tgt_nsp'])
+                                                  forward[1]['tgt_mlm'], forward[1]['tgt_nsp'])
             print(f'\n'.join(print_tuple[:-1]))
         except StopIteration:
             break

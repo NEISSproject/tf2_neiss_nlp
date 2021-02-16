@@ -1,6 +1,6 @@
-# Copyright 2020 The neiss authors. All Rights Reserved.
+# Copyright 2020 The tfaip authors. All Rights Reserved.
 #
-# This file is part of tf2_neiss_nlp.
+# This file is part of tfaip.
 #
 # tfaip is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by the
@@ -21,14 +21,13 @@ from typing import TYPE_CHECKING
 
 import tensorflow as tf
 import tensorflow.keras as keras
-from dataclasses_json import dataclass_json
-
 import tfneissnlp.util.transformer as transformers
+from dataclasses_json import dataclass_json
 from tfaip.base.model import GraphBase
 from tfaip.base.model.modelbase import SimpleMetric
+from tfaip.util.typing import AnyNumpy
 from tfneissnlp.bert_pretraining.mlm.model import ModelMLMParams, Model as ModelMLM
 from tfneissnlp.data.nsp import NSPData
-from tfaip.util.typing import AnyNumpy
 
 if TYPE_CHECKING:
     pass

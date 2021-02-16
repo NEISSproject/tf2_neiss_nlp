@@ -1,6 +1,6 @@
-# Copyright 2020 The neiss authors. All Rights Reserved.
+# Copyright 2020 The tfaip authors. All Rights Reserved.
 #
-# This file is part of tf2_neiss_nlp.
+# This file is part of tfaip.
 #
 # tfaip is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by the
@@ -18,20 +18,19 @@
 import json
 import logging
 import os
+import random
 from abc import abstractmethod
 from dataclasses import dataclass, field
 from functools import partial
-import random
 from typing import List, Callable
 
 import tensorflow as tf
 from dataclasses_json import dataclass_json
-
 from tfaip.base.data.data import DataBase
 from tfaip.base.data.data_base_params import DataBaseParams
-from tfneissnlp.util.nlp_helper import load_txt_conll
 from tfaip.util.multiprocessing.data.pipeline import DataPipeline
 from tfaip.util.multiprocessing.data.worker import DataWorker
+from tfneissnlp.util.nlp_helper import load_txt_conll
 
 logger = logging.getLogger(__name__)
 this_dir = os.path.dirname(os.path.realpath(__file__))
@@ -53,6 +52,9 @@ class NLPDataParams(DataBaseParams):
     whole_word_masking: bool = False
     train_shuffle: bool = True
     val_shuffle: bool = False
+    use_hf_model: bool = False
+    pretrained_hf_model: str = ""
+    whole_word_attention: bool = False
 
 
 class NLPData(DataBase):

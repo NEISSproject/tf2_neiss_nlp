@@ -1,6 +1,6 @@
-# Copyright 2020 The neiss authors. All Rights Reserved.
+# Copyright 2020 The tfaip authors. All Rights Reserved.
 #
-# This file is part of tf2_neiss_nlp.
+# This file is part of tfaip.
 #
 # tfaip is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by the
@@ -23,10 +23,9 @@ from dataclasses import dataclass
 
 import tensorflow as tf
 from dataclasses_json import dataclass_json
-
+from tfaip.util.argument_parser import add_args_group
 from tfneissnlp.data.mlm import MLMDataParams, MLMData
 from tfneissnlp.data.worker.sop import SOPWorker
-from tfaip.util.argument_parser import add_args_group
 
 logger = logging.getLogger(__name__)
 
@@ -48,10 +47,15 @@ class SOPData(MLMData):
         return SOPWorker
 
     def _input_layer_specs(self):
-        return {
+        dict = {
             'text': tf.TensorSpec(shape=[None], dtype='int32', name='text'),
+            'seq_length': tf.TensorSpec(shape=[None], dtype='int32', name='seq_length'),
             'mask_mlm': tf.TensorSpec(shape=[None], dtype='int32', name='mask_mlm'),
         }
+        if self._params.whole_word_attention:
+            dict['word_length_vector'] = tf.TensorSpec(shape=[None], dtype='int32', name='word_length_vector')
+            dict['segment_ids'] = tf.TensorSpec(shape=[None], dtype='int32', name='segment_ids')
+        return dict
 
     def _target_layer_specs(self):
         return {
@@ -60,17 +64,25 @@ class SOPData(MLMData):
         }
 
     def get_shapes_types_defaults(self):
-        input_shapes = {'text': [None], 'mask_mlm': [None]}
+        input_shapes = {'text': [None], 'seq_length': [None], 'mask_mlm': [None]}
 
         tgt_shapes = {'tgt_mlm': [None], 'tgt_sop': [None]}
 
-        input_types = {'text': tf.int32, 'mask_mlm': tf.int32}
+        input_types = {'text': tf.int32, 'seq_length': tf.int32, 'mask_mlm': tf.int32}
 
         tgt_types = {'tgt_mlm': tf.int32, 'tgt_sop': tf.int32}
 
-        input_defaults = {'text': 0, 'mask_mlm': 0}
+        input_defaults = {'text': 0, 'seq_length': 0, 'mask_mlm': 0}
 
         tgt_defaults = {'tgt_mlm': 0, 'tgt_sop': 0}
+
+        if self._params.whole_word_attention:
+            input_shapes['word_length_vector'] = [None]
+            input_shapes['segment_ids'] = [None]
+            input_types['word_length_vector'] = tf.int32
+            input_types['segment_ids'] = tf.int32
+            input_defaults['word_length_vector'] = 0
+            input_defaults['segment_ids'] = -1
 
         self._shapes = input_shapes, tgt_shapes
         self._types = input_types, tgt_types
@@ -78,9 +90,9 @@ class SOPData(MLMData):
 
     def print_sentence(self, sentence, masked_index, target_mlm, target_sop, preds_mlm=None, preds_sop=None):
         super_res_tuple = super(SOPData, self).print_sentence(sentence, masked_index, target_mlm, preds_mlm)
-        sop_str = f"SOP-TGT: {target_sop}; SOP-PRED: {preds_sop if preds_sop != None else '-'}"
+        sop_str = f"SOP-TGT: {target_sop}; SOP-PRED: {[x for x in preds_sop] if preds_sop is not None else '-'}"
         lst = [x for x in super_res_tuple]
-        lst.extend(sop_str)
+        lst.append(sop_str)
         return lst
 
 

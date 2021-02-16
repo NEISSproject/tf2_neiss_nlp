@@ -1,6 +1,6 @@
-# Copyright 2020 The neiss authors. All Rights Reserved.
+# Copyright 2020 The tfaip authors. All Rights Reserved.
 #
-# This file is part of tf2_neiss_nlp.
+# This file is part of tfaip.
 #
 # tfaip is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by the
@@ -17,10 +17,7 @@
 # ==============================================================================
 import random
 
-import tensorflow_datasets as tfds
-
 from tfneissnlp.data.worker.nlp_base import NLPWorker
-from tfaip.util.random import set_global_random_seed
 
 
 class SOPWorker(NLPWorker):
@@ -105,10 +102,10 @@ class SOPWorker(NLPWorker):
             inputlist = sentences.split(' ')
             nowords = len(inputlist)
             # minimal word number is 10
-            if nowords>=10:
+            if nowords >= 10:
                 splitindex = random.randint(4, nowords - 5)
             else:
-                splitindex=0
+                splitindex = 0
             textpartone = inputlist[:splitindex]
             # maximal text sequence length is 40
             textparttwo = inputlist[splitindex:]
@@ -139,12 +136,14 @@ class SOPWorker(NLPWorker):
             tar_mlm = [self._tok_vocab_size] + first_enc_sentence + [self._tok_vocab_size + 1] + sec_enc_sentence + [
                 self._tok_vocab_size + 1]
             tar_sop = [1]
-        inputs = {'text': text_index_list, 'mask_mlm': masked_index_list}
+        inputs = {'text': text_index_list, 'seq_length': [len(text_index_list)], 'mask_mlm': masked_index_list}
+        if self._wwa:
+            word_length_vector, segment_ids = self.build_whole_word_attention_inputs(tar_mlm)
+            inputs['word_length_vector'] = word_length_vector
+            inputs['segment_ids'] = segment_ids
         tgts = {'tgt_mlm': tar_mlm, 'tgt_sop': tar_sop}
 
         return inputs, tgts
 
     def switch_sentences(self):
         return random.choice([True, False])
-
-

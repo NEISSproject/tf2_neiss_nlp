@@ -1,6 +1,6 @@
-# Copyright 2020 The neiss authors. All Rights Reserved.
+# Copyright 2020 The tfaip authors. All Rights Reserved.
 #
-# This file is part of tf2_neiss_nlp.
+# This file is part of tfaip.
 #
 # tfaip is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by the
@@ -41,4 +41,5 @@ class Scenario(ScenarioMLM):
 
     def create_model(self) -> 'ModelBase':
         self._params.model_params.target_vocab_size_ = self.data.get_tokenizer().vocab_size + 3
+        self._params.model_params.whole_word_attention_ = self._params.data_params.whole_word_attention
         return super(Scenario, self).create_model()

@@ -1,6 +1,6 @@
-# Copyright 2020 The neiss authors. All Rights Reserved.
+# Copyright 2020 The tfaip authors. All Rights Reserved.
 #
-# This file is part of tf2_neiss_nlp.
+# This file is part of tfaip.
 #
 # tfaip is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by the
@@ -24,10 +24,9 @@ from dataclasses import dataclass
 import tensorflow as tf
 import tensorflow_datasets as tfds
 from dataclasses_json import dataclass_json
-
+from tfaip.util.argument_parser import add_args_group
 from tfneissnlp.data.nlp_base import NLPDataParams, NLPData, NLPPipeline
 from tfneissnlp.data.worker.mlm import MLMWorker
-from tfaip.util.argument_parser import add_args_group
 
 logger = logging.getLogger(__name__)
 
@@ -39,7 +38,8 @@ MODULE_NAME = os.path.basename(__file__)
 class MLMDataParams(NLPDataParams):
     tokenizer: str = ''
     max_token_text_part: int = 320  # 'maximum number of tokens in a text part of the input function'
-
+    max_word_text_part: int = 0  # only relevant in whole word attention and then it is used instead of
+    # the max_token_text_param if it has a value greater 0. It specifies the maximum number of words in am sample
 
 class MLMData(NLPData):
     @staticmethod
@@ -61,10 +61,15 @@ class MLMData(NLPData):
         return MLMWorker
 
     def _input_layer_specs(self):
-        return {
+        dict = {
             'text': tf.TensorSpec(shape=[None], dtype='int32', name='sentence'),
+            'seq_length': tf.TensorSpec(shape=[None], dtype='int32', name='seq_length'),
             'mask_mlm': tf.TensorSpec(shape=[None], dtype='int32', name='mask_mlm'),
         }
+        if self._params.whole_word_attention:
+            dict['word_length_vector'] = tf.TensorSpec(shape=[None], dtype='int32', name='word_length_vector')
+            dict['segment_ids'] = tf.TensorSpec(shape=[None], dtype='int32', name='segment_ids')
+        return dict
 
     def _target_layer_specs(self):
         return {
@@ -73,17 +78,25 @@ class MLMData(NLPData):
 
     def get_shapes_types_defaults(self):
 
-        input_shapes = {'text': [None], 'mask_mlm': [None]}
+        input_shapes = {'text': [None], 'seq_length': [None], 'mask_mlm': [None]}
 
         tgt_shapes = {'tgt_mlm': [None]}
 
-        input_types = {'text': tf.int32, 'mask_mlm': tf.int32}
+        input_types = {'text': tf.int32, 'seq_length': tf.int32, 'mask_mlm': tf.int32}
 
         tgt_types = {'tgt_mlm': tf.int32}
 
-        input_defaults = {'text': 0, 'mask_mlm': 0}
+        input_defaults = {'text': 0, 'seq_length': 0, 'mask_mlm': 0}
 
         tgt_defaults = {'tgt_mlm': 0}
+
+        if self._params.whole_word_attention:
+            input_shapes['word_length_vector'] = [None]
+            input_shapes['segment_ids'] = [None]
+            input_types['word_length_vector'] = tf.int32
+            input_types['segment_ids'] = tf.int32
+            input_defaults['word_length_vector'] = 0
+            input_defaults['segment_ids'] = -1
 
         self._shapes = input_shapes, tgt_shapes
         self._types = input_types, tgt_types
@@ -125,7 +138,9 @@ class MLMData(NLPData):
         tokens_with_visible_space = [x.replace(" ", '\u2423') for x in token_list]
         tokens_str = "|".join(
             [("{:" + str(f) + "}").format(s, ) for f, s in zip(format_helper, tokens_with_visible_space)])
-        targets_str = "|".join([("{:" + str(f) + "}").format(t) for f, t in zip(format_helper, target_string)])
+        targets_with_visible_space = [x.replace(" ", '\u2423') for x in target_string]
+        targets_str = "|".join(
+            [("{:" + str(f) + "}").format(t) for f, t in zip(format_helper, targets_with_visible_space)])
         mask_index_str = "|".join([("{:" + str(f) + "}").format(t) for f, t in zip(format_helper, masked_index)])
         return tokens_str, mask_index_str, targets_str, preds_str
 

@@ -1,6 +1,6 @@
-# Copyright 2020 The neiss authors. All Rights Reserved.
+# Copyright 2020 The tfaip authors. All Rights Reserved.
 #
-# This file is part of tf2_neiss_nlp.
+# This file is part of tfaip.
 #
 # tfaip is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by the
@@ -21,12 +21,10 @@ from typing import TYPE_CHECKING
 
 import tensorflow as tf
 import tensorflow.keras as keras
-from dataclasses_json import dataclass_json
-
 import tfneissnlp.util.transformer as transformers
+from dataclasses_json import dataclass_json
 from tfaip.base.model import ModelBaseParams, ModelBase, GraphBase
 from tfaip.base.model.modelbase import SimpleMetric
-from tfneissnlp.util.ner_metrics import EntityF1
 from tfaip.util.typing import AnyNumpy
 
 if TYPE_CHECKING:
@@ -45,7 +43,10 @@ class ModelMLMParams(ModelBaseParams):
     rel_pos_enc: bool = True
     pos_enc_max_abs: int = 20000
     pos_enc_max_rel: int = 16
+    hidden_activation: str = 'relu'
     target_vocab_size_: int = None
+    whole_word_attention_: bool = False
+    one_side_attention_window: int = 5
 
 
 class Model(ModelBase):
