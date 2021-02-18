@@ -8,12 +8,13 @@ it contains several pretraining tasks for bert models and fine tuning for named 
 `pip install --use-feature=2020-resolver <path_to:tf2_neiss_nlp>`
 
 ### Install tf2_neiss_nlp as a developer:
+The cloned git repos is linked to the virtual environment and can be edited.
+First consider to clone and install [tfaip](https://github.com/Planet-AI-GmbH/tf2_aip_base) in development mode too. 
+Otherwise it will be installed from PyPi.
 
-First consider to clone and install [tfaip](https://github.com/Planet-AI-GmbH/tf2_aip_base) for development too.
+`pip install -e <path_to:tf2_neiss_nlp>`
 
-`pip install -r <path_to:tf2_neiss_nlp/requirements.txt>`
-
-Add `<path_to:tf2_neiss_nlp/tfneissnlp>` to the `TF_AIP_SCENARIOS` environment variable:
+And add `<path_to:tf2_neiss_nlp/tfneissnlp>` to the `TF_AIP_SCENARIOS` environment variable:
 * run `export TF_AIP_SCENARIOS=<path_to:tf2_neiss_nlp/tfneissnlp>:$TF_AIP_SCENARIOS` 
   in your shell or add it permanent to your virtual env activate script
 
@@ -23,6 +24,6 @@ Run tests:
 `python -m unittest discover test`
 
 # Usage
-see [tf2_aip_base-wiki](http://gitea.planet-ai.de/pai/tf2_aip/wiki) for general information.
+see [tf2_aip_base-wiki](https://github.com/Planet-AI-GmbH/tf2_aip_base/wiki) for general information.
 
 _Contributions are welcome, and they are greatly appreciated!_
