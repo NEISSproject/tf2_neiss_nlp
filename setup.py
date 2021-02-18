@@ -17,10 +17,12 @@
 # ==============================================================================
 
 import os
+from distutils import sysconfig
 
 from setuptools import setup, find_packages
-from tfaip import __version__
-from distutils import sysconfig
+
+from tfneissnlp import __version__
+
 site_packages_path = os.path.sep.join(sysconfig.get_python_lib().split(os.path.sep)[-3:])
 setup(
     name='tfneissnlp',
