@@ -1,7 +1,7 @@
-tensorflow~=2.3.0
+tensorflow~=2.4.0
 tensorflow_addons
 tensorflow-datasets~=3.0.0
-tfaip==0.0.1
+tfaip==1.2.1
 pandas
 dataclasses-json
 prettytable

@@ -1,0 +1,176 @@
+{
+  "id": "D72f569ee-6915-48be-9a9c-c5e7d717042c",
+  "producer": "MODERN_0",
+  "srcImgPath": "data/imgs/data/Datenlieferung_4/TIFFs-Farbe/01-UNI-20190424-124-083.tif",
+  "classifications": {
+    "dc398117-9ac6-43b5-a0b1-7ac2b257b492": {
+      "moduleId": "dc398117-9ac6-43b5-a0b1-7ac2b257b492",
+      "moduleLabel": "HM_DocClass",
+      "source": "DC",
+      "results": [
+        {
+          "label": "Anschreiben",
+          "score": 1.0,
+          "isValid": true
+        }
+      ]
+    }
+  },
+  "pages": [
+    {
+      "id": "D72f569ee-6915-48be-9a9c-c5e7d717042c.P0",
+      "imageDimsOriginal": "1662,2362",
+      "imageDimsProcess": "1662,2362"
+    },
+    {
+      "id": "D72f569ee-6915-48be-9a9c-c5e7d717042c.P1",
+      "imageDimsOriginal": "823,1158",
+      "imageDimsProcess": "823,1158"
+    },
+    {
+      "id": "D72f569ee-6915-48be-9a9c-c5e7d717042c.P2",
+      "regions": [
+        {
+          "id": "D72f569ee-6915-48be-9a9c-c5e7d717042c.P2.B0",
+          "coordinates": "30,32;30,716;845,716;845,32",
+          "angleMod90": {
+            "content": null
+          },
+          "lines": [
+            {
+              "id": "D72f569ee-6915-48be-9a9c-c5e7d717042c.P2.B0.L2",
+              "coordinates": "646,72;831,72;831,101;646,101",
+              "exactAngle": {
+                "content": null
+              },
+              "text": {
+                "content": "FI 23.04.19 3,20"
+              },
+              "words": [
+                {
+                  "id": "9da6056c-d63e-4b73-9042-d496bd348623",
+                  "wordboxBounds": "652,93,19,21,0.0",
+                  "wordboxMainBody": "652,93,19,21,0.0",
+                  "text": {
+                    "content": "FI"
+                  }
+                },
+                {
+                  "id": "37a979c1-947c-4896-a729-dc7f4406eebf",
+                  "wordboxBounds": "687,95,78,21,0.0",
+                  "wordboxMainBody": "687,95,78,21,0.0",
+                  "text": {
+                    "content": "23.04.19"
+                  }
+                },
+                {
+                  "id": "b7c29ac5-51ec-4feb-870a-0861f36a4aa5",
+                  "wordboxBounds": "791,100,37,23,0.0",
+                  "wordboxMainBody": "791,100,37,23,0.0",
+                  "text": {
+                    "content": "3,20"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "empty test"
+            },
+            {
+              "id": "D72f569ee-6915-48be-9a9c-c5e7d717042c.P2.B0.L10",
+              "coordinates": "30,667;423,667;423,717;30,717",
+              "exactAngle": {
+                "content": null
+              },
+              "text": {
+                "content": "20308 Hamburg"
+              },
+              "words": [
+                {
+                  "id": "318c7ec6-f357-4a60-bf1e-cc3b2bf79477",
+                  "wordboxBounds": "30,712,140,45,0.0",
+                  "wordboxMainBody": "30,712,140,45,0.0",
+                  "text": {
+                    "content": "20308"
+                  }
+                },
+                {
+                  "id": "42d01077-3802-47a6-ab4e-d462a7a8c8b2",
+                  "wordboxBounds": "193,717,226,44,0.0",
+                  "wordboxMainBody": "193,717,226,44,0.0",
+                  "text": {
+                    "content": "Hamburg"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "imageDimsOriginal": "888,894",
+      "imageDimsProcess": "888,894"
+    }
+  ],
+  "entities": {
+    "99ceee23-7449-4496-bd1f-be4f7ec34a02": {
+      "moduleId": "99ceee23-7449-4496-bd1f-be4f7ec34a02",
+      "moduleLabel": "NERGTTool",
+      "source": "NER",
+      "results": [
+        {
+          "label": "DATUM",
+          "id": "dcd2b92b-b839-40ed-bc2e-b2333ed819af",
+          "text": "23.04.19",
+          "subEntities": [
+            {
+              "snippetText": "23.04.19",
+              "score": -1.0,
+              "pos": "681,104,94,32,0.0",
+              "lineId": "D72f569ee-6915-48be-9a9c-c5e7d717042c.P2.B0.L2",
+              "rangeText": {
+                "begin": 3,
+                "end": 11,
+                "totalLength": 16
+              }
+            }
+          ]
+        },
+        {
+          "label": "PLZ",
+          "id": "497c5abe-4815-420f-bb3d-673519f94c1f",
+          "text": "20308",
+          "subEntities": [
+            {
+              "snippetText": "20308",
+              "score": -1.0,
+              "pos": "30,718,152,51,0.0",
+              "lineId": "D72f569ee-6915-48be-9a9c-c5e7d717042c.P2.B0.L10",
+              "rangeText": {
+                "end": 5,
+                "totalLength": 13
+              }
+            }
+          ]
+        },
+        {
+          "label": "ORT",
+          "id": "9fc38665-279a-49dc-818a-4e0ac4af3c1c",
+          "text": "Hamburg",
+          "subEntities": [
+            {
+              "snippetText": "Hamburg",
+              "score": -1.0,
+              "pos": "212,718,212,51,0.0",
+              "lineId": "D72f569ee-6915-48be-9a9c-c5e7d717042c.P2.B0.L10",
+              "rangeText": {
+                "begin": 6,
+                "end": 13,
+                "totalLength": 13
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

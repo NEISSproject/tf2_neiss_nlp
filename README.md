@@ -18,11 +18,11 @@ And add `<path_to:tf2_neiss_nlp/tfneissnlp>` to the `TF_AIP_SCENARIOS` environme
 * run `export TF_AIP_SCENARIOS=<path_to:tf2_neiss_nlp/tfneissnlp>:$TF_AIP_SCENARIOS` 
   in your shell or add it permanent to your virtual env activate script
 
-Run tests: 
-
+Run tests:
 `cd tf2_neiss_nlp`
 `python -m unittest discover test`
 
+Note: for some tests it is necessary to mark the tfaip directory as source to fix "import test.util.training"
 # Usage
 see [tf2_aip_base-wiki](https://github.com/Planet-AI-GmbH/tf2_aip_base/wiki) for general information.
 

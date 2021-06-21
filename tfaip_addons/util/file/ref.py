@@ -15,3 +15,11 @@
 # You should have received a copy of the GNU General Public License along with
 # tfaip. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
+"""Utilities for reading references"""
+
+
+def read_utf8_textline_reference_from_file(fn: str) -> str:
+    with open(fn, "r") as ref_file:
+        a_line = ref_file.readline()
+        a_line = a_line.rstrip("\n")
+        return a_line
