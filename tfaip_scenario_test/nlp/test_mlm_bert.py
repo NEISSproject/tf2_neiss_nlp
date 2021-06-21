@@ -20,13 +20,13 @@ import unittest
 
 from tensorflow.python.keras.backend import clear_session
 
-from test.util.training import (
+from tfaip_scenario_test.util.training import (
     single_train_iter,
     resume_training,
     lav_test_case,
     warmstart_training_test_case,
 )
-from test.util.workdir import workdir_path
+from tfaip_scenario_test.util.workdir import workdir_path
 from tfaip.scenario.listfile.params import ListsFileGeneratorParams
 from tfaip_scenario.nlp.bert_pretraining.mlm.scenario import Scenario
 from tfaip_scenario.nlp.data.mlm import MLMData

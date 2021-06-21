@@ -20,7 +20,7 @@ from abc import abstractmethod
 
 from tensorflow.python.keras.backend import clear_session
 
-from test.util.workdir import workdir_path
+from tfaip_scenario_test.util.workdir import workdir_path
 from tfaip.resource.resource import Resource
 
 

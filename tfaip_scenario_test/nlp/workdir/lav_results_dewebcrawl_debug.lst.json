@@ -17,7 +17,7 @@
       "bucket_batch_sizes": null,
       "__cls__": "tfaip.data.databaseparams:DataPipelineParams"
     },
-    "model_path": "/home/jochen/devel/projects/ntee/tf2_neiss_nlp/tfaip_scenario_test/nlp/workdir",
+    "model_path": "/home/jochen/devel/projects/nlp_push/tf2_neiss_nlp/tfaip_scenario_test/nlp/workdir",
     "device": {
       "gpus": null,
       "gpu_auto_tune": false,
@@ -38,10 +38,10 @@
       "processors": [
         {
           "modes": [
-            "prediction",
             "targets",
             "evaluation",
-            "training"
+            "training",
+            "prediction"
           ],
           "__cls__": "tfaip_scenario.nlp.data.processors.mlm_task:DataProcessorMLMTaskParams"
         }
@@ -55,8 +55,8 @@
       "processors": [],
       "__cls__": "tfaip.data.pipeline.processor.params:SequentialProcessorPipelineParams"
     },
-    "resource_base_path": "/home/jochen/devel/projects/ntee/tf2_neiss_nlp/tfaip_scenario_test",
-    "tokenizer": "/home/jochen/devel/projects/ntee/tf2_neiss_nlp/tfaip_scenario_test/nlp/workdir/data/tokenizer/tokenizer_de.subwords",
+    "resource_base_path": "/home/jochen/devel/projects/nlp_push",
+    "tokenizer": "/home/jochen/devel/projects/nlp_push/tf2_neiss_nlp/tfaip_scenario_test/nlp/workdir/data/tokenizer/tokenizer_de.subwords",
     "add_types": [],
     "magnitude": 3,
     "noise": "uniform",

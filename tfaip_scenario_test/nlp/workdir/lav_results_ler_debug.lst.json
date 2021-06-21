@@ -19,7 +19,7 @@
       "bucket_batch_sizes": null,
       "__cls__": "tfaip.data.databaseparams:DataPipelineParams"
     },
-    "model_path": "/home/jochen/devel/projects/ntee/tf2_neiss_nlp/tfaip_scenario_test/nlp/workdir",
+    "model_path": "/home/jochen/devel/projects/nlp_push/tf2_neiss_nlp/tfaip_scenario_test/nlp/workdir",
     "device": {
       "gpus": null,
       "gpu_auto_tune": false,
@@ -40,10 +40,10 @@
       "processors": [
         {
           "modes": [
+            "training",
             "prediction",
-            "targets",
             "evaluation",
-            "training"
+            "targets"
           ],
           "__cls__": "tfaip_scenario.nlp.data.processors.ner_task:DataProcessorNERTaskParams"
         }
@@ -57,8 +57,8 @@
       "processors": [],
       "__cls__": "tfaip.data.pipeline.processor.params:SequentialProcessorPipelineParams"
     },
-    "resource_base_path": "/home/jochen/devel/projects/ntee/tf2_neiss_nlp/tfaip_scenario_test",
-    "tokenizer": "/home/jochen/devel/projects/ntee/tf2_neiss_nlp/tfaip_scenario_test/nlp/workdir/data/tokenizer/tokenizer_de.subwords",
+    "resource_base_path": "/home/jochen/devel/projects/nlp_push",
+    "tokenizer": "/home/jochen/devel/projects/nlp_push/tf2_neiss_nlp/tfaip_scenario_test/nlp/workdir/data/tokenizer/tokenizer_de.subwords",
     "add_types": [],
     "magnitude": 3,
     "noise": "uniform",
@@ -78,7 +78,7 @@
     "tok_vocab_size_": 29987,
     "whole_word_attention": false,
     "paifile_input": false,
-    "tags": "/home/jochen/devel/projects/ntee/tf2_neiss_nlp/tfaip_scenario_test/nlp/workdir/data/tags/ler_fg.txt",
+    "tags": "/home/jochen/devel/projects/nlp_push/tf2_neiss_nlp/tfaip_scenario_test/nlp/workdir/data/tags/ler_fg.txt",
     "tokenizer_range": "sentence_v3",
     "bet_tagging": false,
     "wordwise_output": false,
@@ -99,7 +99,7 @@
     "rate": 0.1,
     "bert_graph": "BERT",
     "pretrained_bert": "",
-    "tags_fn_": "/home/jochen/devel/projects/ntee/tf2_neiss_nlp/tfaip_scenario_test/nlp/workdir/data/tags/ler_fg.txt",
+    "tags_fn_": "/home/jochen/devel/projects/nlp_push/tf2_neiss_nlp/tfaip_scenario_test/nlp/workdir/data/tags/ler_fg.txt",
     "target_vocab_size": 29990,
     "oov_id_": 38,
     "use_hf_model_": false,

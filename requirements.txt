@@ -11,3 +11,4 @@ pytest
 PyYAML
 seqeval
 transformers
+datasets
