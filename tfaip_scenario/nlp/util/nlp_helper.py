@@ -13,7 +13,7 @@
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tfaip. If not, see http://www.gnu.org/licenses/.
+# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 from tfaip_addons.util.file.stringmapper import get_sm
 
@@ -22,12 +22,7 @@ def load_txt_conll(filename):
     with open(filename) as f:
         text = f.read()
         if "\r" in text:
-            raise ValueError(
-                "file '"
-                + filename
-                + "' contains non unix line endings: try dos2unix "
-                + filename
-            )
+            raise ValueError("file '" + filename + "' contains non unix line endings: try dos2unix " + filename)
         training_data = text.strip("\n\t ").split("\n\n")
         list = []
         for sentence in training_data:
@@ -50,9 +45,7 @@ def get_ner_string_mapper(path, check="IOB"):
             if sm.get_value(channel) in sm.word_to_id_map:
                 maybe_i_tag = sm.get_value(channel).replace("B-", "I-")
                 maybe_b_tag = sm.get_value(channel).replace("I-", "B-")
-                if "B-" not in sm.get_value(channel) and "I-" not in sm.get_value(
-                    channel
-                ):
+                if "B-" not in sm.get_value(channel) and "I-" not in sm.get_value(channel):
                     assert sm.get_value(channel) in [
                         "O",
                         "UNK",

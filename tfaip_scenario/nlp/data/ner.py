@@ -13,12 +13,13 @@
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tfaip. If not, see http://www.gnu.org/licenses/.
+# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 import logging
 import os
 from typing import Dict, TypeVar
 
+import numpy as np
 import tensorflow as tf
 
 from tfaip.data.pipeline.processor.params import SequentialProcessorPipelineParams
@@ -53,34 +54,20 @@ class NERData(NLPData[TDP]):
         if self._params.use_hf_model:
             dict_ = dict(
                 input_ids=tf.TensorSpec(shape=[None], dtype="int32", name="input_ids"),
-                attention_mask=tf.TensorSpec(
-                    shape=[None], dtype="int32", name="attention_mask"
-                ),
-                seq_length=tf.TensorSpec(
-                    shape=[None], dtype="int32", name="seq_length"
-                ),
+                attention_mask=tf.TensorSpec(shape=[None], dtype="int32", name="attention_mask"),
+                seq_length=tf.TensorSpec(shape=[None], dtype="int32", name="seq_length"),
             )
         else:
             dict_ = dict(
                 sentence=tf.TensorSpec(shape=[None], dtype="int32", name="sentence"),
-                seq_length=tf.TensorSpec(
-                    shape=[None], dtype="int32", name="seq_length"
-                ),
+                seq_length=tf.TensorSpec(shape=[None], dtype="int32", name="seq_length"),
             )
         if self.params.wordwise_output:
-            dict_["wwo_indexes"] = tf.TensorSpec(
-                shape=[None], dtype="int32", name="wwo_indexes"
-            )
-            dict_["word_seq_length"] = tf.TensorSpec(
-                shape=[None], dtype="int32", name="word_seq_length"
-            )
+            dict_["wwo_indexes"] = tf.TensorSpec(shape=[None], dtype="int32", name="wwo_indexes")
+            dict_["word_seq_length"] = tf.TensorSpec(shape=[None], dtype="int32", name="word_seq_length")
         if self._params.whole_word_attention:
-            dict_["word_length_vector"] = tf.TensorSpec(
-                shape=[None], dtype="int32", name="word_length_vector"
-            )
-            dict_["segment_ids"] = tf.TensorSpec(
-                shape=[None], dtype="int32", name="segment_ids"
-            )
+            dict_["word_length_vector"] = tf.TensorSpec(shape=[None], dtype="int32", name="word_length_vector")
+            dict_["segment_ids"] = tf.TensorSpec(shape=[None], dtype="int32", name="segment_ids")
 
         return dict_
 
@@ -90,9 +77,7 @@ class NERData(NLPData[TDP]):
             "targetmask": tf.TensorSpec(shape=[None], dtype="int32", name="targetmask"),
         }
         if self._params.bet_tagging:
-            dict_target_layer["tgt_cse"] = tf.TensorSpec(
-                shape=[None, 3], dtype="int32", name="tgt"
-            )
+            dict_target_layer["tgt_cse"] = tf.TensorSpec(shape=[None, 3], dtype="int32", name="tgt")
         return dict_target_layer
 
     def _padding_values(self) -> Dict[str, AnyNumpy]:
@@ -127,6 +112,21 @@ class NERData(NLPData[TDP]):
     def get_num_tags(self):
         return self.tag_string_mapper.size()
 
+    def prediction_to_list(self, sentence, pred_ids):
+        assert self.params.wordwise_output
+        start = int(np.argwhere(sentence == self.params.cls_token_id_)) + 1
+        end = int(np.argwhere(sentence == self.params.sep_token_id_))
+        start_tag = int(np.argwhere(pred_ids == self._tag_string_mapper.size())) + 1
+        end_tag = int(np.argwhere(pred_ids == self._tag_string_mapper.size() + 1))
+        # assert end_tag == end, f"Inkonsisten EOS index in tokens({end}) and tags({end_tag}!"
+        tags = [self._tag_string_mapper.get_value(x) for x in pred_ids[start_tag:end_tag]]
+        sentence_str = self.tokenizer.decode(sentence[start:end])
+        word_list = sentence_str.split(" ")
+        assert len(word_list) == len(tags)
+        logger.debug(f"{word_list}")
+        logger.debug(f"{tags}")
+        return word_list, tags
+
     def print_ner_sentence(self, sentence, tags, mask, preds=None, pred_fp=None):
         if tf.is_tensor(sentence):
             assert tf.executing_eagerly()
@@ -149,28 +149,18 @@ class NERData(NLPData[TDP]):
             else:
                 raise IndexError(f"{i} is not a valid token id!")
 
-        tag_string = [
-            self.tag_string_mapper.get_value(i)
-            if i < self.tag_string_mapper.size()
-            else "OOB"
-            for i in tags
-        ]
+        tag_string = [self.tag_string_mapper.get_value(i) if i < self.tag_string_mapper.size() else "OOB" for i in tags]
         tag_string = [i if i != "UNK" else "*" for i in tag_string]
 
         if preds is not None:
             pred_string = [
-                self.tag_string_mapper.get_value(i)
-                if i < self.tag_string_mapper.size()
-                else "OOB"
-                for i in preds
+                self.tag_string_mapper.get_value(i) if i < self.tag_string_mapper.size() else "OOB" for i in preds
             ]
             pred_string = [i if i != "UNK" else "*" for i in pred_string]
 
             if pred_fp is not None:
                 pred_fp_string = [
-                    self._tag_string_mapper.get_value(i)
-                    if i < self._tag_string_mapper.size()
-                    else "OOB"
+                    self._tag_string_mapper.get_value(i) if i < self._tag_string_mapper.size() else "OOB"
                     for i in pred_fp
                 ]
                 pred_fp_string = [i if i != "UNK" else "*" for i in pred_fp_string]
@@ -181,40 +171,20 @@ class NERData(NLPData[TDP]):
                     and str(tag).startswith("I-")
                     and str(pred_string_fix_rule[idx - 1]).replace("B-", "I-") != tag
                 ):
-                    pred_string_fix_rule[idx] = str(
-                        pred_string_fix_rule[idx - 1]
-                    ).replace("B-", "I-")
+                    pred_string_fix_rule[idx] = str(pred_string_fix_rule[idx - 1]).replace("B-", "I-")
 
-            format_helper = [
-                max(len(s), len(t), len(u))
-                for s, t, u in zip(token_list, tag_string, pred_string)
-            ]
-            preds_str = "|".join(
-                [
-                    ("{:" + str(f) + "}").format(t)
-                    for f, t in zip(format_helper, pred_string)
-                ]
-            )
+            format_helper = [max(len(s), len(t), len(u)) for s, t, u in zip(token_list, tag_string, pred_string)]
+            preds_str = "|".join([("{:" + str(f) + "}").format(t) for f, t in zip(format_helper, pred_string)])
             if pred_fp is not None:
-                pred_fp_str = "|".join(
-                    [
-                        ("{:" + str(f) + "}").format(t)
-                        for f, t in zip(format_helper, pred_fp_string)
-                    ]
-                )
+                pred_fp_str = "|".join([("{:" + str(f) + "}").format(t) for f, t in zip(format_helper, pred_fp_string)])
             preds_str_fix_rule = "|".join(
-                [
-                    ("{:" + str(f) + "}").format(t)
-                    for f, t in zip(format_helper, pred_string_fix_rule)
-                ]
+                [("{:" + str(f) + "}").format(t) for f, t in zip(format_helper, pred_string_fix_rule)]
             )
             preds_str = preds_str + "\nfpre:" + preds_str_fix_rule
             if pred_fp is not None:
                 preds_str = preds_str + "\nfppr:" + pred_fp_str
         else:
-            format_helper = [
-                max(len(s), len(t)) for s, t in zip(token_list, tag_string)
-            ]
+            format_helper = [max(len(s), len(t)) for s, t in zip(token_list, tag_string)]
             preds_str = ""
 
         tokens_with_visible_space = [x.replace(" ", "\u2423") for x in token_list]
@@ -226,10 +196,6 @@ class NERData(NLPData[TDP]):
                 for f, s in zip(format_helper, tokens_with_visible_space)
             ]
         )
-        tags_str = "|".join(
-            [("{:" + str(f) + "}").format(t) for f, t in zip(format_helper, tag_string)]
-        )
-        mask_str = "|".join(
-            [("{:" + str(f) + "}").format(t) for f, t in zip(format_helper, mask)]
-        )
+        tags_str = "|".join([("{:" + str(f) + "}").format(t) for f, t in zip(format_helper, tag_string)])
+        mask_str = "|".join([("{:" + str(f) + "}").format(t) for f, t in zip(format_helper, mask)])
         return tokens_str, tags_str, mask_str, preds_str

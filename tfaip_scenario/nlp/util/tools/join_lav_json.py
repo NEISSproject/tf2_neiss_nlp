@@ -13,7 +13,7 @@
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tfaip. If not, see http://www.gnu.org/licenses/.
+# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 import argparse
 import json
@@ -72,14 +72,8 @@ def main(args):
         logger.debug(f"{fn + chr(10) + json_str}")
         a, b = fn_dict["lav_params"]["model_path"], os.path.dirname(fn)
         if not os.path.samefile(a, b):
-            logger.warning(
-                f"The dir is not the same as model_path_\nmodel_path_: {a}\nfile_system: {b} "
-            )
-        fn_dict_list[
-            os.path.join(
-                fn_dict["lav_params"]["model_path"], os.path.basename(fn)[12:-5]
-            )
-        ] = fn_dict
+            logger.warning(f"The dir is not the same as model_path_\nmodel_path_: {a}\nfile_system: {b} ")
+        fn_dict_list[os.path.join(fn_dict["lav_params"]["model_path"], os.path.basename(fn)[12:-5])] = fn_dict
     # join header
     header = []
     for fn_key in fn_dict_list:
@@ -88,16 +82,10 @@ def main(args):
                 header.append(metric_key)
     logger.info(f'\n{chr(10).join(["  "  + x for x in header])}')
 
-    df_list = [
-        pandas.DataFrame({file_key: fn_dict_list[file_key]["metrics"]}).transpose()
-        for file_key in fn_dict_list
-    ]
+    df_list = [pandas.DataFrame({file_key: fn_dict_list[file_key]["metrics"]}).transpose() for file_key in fn_dict_list]
 
     data_frame = pandas.concat(df_list)
-    data_frame.to_csv(
-        f"lav_collection-{'_'.join([os.path.basename(x) for x in dir_list])}.csv",
-        sep="\t",
-    )
+    data_frame.to_csv(f"lav_collection-{'_'.join([os.path.basename(x) for x in dir_list])}.csv", sep="\t")
 
     print("Result", data_frame)
     # # for metric_key in value:
@@ -114,27 +102,11 @@ def parse_args(args=None):
     parser.add_argument(
         "--root_dir",
         type=str,
-        help="set dir to search recusivley for lav-*.json files, "
-        "accepts multi dirs like [dir1,dir2]",
+        help="set dir to search recusivley for lav-*.json files, " "accepts multi dirs like [dir1,dir2]",
     )
-    parser.add_argument(
-        "--search_in",
-        type=str,
-        default="best",
-        help="search lav-log files in checkpoint subdir",
-    )
-    parser.add_argument(
-        "--filter_with",
-        type=str,
-        default="",
-        help="use only where given str is in file path",
-    )
-    parser.add_argument(
-        "--filter_without",
-        type=str,
-        default="",
-        help="use only where given str is NOT in file path",
-    )
+    parser.add_argument("--search_in", type=str, default="best", help="search lav-log files in checkpoint subdir")
+    parser.add_argument("--filter_with", type=str, default="", help="use only where given str is in file path")
+    parser.add_argument("--filter_without", type=str, default="", help="use only where given str is NOT in file path")
 
     args_ = parser.parse_args(args)
     return args_

@@ -13,7 +13,7 @@
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tfaip. If not, see http://www.gnu.org/licenses/.
+# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 import os
 import unittest
@@ -41,12 +41,8 @@ class WikiMLMScenarioTest(Scenario):
     def default_trainer_params(cls):
         p = super().default_trainer_params()
         p = set_test_trainer_params(p)
-        p.gen.train = ListsFileGeneratorParams(
-            lists=[workdir_path(__file__, "lists", "dewebcrawl_debug.lst")]
-        )
-        p.gen.val = ListsFileGeneratorParams(
-            lists=[workdir_path(__file__, "lists", "dewebcrawl_debug.lst")]
-        )
+        p.gen.train = ListsFileGeneratorParams(lists=[workdir_path(__file__, "lists", "dewebcrawl_debug.lst")])
+        p.gen.val = ListsFileGeneratorParams(lists=[workdir_path(__file__, "lists", "dewebcrawl_debug.lst")])
         return p
 
 
@@ -88,9 +84,7 @@ class TestMLMData(AbstractTestNLPData, unittest.TestCase):
             expected_inputs += 2
             self.assertTrue("word_length_vector" in batch[0])
             self.assertTrue("segment_ids" in batch[0])
-        self.assertEqual(
-            len(batch[0]), expected_inputs, f"Expected {expected_inputs} inputs"
-        )
+        self.assertEqual(len(batch[0]), expected_inputs, f"Expected {expected_inputs} inputs")
         self.assertEqual(len(batch), 3, "Expected (input, output, meta) tuple")
         self.assertEqual(len(batch[1]), 2, "Expected one output")
         # meta = json.loads(batch[2]["meta"][0, 0])

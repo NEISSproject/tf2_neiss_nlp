@@ -13,7 +13,7 @@
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tfaip. If not, see http://www.gnu.org/licenses/.
+# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 import json
 import logging
@@ -26,10 +26,7 @@ from typing import Iterable, TypeVar
 from paiargparse import pai_dataclass
 
 from tfaip import Sample, PipelineMode
-from tfaip.data.pipeline.processor.dataprocessor import (
-    DataProcessorParams,
-    GeneratingDataProcessor,
-)
+from tfaip.data.pipeline.processor.dataprocessor import DataProcessorParams, GeneratingDataProcessor
 from tfaip.util.random import set_global_random_seed
 from tfaip_addons.util.file.pai_file import File
 from tfaip_scenario.nlp.data.nlp_base_params import NLPDataParams
@@ -57,12 +54,7 @@ class DataProcessorNLPBase(GeneratingDataProcessor[T]):
     The returned "text" field is a numpy array (or a list of those) of type inter, of size [<=max_token_text_part]
     """
 
-    def __init__(
-        self,
-        params: DataProcessorNLPBaseParams,
-        data_params: NLPDataParams,
-        mode: PipelineMode,
-    ):
+    def __init__(self, params: DataProcessorNLPBaseParams, data_params: NLPDataParams, mode: PipelineMode):
         super(DataProcessorNLPBase, self).__init__(params, data_params, mode)
         self.tokenizer = data_params.get_tokenizer()
         self._wwm = self.data_params.whole_word_masking
@@ -80,9 +72,7 @@ class DataProcessorNLPBase(GeneratingDataProcessor[T]):
         if list_len <= self.data_params.max_token_text_part:
             return enc_list
         split_index = random.randint(0, list_len - self.data_params.max_token_text_part)
-        shorter_list = enc_list[
-            split_index : split_index + self.data_params.max_token_text_part
-        ]
+        shorter_list = enc_list[split_index : split_index + self.data_params.max_token_text_part]
         return shorter_list
 
     def extract_input_data_from_paifile(self, paifile):
@@ -109,16 +99,11 @@ class DataProcessorNLPBase(GeneratingDataProcessor[T]):
                         text_data = json.load(f)
                 else:
                     text_data = []
-                    IOError(
-                        f"Invalid file extension in: '{path_to_file}', only '.txt' and '.json' is supported"
-                    )
+                    IOError(f"Invalid file extension in: '{path_to_file}', only '.txt' and '.json' is supported")
             except IOError:
                 logger.error(f"Could not load file:  {path_to_file}")
                 continue
-            if (
-                self.data_params.shuffle_text_data
-                and self.mode == PipelineMode.TRAINING
-            ):
+            if self.data_params.shuffle_text_data and self.mode == PipelineMode.TRAINING:
                 random.shuffle(text_data)
             for sentence in text_data:
                 s = deepcopy(s)
@@ -141,9 +126,7 @@ class DataProcessorNLPBase(GeneratingDataProcessor[T]):
                     cur_word_index_list = []
             # Masking the whole words
             for encoded_word in whole_word_index_list:
-                masked_word_indexes, masked_indexes = self.mask_whole_word_indexes(
-                    encoded_word
-                )
+                masked_word_indexes, masked_indexes = self.mask_whole_word_indexes(encoded_word)
                 word_index_list.extend(masked_word_indexes)
                 masked_index_list.extend(masked_indexes)
         else:
@@ -178,9 +161,7 @@ class DataProcessorNLPBase(GeneratingDataProcessor[T]):
                     # MASK-Token
                     masked_word_indexes.append(self.data_params.tok_vocab_size + 2)
                 elif prob > 0.1:
-                    masked_word_indexes.append(
-                        random.randint(0, self.data_params.tok_vocab_size - 1)
-                    )
+                    masked_word_indexes.append(random.randint(0, self.data_params.tok_vocab_size - 1))
                 else:
                     masked_word_indexes.append(index)
             return masked_word_indexes, [1] * len(encoded_word)
@@ -193,9 +174,7 @@ class DataProcessorNLPBase(GeneratingDataProcessor[T]):
         cur_word_index_list = []
         j = 0
         for i in range(len(enc_text_input)):
-            if enc_text_input[i] >= self.data_params.tok_vocab_size or enc_text_input[
-                i
-            ] in [
+            if enc_text_input[i] >= self.data_params.tok_vocab_size or enc_text_input[i] in [
                 self.data_params.cls_token_id_,
                 self.data_params.sep_token_id,
             ]:

@@ -13,7 +13,7 @@
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tfaip. If not, see http://www.gnu.org/licenses/.
+# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 import json
 import os
@@ -47,15 +47,9 @@ class LERScenarioTest(Scenario):
     def default_trainer_params(cls):
         p = super().default_trainer_params()
         p = set_test_trainer_params(p)
-        p.gen.train = ListsFileGeneratorParams(
-            lists=[workdir_path(__file__, "lists", "ler_debug.lst")]
-        )
-        p.gen.val = ListsFileGeneratorParams(
-            lists=[workdir_path(__file__, "lists", "ler_debug.lst")]
-        )
-        p.scenario.data.tags = Resource(
-            workdir_path(__file__, "data", "tags", "ler_fg.txt")
-        )
+        p.gen.train = ListsFileGeneratorParams(lists=[workdir_path(__file__, "lists", "ler_debug.lst")])
+        p.gen.val = ListsFileGeneratorParams(lists=[workdir_path(__file__, "lists", "ler_debug.lst")])
+        p.scenario.data.tags = Resource(workdir_path(__file__, "data", "tags", "ler_fg.txt"))
         return p
 
 
@@ -65,9 +59,7 @@ class FromDatasetsScenarioTest(FromDatasetsScenario):
         p = super().default_trainer_params()
 
         p = set_test_trainer_params(p)
-        p.scenario.data.tags = Resource(
-            workdir_path(__file__, "data", "tags", "tags_germeval_14.txt")
-        )
+        p.scenario.data.tags = Resource(workdir_path(__file__, "data", "tags", "tags_germeval_14.txt"))
         # p.gen = FromDatasetsTrainerGeneratorParams
         # p.gen.train = ListsFileGeneratorParams(lists=[workdir_path(__file__, 'lists', 'ler_debug.lst')])
         # p.gen.val = ListsFileGeneratorParams(lists=[workdir_path(__file__, 'lists', 'ler_debug.lst')])
@@ -79,15 +71,9 @@ class PaifileScenarioTest(Scenario):
     def default_trainer_params(cls):
         p = super().default_trainer_params()
         p = set_test_trainer_params(p)
-        p.gen.train = ListsFileGeneratorParams(
-            lists=[workdir_path(__file__, "lists", "paifile_small.lst")]
-        )
-        p.gen.val = ListsFileGeneratorParams(
-            lists=[workdir_path(__file__, "lists", "paifile_small.lst")]
-        )
-        p.scenario.data.tags = Resource(
-            workdir_path(__file__, "data", "tags", "paifile_tags.txt")
-        )
+        p.gen.train = ListsFileGeneratorParams(lists=[workdir_path(__file__, "lists", "paifile_small.lst")])
+        p.gen.val = ListsFileGeneratorParams(lists=[workdir_path(__file__, "lists", "paifile_small.lst")])
+        p.scenario.data.tags = Resource(workdir_path(__file__, "data", "tags", "paifile_tags.txt"))
         p.scenario.data.paifile_input = True
         return p
 
@@ -96,15 +82,9 @@ class CONLLScenarioTest(LERScenarioTest):
     @classmethod
     def default_trainer_params(cls):
         p = super().default_trainer_params()
-        p.gen.train = ListsFileGeneratorParams(
-            lists=[workdir_path(__file__, "lists", "conll_txt_val_small.lst")]
-        )
-        p.gen.val = ListsFileGeneratorParams(
-            lists=[workdir_path(__file__, "lists", "conll_txt_val_small.lst")]
-        )
-        p.scenario.data.tags = Resource(
-            workdir_path(__file__, "data", "tags", "tags_conll.txt")
-        )
+        p.gen.train = ListsFileGeneratorParams(lists=[workdir_path(__file__, "lists", "conll_txt_val_small.lst")])
+        p.gen.val = ListsFileGeneratorParams(lists=[workdir_path(__file__, "lists", "conll_txt_val_small.lst")])
+        p.scenario.data.tags = Resource(workdir_path(__file__, "data", "tags", "tags_conll.txt"))
         return p
 
 
@@ -112,12 +92,8 @@ class CONLLScenarioJsonTest(CONLLScenarioTest):
     @classmethod
     def default_trainer_params(cls):
         p = super().default_trainer_params()
-        p.gen.train = ListsFileGeneratorParams(
-            lists=[workdir_path(__file__, "lists", "conll_json_val_small.lst")]
-        )
-        p.gen.val = ListsFileGeneratorParams(
-            lists=[workdir_path(__file__, "lists", "conll_json_val_small.lst")]
-        )
+        p.gen.train = ListsFileGeneratorParams(lists=[workdir_path(__file__, "lists", "conll_json_val_small.lst")])
+        p.gen.val = ListsFileGeneratorParams(lists=[workdir_path(__file__, "lists", "conll_json_val_small.lst")])
         return p
 
 
@@ -196,16 +172,12 @@ class TestNERData(AbstractTestNLPData, unittest.TestCase):
 
         conll_txt_scenario = CONLLScenarioTest.default_trainer_params()
         conll_json_scenario = CONLLScenarioJsonTest.default_trainer_params()
-        data = NERData(
-            conll_json_scenario.scenario.data
-        )  # same for both, only data generator differs
+        data = NERData(conll_json_scenario.scenario.data)  # same for both, only data generator differs
         with conll_txt_scenario.gen.train_data(data) as rd:
             train_data = next(rd.generate_input_samples())
         with conll_json_scenario.gen.train_data(data) as rd:
             train_data = next(rd.generate_input_samples())
-        with conll_txt_scenario.gen.val_data(
-            data
-        ) as data_txt, conll_json_scenario.gen.val_data(data) as data_json:
+        with conll_txt_scenario.gen.val_data(data) as data_txt, conll_json_scenario.gen.val_data(data) as data_json:
             dataset_txt = data_txt.input_dataset().as_numpy_iterator()
             dataset_json = data_json.input_dataset().as_numpy_iterator()
             while True:
@@ -214,9 +186,7 @@ class TestNERData(AbstractTestNLPData, unittest.TestCase):
                     b_json = next(dataset_json)
                     npt.assert_array_equal(b_txt[0]["sentence"], b_json[0]["sentence"])
                     npt.assert_array_equal(b_txt[1]["tgt"], b_json[1]["tgt"])
-                    npt.assert_array_equal(
-                        b_txt[1]["targetmask"], b_json[1]["targetmask"]
-                    )
+                    npt.assert_array_equal(b_txt[1]["targetmask"], b_json[1]["targetmask"])
                 except StopIteration:
                     break
         clear_session()
@@ -227,11 +197,7 @@ class TestNERData(AbstractTestNLPData, unittest.TestCase):
         txt_data_fn = "data/conll/small_val_std_ner.txt"
         with tempfile.TemporaryDirectory() as tmp_dir:
             txt2json(txt_data_fn, outputfolder=tmp_dir)
-            with open(
-                os.path.join(
-                    tmp_dir, os.path.basename(txt_data_fn.strip(".txt")) + ".json"
-                )
-            ) as json_fp:
+            with open(os.path.join(tmp_dir, os.path.basename(txt_data_fn.strip(".txt")) + ".json")) as json_fp:
                 json_data = json.load(json_fp)
 
             txt_data = load_txt_conll(txt_data_fn)

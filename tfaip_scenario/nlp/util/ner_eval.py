@@ -13,7 +13,7 @@
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tfaip. If not, see http://www.gnu.org/licenses/.
+# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 import abc
 import logging
@@ -57,19 +57,13 @@ class SeqEvalF1HugFace(EvaluatorBase[NEREvaluatorParams]):
             #     cur_pred_tag_el.append(self._tag_string_mapper.get_value(self.oov_id).replace('UNK', 'O'))
             # else:
             if sample_weight[i] != 0:
-                cur_truth_tag_el.append(
-                    self._tag_string_mapper.get_value(y_true[i]).replace("UNK", "O")
-                )
-                cur_pred_tag_el.append(
-                    self._tag_string_mapper.get_value(y_pred[i]).replace("UNK", "O")
-                )
+                cur_truth_tag_el.append(self._tag_string_mapper.get_value(y_true[i]).replace("UNK", "O"))
+                cur_pred_tag_el.append(self._tag_string_mapper.get_value(y_pred[i]).replace("UNK", "O"))
         return cur_truth_tag_el, cur_pred_tag_el
 
     def update_state(self, sampel: Sample):
         truth_tag_list, pred_tag_list = self.seq_f1_score_sw(
-            y_true=sampel.targets["tgt"],
-            y_pred=sampel.outputs["pred_ids"],
-            sample_weight=sampel.targets["targetmask"],
+            y_true=sampel.targets["tgt"], y_pred=sampel.outputs["pred_ids"], sample_weight=sampel.targets["targetmask"]
         )
         self._truth_tags_.append(truth_tag_list)
         self._pred_tags_.append(pred_tag_list)
@@ -79,10 +73,7 @@ class SeqEvalF1HugFace(EvaluatorBase[NEREvaluatorParams]):
             return {}  # No data
 
         report = seqeval.metrics.classification_report(
-            y_true=self._truth_tags_,
-            y_pred=self._pred_tags_,
-            suffix=False,
-            output_dict=True,
+            y_true=self._truth_tags_, y_pred=self._pred_tags_, suffix=False, output_dict=True
         )
         overall_score = report.pop("micro avg")
         print(overall_score)
@@ -100,13 +91,9 @@ class SeqEvalF1Old(Mean):
 
     def update_state(self, y_true, y_pred, sample_weight=None):
         if sample_weight is not None:
-            cur_f1_score = tf.py_function(
-                self.seq_f1_score_sw, [y_true, y_pred, sample_weight], Tout=tf.float32
-            )
+            cur_f1_score = tf.py_function(self.seq_f1_score_sw, [y_true, y_pred, sample_weight], Tout=tf.float32)
         else:
-            cur_f1_score = tf.py_function(
-                self.seq_f1_score, [y_true, y_pred], Tout=tf.float32
-            )
+            cur_f1_score = tf.py_function(self.seq_f1_score, [y_true, y_pred], Tout=tf.float32)
         self._counter.assign_add(1.0)
         self._current_sum.assign_add(cur_f1_score)
 
@@ -114,18 +101,8 @@ class SeqEvalF1Old(Mean):
         truth_tag_list = []
         pred_tag_list = []
         for truth_sample, pred_sample in zip(y_true.numpy(), y_pred.numpy()):
-            truth_tag_list.append(
-                [
-                    self._tag_string_mapper.get_value(x).replace("UNK", "O")
-                    for x in truth_sample
-                ]
-            )
-            pred_tag_list.append(
-                [
-                    self._tag_string_mapper.get_value(x).replace("UNK", "O")
-                    for x in pred_sample
-                ]
-            )
+            truth_tag_list.append([self._tag_string_mapper.get_value(x).replace("UNK", "O") for x in truth_sample])
+            pred_tag_list.append([self._tag_string_mapper.get_value(x).replace("UNK", "O") for x in pred_sample])
         cur_f1_score = f1_score(truth_tag_list, pred_tag_list)
         return cur_f1_score
 
@@ -133,34 +110,16 @@ class SeqEvalF1Old(Mean):
         truth_tag_list = []
         pred_tag_list = []
 
-        for truth_sample, pred_sample, sw_sample in zip(
-            y_true.numpy(), y_pred.numpy(), sample_weight.numpy()
-        ):
+        for truth_sample, pred_sample, sw_sample in zip(y_true.numpy(), y_pred.numpy(), sample_weight.numpy()):
             cur_truth_tag_el = []
             cur_pred_tag_el = []
             for i in range(len(truth_sample)):
                 if sw_sample[i] == 0:
-                    cur_truth_tag_el.append(
-                        self._tag_string_mapper.get_value(self.oov_id).replace(
-                            "UNK", "O"
-                        )
-                    )
-                    cur_pred_tag_el.append(
-                        self._tag_string_mapper.get_value(self.oov_id).replace(
-                            "UNK", "O"
-                        )
-                    )
+                    cur_truth_tag_el.append(self._tag_string_mapper.get_value(self.oov_id).replace("UNK", "O"))
+                    cur_pred_tag_el.append(self._tag_string_mapper.get_value(self.oov_id).replace("UNK", "O"))
                 else:
-                    cur_truth_tag_el.append(
-                        self._tag_string_mapper.get_value(truth_sample[i]).replace(
-                            "UNK", "O"
-                        )
-                    )
-                    cur_pred_tag_el.append(
-                        self._tag_string_mapper.get_value(pred_sample[i]).replace(
-                            "UNK", "O"
-                        )
-                    )
+                    cur_truth_tag_el.append(self._tag_string_mapper.get_value(truth_sample[i]).replace("UNK", "O"))
+                    cur_pred_tag_el.append(self._tag_string_mapper.get_value(pred_sample[i]).replace("UNK", "O"))
             truth_tag_list.append(cur_truth_tag_el)
             pred_tag_list.append(cur_pred_tag_el)
         cur_f1_score = f1_score(truth_tag_list, pred_tag_list)
@@ -199,18 +158,8 @@ class SeqEvalF1FPOld(SeqEvalF1Old):
         truth_tag_list = []
         pred_tag_list = []
         for truth_sample, pred_sample in zip(y_true.numpy(), y_pred_fp.numpy()):
-            truth_tag_list.append(
-                [
-                    self._tag_string_mapper.get_value(x).replace("UNK", "O")
-                    for x in truth_sample
-                ]
-            )
-            pred_tag_list.append(
-                [
-                    self._tag_string_mapper.get_value(x).replace("UNK", "O")
-                    for x in pred_sample
-                ]
-            )
+            truth_tag_list.append([self._tag_string_mapper.get_value(x).replace("UNK", "O") for x in truth_sample])
+            pred_tag_list.append([self._tag_string_mapper.get_value(x).replace("UNK", "O") for x in pred_sample])
         cur_f1_score = f1_score(truth_tag_list, pred_tag_list)
         return cur_f1_score
 
@@ -220,34 +169,16 @@ class SeqEvalF1FPOld(SeqEvalF1Old):
         truth_tag_list = []
         pred_tag_list = []
 
-        for truth_sample, pred_sample, sw_sample in zip(
-            y_true.numpy(), y_pred_fp.numpy(), sample_weight.numpy()
-        ):
+        for truth_sample, pred_sample, sw_sample in zip(y_true.numpy(), y_pred_fp.numpy(), sample_weight.numpy()):
             cur_truth_tag_el = []
             cur_pred_tag_el = []
             for i in range(len(truth_sample)):
                 if sw_sample[i] == 0:
-                    cur_truth_tag_el.append(
-                        self._tag_string_mapper.get_value(self.oov_id).replace(
-                            "UNK", "O"
-                        )
-                    )
-                    cur_pred_tag_el.append(
-                        self._tag_string_mapper.get_value(self.oov_id).replace(
-                            "UNK", "O"
-                        )
-                    )
+                    cur_truth_tag_el.append(self._tag_string_mapper.get_value(self.oov_id).replace("UNK", "O"))
+                    cur_pred_tag_el.append(self._tag_string_mapper.get_value(self.oov_id).replace("UNK", "O"))
                 else:
-                    cur_truth_tag_el.append(
-                        self._tag_string_mapper.get_value(truth_sample[i]).replace(
-                            "UNK", "O"
-                        )
-                    )
-                    cur_pred_tag_el.append(
-                        self._tag_string_mapper.get_value(pred_sample[i]).replace(
-                            "UNK", "O"
-                        )
-                    )
+                    cur_truth_tag_el.append(self._tag_string_mapper.get_value(truth_sample[i]).replace("UNK", "O"))
+                    cur_pred_tag_el.append(self._tag_string_mapper.get_value(pred_sample[i]).replace("UNK", "O"))
             truth_tag_list.append(cur_truth_tag_el)
             pred_tag_list.append(cur_pred_tag_el)
         cur_f1_score = f1_score(truth_tag_list, pred_tag_list)
@@ -260,14 +191,10 @@ class SeqEvalF1FPOld(SeqEvalF1Old):
         init_probs[2 * self._real_tag_num + 1] = 0
         init_probs[2 * self._real_tag_num + 2] = 0
         self._pathprobs = [init_probs]
-        self._predecessors = [
-            [2 * self._real_tag_num + 1] * (2 * self._real_tag_num + 3)
-        ]
+        self._predecessors = [[2 * self._real_tag_num + 1] * (2 * self._real_tag_num + 3)]
         for i in range(seq_length - 3):
             self._pathprobs.append([0.0] * (2 * self._real_tag_num + 3))
-            self._predecessors.append(
-                [2 * self._real_tag_num + 1] * (2 * self._real_tag_num + 3)
-            )
+            self._predecessors.append([2 * self._real_tag_num + 1] * (2 * self._real_tag_num + 3))
 
     def prob_update(self, cur_pos, from_index, to_index, to_prob):
         alternative = self._pathprobs[cur_pos][from_index] * to_prob
@@ -280,17 +207,10 @@ class SeqEvalF1FPOld(SeqEvalF1Old):
         for cur_pos in range(seq_len - 3):
             for from_index in range(2 * self._real_tag_num + 1):
                 for to_index in self._feas_succ_mapping[from_index]:
-                    self.prob_update(
-                        cur_pos,
-                        from_index,
-                        to_index,
-                        sample_prob[cur_pos + 2][to_index],
-                    )
+                    self.prob_update(cur_pos, from_index, to_index, sample_prob[cur_pos + 2][to_index])
         last_tag_index = np.argmax(self._pathprobs[-1], axis=-1)
         max_path = (
-            [last_tag_index]
-            + [2 * self._real_tag_num + 2]
-            + [2 * self._real_tag_num] * (len(sample_prob) - seq_len)
+            [last_tag_index] + [2 * self._real_tag_num + 2] + [2 * self._real_tag_num] * (len(sample_prob) - seq_len)
         )
         for cur_pos in reversed(range(seq_len - 2)):
             last_tag_index = self._predecessors[cur_pos][last_tag_index]
@@ -301,23 +221,17 @@ class SeqEvalF1FPOld(SeqEvalF1Old):
     def get_max_feasible_path_batch(self, probabilities, seq_length):
         pred_ids = []
         for sample_probs, seq_len in zip(probabilities.numpy(), seq_length.numpy()):
-            sample_pred_ids = self.get_max_feasible_path(
-                sample_probs, seq_len
-            )  # np.argmax(sample_probs,axis=-1)
+            sample_pred_ids = self.get_max_feasible_path(sample_probs, seq_len)  # np.argmax(sample_probs,axis=-1)
             pred_ids.append(sample_pred_ids)
         return tf.constant(pred_ids, tf.int32)
 
     def update_state_with_fppreds(self, y_true, y_pred, sample_weight=None):
         if sample_weight is not None:
             cur_f1_score = tf.py_function(
-                self.seq_f1_score_with_fppreds_sw,
-                [y_true, y_pred, sample_weight],
-                Tout=tf.float32,
+                self.seq_f1_score_with_fppreds_sw, [y_true, y_pred, sample_weight], Tout=tf.float32
             )
         else:
-            cur_f1_score = tf.py_function(
-                self.seq_f1_score_with_fppreds, [y_true, y_pred], Tout=tf.float32
-            )
+            cur_f1_score = tf.py_function(self.seq_f1_score_with_fppreds, [y_true, y_pred], Tout=tf.float32)
         self._counter.assign_add(1.0)
         self._current_sum.assign_add(cur_f1_score)
 
@@ -325,52 +239,24 @@ class SeqEvalF1FPOld(SeqEvalF1Old):
         truth_tag_list = []
         pred_tag_list = []
         for truth_sample, pred_sample in zip(y_true.numpy(), y_pred.numpy()):
-            truth_tag_list.append(
-                [
-                    self._tag_string_mapper.get_value(x).replace("UNK", "O")
-                    for x in truth_sample
-                ]
-            )
-            pred_tag_list.append(
-                [
-                    self._tag_string_mapper.get_value(x).replace("UNK", "O")
-                    for x in pred_sample
-                ]
-            )
+            truth_tag_list.append([self._tag_string_mapper.get_value(x).replace("UNK", "O") for x in truth_sample])
+            pred_tag_list.append([self._tag_string_mapper.get_value(x).replace("UNK", "O") for x in pred_sample])
         cur_f1_score = f1_score(truth_tag_list, pred_tag_list)
         return cur_f1_score
 
     def seq_f1_score_with_fppreds_sw(self, y_true, y_pred, sample_weight):
         truth_tag_list = []
         pred_tag_list = []
-        for truth_sample, pred_sample, sw_sample in zip(
-            y_true.numpy(), y_pred.numpy(), sample_weight.numpy()
-        ):
+        for truth_sample, pred_sample, sw_sample in zip(y_true.numpy(), y_pred.numpy(), sample_weight.numpy()):
             cur_truth_tag_el = []
             cur_pred_tag_el = []
             for i in range(len(truth_sample)):
                 if sw_sample[i] == 0:
-                    cur_truth_tag_el.append(
-                        self._tag_string_mapper.get_value(self.oov_id).replace(
-                            "UNK", "O"
-                        )
-                    )
-                    cur_pred_tag_el.append(
-                        self._tag_string_mapper.get_value(self.oov_id).replace(
-                            "UNK", "O"
-                        )
-                    )
+                    cur_truth_tag_el.append(self._tag_string_mapper.get_value(self.oov_id).replace("UNK", "O"))
+                    cur_pred_tag_el.append(self._tag_string_mapper.get_value(self.oov_id).replace("UNK", "O"))
                 else:
-                    cur_truth_tag_el.append(
-                        self._tag_string_mapper.get_value(truth_sample[i]).replace(
-                            "UNK", "O"
-                        )
-                    )
-                    cur_pred_tag_el.append(
-                        self._tag_string_mapper.get_value(pred_sample[i]).replace(
-                            "UNK", "O"
-                        )
-                    )
+                    cur_truth_tag_el.append(self._tag_string_mapper.get_value(truth_sample[i]).replace("UNK", "O"))
+                    cur_pred_tag_el.append(self._tag_string_mapper.get_value(pred_sample[i]).replace("UNK", "O"))
             truth_tag_list.append(cur_truth_tag_el)
             pred_tag_list.append(cur_pred_tag_el)
         cur_f1_score = f1_score(truth_tag_list, pred_tag_list)
@@ -437,16 +323,10 @@ class ClassF1(BaseF1):
     def update_state(self, y_true, y_pred, sample_weight=None):
         y_true = y_true - self.num_tags // 2
         # y_true = tf.one_hot(y_true, depth=y_pred.shape()[-1]-2, axis=-1, dtype=tf.float32)
-        y_pred_cut = tf.cast(
-            tf.argmax(tf.stack(tf.unstack(y_pred, axis=-1)[:-2], axis=-1), axis=-1),
-            dtype=tf.int32,
-        )
+        y_pred_cut = tf.cast(tf.argmax(tf.stack(tf.unstack(y_pred, axis=-1)[:-2], axis=-1), axis=-1), dtype=tf.int32)
         # tf.print(tf.shape(y_pred_cut), tf.shape(y_pred))
         correct = tf.reduce_sum(
-            tf.cast(
-                tf.raw_ops.Equal(x=tf.gather(y_true, 0, axis=-1), y=y_pred_cut),
-                tf.float32,
-            )
+            tf.cast(tf.raw_ops.Equal(x=tf.gather(y_true, 0, axis=-1), y=y_pred_cut), tf.float32)
             * tf.cast(sample_weight, dtype=tf.float32)
         )
         actual = tf.reduce_sum(
@@ -454,10 +334,7 @@ class ClassF1(BaseF1):
             * tf.cast(sample_weight, dtype=tf.float32)
         )
         possible = tf.reduce_sum(
-            tf.cast(
-                tf.raw_ops.NotEqual(x=tf.gather(y_true, 0, axis=-1), y=self.oov_id),
-                tf.float32,
-            )
+            tf.cast(tf.raw_ops.NotEqual(x=tf.gather(y_true, 0, axis=-1), y=self.oov_id), tf.float32)
             * tf.cast(sample_weight, dtype=tf.float32)
         )
         # possible = tf.reduce_sum(y_true)
@@ -503,39 +380,19 @@ class SeqEvalF1(BaseF1):
         truth_tag_list = []
         pred_tag_list = []
 
-        for truth_sample, pred_sample, sw_sample in zip(
-            y_true.numpy(), y_pred.numpy(), sample_weight.numpy()
-        ):
+        for truth_sample, pred_sample, sw_sample in zip(y_true.numpy(), y_pred.numpy(), sample_weight.numpy()):
             cur_truth_tag_el = []
             cur_pred_tag_el = []
             for i in range(len(truth_sample)):
                 if sw_sample[i] == 0:
-                    cur_truth_tag_el.append(
-                        self._tag_string_mapper.get_value(self.oov_id).replace(
-                            "UNK", "O"
-                        )
-                    )
-                    cur_pred_tag_el.append(
-                        self._tag_string_mapper.get_value(self.oov_id).replace(
-                            "UNK", "O"
-                        )
-                    )
+                    cur_truth_tag_el.append(self._tag_string_mapper.get_value(self.oov_id).replace("UNK", "O"))
+                    cur_pred_tag_el.append(self._tag_string_mapper.get_value(self.oov_id).replace("UNK", "O"))
                 else:
-                    cur_truth_tag_el.append(
-                        self._tag_string_mapper.get_value(truth_sample[i]).replace(
-                            "UNK", "O"
-                        )
-                    )
-                    cur_pred_tag_el.append(
-                        self._tag_string_mapper.get_value(pred_sample[i]).replace(
-                            "UNK", "O"
-                        )
-                    )
+                    cur_truth_tag_el.append(self._tag_string_mapper.get_value(truth_sample[i]).replace("UNK", "O"))
+                    cur_pred_tag_el.append(self._tag_string_mapper.get_value(pred_sample[i]).replace("UNK", "O"))
             truth_tag_list.append(cur_truth_tag_el)
             pred_tag_list.append(cur_pred_tag_el)
-        pred_sum, tp_sum, true_sum = self.extract_tp_actual_correct(
-            truth_tag_list, pred_tag_list, False
-        )
+        pred_sum, tp_sum, true_sum = self.extract_tp_actual_correct(truth_tag_list, pred_tag_list, False)
         correct = sum(tp_sum)
         possible = sum(true_sum)
         actual = sum(pred_sum)
@@ -543,9 +400,7 @@ class SeqEvalF1(BaseF1):
 
     def update_state(self, y_true, y_pred, sample_weight=None):
         correct, possible, actual = tf.py_function(
-            self.seq_f1_score_sw,
-            [y_true, y_pred, sample_weight],
-            Tout=[tf.float32, tf.float32, tf.float32],
+            self.seq_f1_score_sw, [y_true, y_pred, sample_weight], Tout=[tf.float32, tf.float32, tf.float32]
         )
 
         self._correct.assign_add(correct)
@@ -600,39 +455,19 @@ class SeqEvalF1FP(SeqEvalF1):
         truth_tag_list = []
         pred_tag_list = []
 
-        for truth_sample, pred_sample, sw_sample in zip(
-            y_true.numpy(), y_pred_fp.numpy(), sample_weight.numpy()
-        ):
+        for truth_sample, pred_sample, sw_sample in zip(y_true.numpy(), y_pred_fp.numpy(), sample_weight.numpy()):
             cur_truth_tag_el = []
             cur_pred_tag_el = []
             for i in range(len(truth_sample)):
                 if sw_sample[i] == 0:
-                    cur_truth_tag_el.append(
-                        self._tag_string_mapper.get_value(self.oov_id).replace(
-                            "UNK", "O"
-                        )
-                    )
-                    cur_pred_tag_el.append(
-                        self._tag_string_mapper.get_value(self.oov_id).replace(
-                            "UNK", "O"
-                        )
-                    )
+                    cur_truth_tag_el.append(self._tag_string_mapper.get_value(self.oov_id).replace("UNK", "O"))
+                    cur_pred_tag_el.append(self._tag_string_mapper.get_value(self.oov_id).replace("UNK", "O"))
                 else:
-                    cur_truth_tag_el.append(
-                        self._tag_string_mapper.get_value(truth_sample[i]).replace(
-                            "UNK", "O"
-                        )
-                    )
-                    cur_pred_tag_el.append(
-                        self._tag_string_mapper.get_value(pred_sample[i]).replace(
-                            "UNK", "O"
-                        )
-                    )
+                    cur_truth_tag_el.append(self._tag_string_mapper.get_value(truth_sample[i]).replace("UNK", "O"))
+                    cur_pred_tag_el.append(self._tag_string_mapper.get_value(pred_sample[i]).replace("UNK", "O"))
             truth_tag_list.append(cur_truth_tag_el)
             pred_tag_list.append(cur_pred_tag_el)
-        pred_sum, tp_sum, true_sum = self.extract_tp_actual_correct(
-            truth_tag_list, pred_tag_list, False
-        )
+        pred_sum, tp_sum, true_sum = self.extract_tp_actual_correct(truth_tag_list, pred_tag_list, False)
         correct = sum(tp_sum)
         possible = sum(true_sum)
         actual = sum(pred_sum)
@@ -645,14 +480,10 @@ class SeqEvalF1FP(SeqEvalF1):
         init_probs[2 * self._real_tag_num + 1] = 0
         init_probs[2 * self._real_tag_num + 2] = 0
         self._pathprobs = [init_probs]
-        self._predecessors = [
-            [2 * self._real_tag_num + 1] * (2 * self._real_tag_num + 3)
-        ]
+        self._predecessors = [[2 * self._real_tag_num + 1] * (2 * self._real_tag_num + 3)]
         for i in range(seq_length - 3):
             self._pathprobs.append([0.0] * (2 * self._real_tag_num + 3))
-            self._predecessors.append(
-                [2 * self._real_tag_num + 1] * (2 * self._real_tag_num + 3)
-            )
+            self._predecessors.append([2 * self._real_tag_num + 1] * (2 * self._real_tag_num + 3))
 
     def prob_update(self, cur_pos, from_index, to_index, to_prob):
         alternative = self._pathprobs[cur_pos][from_index] * to_prob
@@ -665,17 +496,10 @@ class SeqEvalF1FP(SeqEvalF1):
         for cur_pos in range(seq_len - 3):
             for from_index in range(2 * self._real_tag_num + 1):
                 for to_index in self._feas_succ_mapping[from_index]:
-                    self.prob_update(
-                        cur_pos,
-                        from_index,
-                        to_index,
-                        sample_prob[cur_pos + 2][to_index],
-                    )
+                    self.prob_update(cur_pos, from_index, to_index, sample_prob[cur_pos + 2][to_index])
         last_tag_index = np.argmax(self._pathprobs[-1], axis=-1)
         max_path = (
-            [last_tag_index]
-            + [2 * self._real_tag_num + 2]
-            + [2 * self._real_tag_num] * (len(sample_prob) - seq_len)
+            [last_tag_index] + [2 * self._real_tag_num + 2] + [2 * self._real_tag_num] * (len(sample_prob) - seq_len)
         )
         for cur_pos in reversed(range(seq_len - 2)):
             last_tag_index = self._predecessors[cur_pos][last_tag_index]
@@ -686,9 +510,7 @@ class SeqEvalF1FP(SeqEvalF1):
     def get_max_feasible_path_batch(self, probabilities, seq_length):
         pred_ids = []
         for sample_probs, seq_len in zip(probabilities.numpy(), seq_length.numpy()):
-            sample_pred_ids = self.get_max_feasible_path(
-                sample_probs, seq_len
-            )  # np.argmax(sample_probs,axis=-1)
+            sample_pred_ids = self.get_max_feasible_path(sample_probs, seq_len)  # np.argmax(sample_probs,axis=-1)
             pred_ids.append(sample_pred_ids)
         return tf.constant(pred_ids, tf.int32)
 
@@ -706,39 +528,19 @@ class SeqEvalF1FP(SeqEvalF1):
     def seq_f1_score_with_fppreds_sw(self, y_true, y_pred, sample_weight):
         truth_tag_list = []
         pred_tag_list = []
-        for truth_sample, pred_sample, sw_sample in zip(
-            y_true.numpy(), y_pred.numpy(), sample_weight.numpy()
-        ):
+        for truth_sample, pred_sample, sw_sample in zip(y_true.numpy(), y_pred.numpy(), sample_weight.numpy()):
             cur_truth_tag_el = []
             cur_pred_tag_el = []
             for i in range(len(truth_sample)):
                 if sw_sample[i] == 0:
-                    cur_truth_tag_el.append(
-                        self._tag_string_mapper.get_value(self.oov_id).replace(
-                            "UNK", "O"
-                        )
-                    )
-                    cur_pred_tag_el.append(
-                        self._tag_string_mapper.get_value(self.oov_id).replace(
-                            "UNK", "O"
-                        )
-                    )
+                    cur_truth_tag_el.append(self._tag_string_mapper.get_value(self.oov_id).replace("UNK", "O"))
+                    cur_pred_tag_el.append(self._tag_string_mapper.get_value(self.oov_id).replace("UNK", "O"))
                 else:
-                    cur_truth_tag_el.append(
-                        self._tag_string_mapper.get_value(truth_sample[i]).replace(
-                            "UNK", "O"
-                        )
-                    )
-                    cur_pred_tag_el.append(
-                        self._tag_string_mapper.get_value(pred_sample[i]).replace(
-                            "UNK", "O"
-                        )
-                    )
+                    cur_truth_tag_el.append(self._tag_string_mapper.get_value(truth_sample[i]).replace("UNK", "O"))
+                    cur_pred_tag_el.append(self._tag_string_mapper.get_value(pred_sample[i]).replace("UNK", "O"))
             truth_tag_list.append(cur_truth_tag_el)
             pred_tag_list.append(cur_pred_tag_el)
-        pred_sum, tp_sum, true_sum = self.extract_tp_actual_correct(
-            truth_tag_list, pred_tag_list, False
-        )
+        pred_sum, tp_sum, true_sum = self.extract_tp_actual_correct(truth_tag_list, pred_tag_list, False)
         correct = sum(tp_sum)
         possible = sum(true_sum)
         actual = sum(pred_sum)
@@ -761,15 +563,11 @@ class EntityF1(BaseF1):
     def update_state(self, y_true, y_pred, sample_weight=None):
         if sample_weight is not None:
             correct, possible, actual = tf.py_function(
-                self.py_func_sw,
-                [y_true, y_pred, sample_weight],
-                Tout=[tf.float32, tf.float32, tf.float32],
+                self.py_func_sw, [y_true, y_pred, sample_weight], Tout=[tf.float32, tf.float32, tf.float32]
             )
         else:
             correct, possible, actual = tf.py_function(
-                self.py_func,
-                [y_true, y_pred],
-                Tout=[tf.float32, tf.float32, tf.float32],
+                self.py_func, [y_true, y_pred], Tout=[tf.float32, tf.float32, tf.float32]
             )
         self._correct.assign_add(correct)
         self._possible.assign_add(possible)
@@ -782,55 +580,33 @@ class EntityF1(BaseF1):
         for truth_sample, pred_sample in zip(y_true.numpy(), y_pred.numpy()):
             # tf.print(truth_sample)
             # tf.print(pred_sample)
-            truth_tag_list.append(
-                [self._tag_string_mapper.get_value(x) for x in truth_sample]
-            )
-            pred_tag_list.append(
-                [self._tag_string_mapper.get_value(x) for x in pred_sample]
-            )
+            truth_tag_list.append([self._tag_string_mapper.get_value(x) for x in truth_sample])
+            pred_tag_list.append([self._tag_string_mapper.get_value(x) for x in pred_sample])
         # tf.print("\n" + "pred:" + " ".join(pred_tag_list[0]))
         # tf.print("tgt :" + " ".join(truth_tag_list[0]))
         evaluator = Evaluator(truth_tag_list, pred_tag_list, self._possible_tags)
         result, _ = evaluator.evaluate()
-        return (
-            result["strict"]["correct"],
-            result["strict"]["possible"],
-            result["strict"]["actual"],
-        )
+        return result["strict"]["correct"], result["strict"]["possible"], result["strict"]["actual"]
 
     def py_func_sw(self, y_true, y_pred, sample_weight):
         truth_tag_list = []
         pred_tag_list = []
 
-        for truth_sample, pred_sample, sw_sample in zip(
-            y_true.numpy(), y_pred.numpy(), sample_weight.numpy()
-        ):
+        for truth_sample, pred_sample, sw_sample in zip(y_true.numpy(), y_pred.numpy(), sample_weight.numpy()):
             cur_truth_tag_el = []
             cur_pred_tag_el = []
             for i in range(len(truth_sample)):
                 if sw_sample[i] == 0:
-                    cur_truth_tag_el.append(
-                        self._tag_string_mapper.get_value(self.oov_id)
-                    )
-                    cur_pred_tag_el.append(
-                        self._tag_string_mapper.get_value(self.oov_id)
-                    )
+                    cur_truth_tag_el.append(self._tag_string_mapper.get_value(self.oov_id))
+                    cur_pred_tag_el.append(self._tag_string_mapper.get_value(self.oov_id))
                 else:
-                    cur_truth_tag_el.append(
-                        self._tag_string_mapper.get_value(truth_sample[i])
-                    )
-                    cur_pred_tag_el.append(
-                        self._tag_string_mapper.get_value(pred_sample[i])
-                    )
+                    cur_truth_tag_el.append(self._tag_string_mapper.get_value(truth_sample[i]))
+                    cur_pred_tag_el.append(self._tag_string_mapper.get_value(pred_sample[i]))
             truth_tag_list.append(cur_truth_tag_el)
             pred_tag_list.append(cur_pred_tag_el)
         evaluator = Evaluator(truth_tag_list, pred_tag_list, self._possible_tags)
         result, _ = evaluator.evaluate()
-        return (
-            result["strict"]["correct"],
-            result["strict"]["possible"],
-            result["strict"]["actual"],
-        )
+        return result["strict"]["correct"], result["strict"]["possible"], result["strict"]["actual"]
 
 
 class BetMetricWrapper(Mean):
@@ -845,9 +621,7 @@ class BetMetricWrapper(Mean):
         # sample_weights = y_pred_sample_weights[1]
         y_pred_arr = np.empty_like(y_pred.numpy()[:, :, 0], dtype=np.int)
         # tf.print(y_pred.numpy().shape)
-        for s_idx, sample, weights in zip(
-            range(y_pred.numpy().shape[0]), y_pred.numpy(), sample_weights.numpy()
-        ):
+        for s_idx, sample, weights in zip(range(y_pred.numpy().shape[0]), y_pred.numpy(), sample_weights.numpy()):
             y_cls = sample[:, :-2]
             y_start = sample[:, -2] * weights
             y_end = sample[:, -1] * weights
@@ -885,30 +659,19 @@ class BetMetricWrapper(Mean):
                 elif y_end[idx] > 0.5 and start_buffer < 0:
                     # tf.print("missing START TOKEN")
                     # +1 to avoid maybe override of previous entity token
-                    start_buffer = (
-                        last_end + 1 + np.argmax(y_start[last_end + 1 : idx + 1])
-                    )
+                    start_buffer = last_end + 1 + np.argmax(y_start[last_end + 1 : idx + 1])
                     end_buffer = idx
 
-                if (
-                    start_buffer >= 0
-                    and end_buffer < 0
-                    and idx + 1 < len(sample)
-                    and y_start[idx + 1] > 0.5
-                ):
+                if start_buffer >= 0 and end_buffer < 0 and idx + 1 < len(sample) and y_start[idx + 1] > 0.5:
                     # it should be possible to query idx+1 since the last index is mask due to <eos>
                     end_buffer = start_buffer + np.argmax(y_end[start_buffer : idx + 1])
 
                 if start_buffer >= 0 and end_buffer >= 0:
                     entity_sum = np.sum(y_cls[start_buffer : end_buffer + 1], axis=0)
                     cls = np.argmax(entity_sum) + self._tag_string_mapper.size() // 2
-                    targets[start_buffer : end_buffer + 1] = cls * np.ones_like(
-                        targets[start_buffer : end_buffer + 1]
-                    )
+                    targets[start_buffer : end_buffer + 1] = cls * np.ones_like(targets[start_buffer : end_buffer + 1])
                     if cls < self._tag_string_mapper.get_oov_id():
-                        targets[start_buffer] = (
-                            cls - self._tag_string_mapper.size() // 2
-                        )
+                        targets[start_buffer] = cls - self._tag_string_mapper.size() // 2
                     elif cls > self._tag_string_mapper.get_oov_id():
                         targets[start_buffer] = self._tag_string_mapper.get_oov_id()
                     start_buffer = -1
@@ -920,9 +683,7 @@ class BetMetricWrapper(Mean):
     def update_state(self, y_true, y_pred, sample_weight=None):
         if sample_weight is not None:
             sample_weight = tf.cast(sample_weight, dtype=tf.float32)
-        y_pred_arr = tf.py_function(
-            self.py_func2, [y_pred, sample_weight], Tout=[tf.int32]
-        )[0]
+        y_pred_arr = tf.py_function(self.py_func2, [y_pred, sample_weight], Tout=[tf.int32])[0]
         y_pred_arr = tf.cast(y_pred_arr, tf.int32)
         # tf.print(y_pred_arr, summarize=1000)
         # tf.print(y_true, summarize=1000)
@@ -945,32 +706,23 @@ class FixRuleMetricWrapper(Mean):
     def py_func(self, y_pred, sample_weight):
         pred_tag_list = []
         for pred_sample in y_pred.numpy():
-            pred_tag_list.append(
-                [self._tag_string_mapper.get_value(x) for x in pred_sample]
-            )
+            pred_tag_list.append([self._tag_string_mapper.get_value(x) for x in pred_sample])
         # Replace I-tags if there is no B-tag or I-tag of same class in the tag before
 
         for sample_idx, sentence in enumerate(pred_tag_list):
             for token_idx, tag in enumerate(sentence):
                 if token_idx > 0 and str(tag).startswith("I-"):
                     if sample_weight.numpy()[sample_idx, token_idx - 1] == 0:
-                        pred_tag_list[sample_idx][token_idx] = pred_tag_list[
-                            sample_idx
-                        ][token_idx].replace("I-", "B-")
+                        pred_tag_list[sample_idx][token_idx] = pred_tag_list[sample_idx][token_idx].replace("I-", "B-")
                     elif str(sentence[token_idx - 1]).replace("B-", "I-") != tag:
-                        pred_tag_list[sample_idx][token_idx] = str(
-                            sentence[token_idx - 1]
-                        ).replace("B-", "I-")
+                        pred_tag_list[sample_idx][token_idx] = str(sentence[token_idx - 1]).replace("B-", "I-")
                 # if token_idx > 0 and str(tag).startswith("I-") and str(sentence[token_idx - 1]).replace("B-", "I-") != tag:
                 #     pred_tag_list[sample_idx][token_idx] = str(sentence[token_idx - 1]).replace("B-", "I-")
         # convert back to channels
         pred_channel_list = []
         for pred_sample in pred_tag_list:
             pred_channel_list.append(
-                np.array(
-                    [self._tag_string_mapper.get_channel(x) for x in pred_sample],
-                    dtype=np.int32,
-                )
+                np.array([self._tag_string_mapper.get_channel(x) for x in pred_sample], dtype=np.int32)
             )
         return np.array(pred_channel_list, dtype=np.int32)
 
@@ -1014,14 +766,10 @@ class FixRuleMetricWrapper(Mean):
     #     return y_pred_fixed_sw
 
     def update_state(self, y_true, y_pred, sample_weight=None):
-        assert (
-            sample_weight is not None
-        ), f"Sample_weight is None in {self._metric_obj.name}!"
+        assert sample_weight is not None, f"Sample_weight is None in {self._metric_obj.name}!"
         # y_pred_ = tf.py_function(self.py_func_sw, [y_true, y_pred, sample_weight], Tout=[tf.int32])[0]
 
-        y_pred_ = tf.py_function(
-            self.py_func, [y_pred, sample_weight], Tout=[tf.int32]
-        )[0]
+        y_pred_ = tf.py_function(self.py_func, [y_pred, sample_weight], Tout=[tf.int32])[0]
         self._metric_obj.update_state(y_true, y_pred_, sample_weight)
 
     def result(self):
@@ -1054,26 +802,16 @@ class EntityF1FixRule(EntityF1):
         truth_tag_list = []
         pred_tag_list = []
 
-        for truth_sample, pred_sample, sw_sample in zip(
-            y_true.numpy(), y_pred.numpy(), sample_weight.numpy()
-        ):
+        for truth_sample, pred_sample, sw_sample in zip(y_true.numpy(), y_pred.numpy(), sample_weight.numpy()):
             cur_truth_tag_el = []
             cur_pred_tag_el = []
             for i in range(len(truth_sample)):
                 if sw_sample[i] == 0:
-                    cur_truth_tag_el.append(
-                        self._tag_string_mapper.get_value(self.oov_id)
-                    )
-                    cur_pred_tag_el.append(
-                        self._tag_string_mapper.get_value(self.oov_id)
-                    )
+                    cur_truth_tag_el.append(self._tag_string_mapper.get_value(self.oov_id))
+                    cur_pred_tag_el.append(self._tag_string_mapper.get_value(self.oov_id))
                 else:
-                    cur_truth_tag_el.append(
-                        self._tag_string_mapper.get_value(truth_sample[i])
-                    )
-                    cur_pred_tag_el.append(
-                        self._tag_string_mapper.get_value(pred_sample[i])
-                    )
+                    cur_truth_tag_el.append(self._tag_string_mapper.get_value(truth_sample[i]))
+                    cur_pred_tag_el.append(self._tag_string_mapper.get_value(pred_sample[i]))
             truth_tag_list.append(cur_truth_tag_el)
             pred_tag_list.append(cur_pred_tag_el)
         # Replace I-tags if there is no B-tag or I-tag of same class in the tag before
@@ -1082,28 +820,18 @@ class EntityF1FixRule(EntityF1):
             for token_idx, tag in enumerate(sentence):
                 if token_idx > 0 and str(tag).startswith("I-"):
                     if sample_weight.numpy()[sample_idx, token_idx - 1] == 0:
-                        pred_tag_list[sample_idx][token_idx] = str(tag).replace(
-                            "I-", "B-"
-                        )
+                        pred_tag_list[sample_idx][token_idx] = str(tag).replace("I-", "B-")
                     elif str(sentence[token_idx - 1]).replace("B-", "I-") != tag:
-                        pred_tag_list[sample_idx][token_idx] = str(
-                            sentence[token_idx - 1]
-                        ).replace("B-", "I-")
+                        pred_tag_list[sample_idx][token_idx] = str(sentence[token_idx - 1]).replace("B-", "I-")
 
         evaluator = Evaluator(truth_tag_list, pred_tag_list, self._possible_tags)
         result, _ = evaluator.evaluate()
-        return (
-            result["strict"]["correct"],
-            result["strict"]["possible"],
-            result["strict"]["actual"],
-        )
+        return result["strict"]["correct"], result["strict"]["possible"], result["strict"]["actual"]
 
     def update_state(self, y_true, y_pred, sample_weight=None):
         assert sample_weight is not None, f"sample weight is None in EntityF1FixRule"
         correct, possible, actual = tf.py_function(
-            self.py_func_sw,
-            [y_true, y_pred, sample_weight],
-            Tout=[tf.float32, tf.float32, tf.float32],
+            self.py_func_sw, [y_true, y_pred, sample_weight], Tout=[tf.float32, tf.float32, tf.float32]
         )
         # else:
         #
@@ -1167,11 +895,7 @@ class Evaluator:
 
     def evaluate(self):
 
-        logging.debug(
-            "Imported %s predictions for %s true examples",
-            len(self.pred),
-            len(self.true),
-        )
+        logging.debug("Imported %s predictions for %s true examples", len(self.pred), len(self.true))
 
         for true_ents, pred_ents in zip(self.true, self.pred):
 
@@ -1185,9 +909,7 @@ class Evaluator:
             # Compute results for one message
 
             tmp_results, tmp_agg_results = compute_metrics(
-                collect_named_entities(true_ents),
-                collect_named_entities(pred_ents),
-                self.tags,
+                collect_named_entities(true_ents), collect_named_entities(pred_ents), self.tags
             )
 
             # Cycle through each result and accumulate
@@ -1197,9 +919,7 @@ class Evaluator:
             for eval_schema in self.results:
 
                 for metric in self.results[eval_schema]:
-                    self.results[eval_schema][metric] += tmp_results[eval_schema][
-                        metric
-                    ]
+                    self.results[eval_schema][metric] += tmp_results[eval_schema][metric]
 
             # Calculate global precision and recall
 
@@ -1212,15 +932,13 @@ class Evaluator:
                 for eval_schema in tmp_agg_results[e_type]:
 
                     for metric in tmp_agg_results[e_type][eval_schema]:
-                        self.evaluation_agg_entities_type[e_type][eval_schema][
-                            metric
-                        ] += tmp_agg_results[e_type][eval_schema][metric]
+                        self.evaluation_agg_entities_type[e_type][eval_schema][metric] += tmp_agg_results[e_type][
+                            eval_schema
+                        ][metric]
 
                 # Calculate precision recall at the individual entity level
 
-                self.evaluation_agg_entities_type[
-                    e_type
-                ] = compute_precision_recall_wrapper(
+                self.evaluation_agg_entities_type[e_type] = compute_precision_recall_wrapper(
                     self.evaluation_agg_entities_type[e_type]
                 )
 
@@ -1255,9 +973,7 @@ def collect_named_entities(tokens):
             ent_type = token_tag[2:]
             start_offset = offset
 
-        elif ent_type != token_tag[2:] or (
-            ent_type == token_tag[2:] and token_tag[:1] == "B"
-        ):
+        elif ent_type != token_tag[2:] or (ent_type == token_tag[2:] and token_tag[:1] == "B"):
 
             end_offset = offset - 1
             named_entities.append(Entity(ent_type, start_offset, end_offset))
@@ -1276,15 +992,7 @@ def collect_named_entities(tokens):
 
 
 def compute_metrics(true_named_entities, pred_named_entities, tags):
-    eval_metrics = {
-        "correct": 0,
-        "incorrect": 0,
-        "partial": 0,
-        "missed": 0,
-        "spurious": 0,
-        "precision": 0,
-        "recall": 0,
-    }
+    eval_metrics = {"correct": 0, "incorrect": 0, "partial": 0, "missed": 0, "spurious": 0, "precision": 0, "recall": 0}
 
     # overall results
 
@@ -1362,12 +1070,8 @@ def compute_metrics(true_named_entities, pred_named_entities, tags):
                     evaluation["exact"]["correct"] += 1
 
                     # aggregated by entity type results
-                    evaluation_agg_entities_type[true.e_type]["strict"][
-                        "incorrect"
-                    ] += 1
-                    evaluation_agg_entities_type[true.e_type]["ent_type"][
-                        "incorrect"
-                    ] += 1
+                    evaluation_agg_entities_type[true.e_type]["strict"]["incorrect"] += 1
+                    evaluation_agg_entities_type[true.e_type]["ent_type"]["incorrect"] += 1
                     evaluation_agg_entities_type[true.e_type]["partial"]["correct"] += 1
                     evaluation_agg_entities_type[true.e_type]["exact"]["correct"] += 1
 
@@ -1395,18 +1099,10 @@ def compute_metrics(true_named_entities, pred_named_entities, tags):
                         evaluation["exact"]["incorrect"] += 1
 
                         # aggregated by entity type results
-                        evaluation_agg_entities_type[true.e_type]["strict"][
-                            "incorrect"
-                        ] += 1
-                        evaluation_agg_entities_type[true.e_type]["ent_type"][
-                            "correct"
-                        ] += 1
-                        evaluation_agg_entities_type[true.e_type]["partial"][
-                            "partial"
-                        ] += 1
-                        evaluation_agg_entities_type[true.e_type]["exact"][
-                            "incorrect"
-                        ] += 1
+                        evaluation_agg_entities_type[true.e_type]["strict"]["incorrect"] += 1
+                        evaluation_agg_entities_type[true.e_type]["ent_type"]["correct"] += 1
+                        evaluation_agg_entities_type[true.e_type]["partial"]["partial"] += 1
+                        evaluation_agg_entities_type[true.e_type]["exact"]["incorrect"] += 1
 
                         found_overlap = True
 
@@ -1425,18 +1121,10 @@ def compute_metrics(true_named_entities, pred_named_entities, tags):
                         # aggregated by entity type results
                         # Results against the true entity
 
-                        evaluation_agg_entities_type[true.e_type]["strict"][
-                            "incorrect"
-                        ] += 1
-                        evaluation_agg_entities_type[true.e_type]["partial"][
-                            "partial"
-                        ] += 1
-                        evaluation_agg_entities_type[true.e_type]["ent_type"][
-                            "incorrect"
-                        ] += 1
-                        evaluation_agg_entities_type[true.e_type]["exact"][
-                            "incorrect"
-                        ] += 1
+                        evaluation_agg_entities_type[true.e_type]["strict"]["incorrect"] += 1
+                        evaluation_agg_entities_type[true.e_type]["partial"]["partial"] += 1
+                        evaluation_agg_entities_type[true.e_type]["ent_type"]["incorrect"] += 1
+                        evaluation_agg_entities_type[true.e_type]["exact"]["incorrect"] += 1
 
                         # Results against the predicted entity
 
@@ -1505,9 +1193,7 @@ def compute_metrics(true_named_entities, pred_named_entities, tags):
         # level results.
 
         for eval_type in entity_level:
-            evaluation_agg_entities_type[entity_type][
-                eval_type
-            ] = compute_actual_possible(entity_level[eval_type])
+            evaluation_agg_entities_type[entity_type][eval_type] = compute_actual_possible(entity_level[eval_type])
 
     return evaluation, evaluation_agg_entities_type
 
@@ -1600,15 +1286,9 @@ def compute_precision_recall_wrapper(results):
     """
 
     results_a = {
-        key: compute_precision_recall(value, True)
-        for key, value in results.items()
-        if key in ["partial", "ent_type"]
+        key: compute_precision_recall(value, True) for key, value in results.items() if key in ["partial", "ent_type"]
     }
-    results_b = {
-        key: compute_precision_recall(value)
-        for key, value in results.items()
-        if key in ["strict", "exact"]
-    }
+    results_b = {key: compute_precision_recall(value) for key, value in results.items() if key in ["strict", "exact"]}
 
     results = {**results_a, **results_b}
 

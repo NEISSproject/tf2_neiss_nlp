@@ -13,7 +13,7 @@
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tfaip. If not, see http://www.gnu.org/licenses/.
+# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 import argparse
 import csv
@@ -42,33 +42,20 @@ def parse_args(args=None):
             raise argparse.ArgumentTypeError("Boolean value expected.")
 
     parser = argparse.ArgumentParser(f"Parser of '{MODULE_NAME}'")
-    parser.add_argument(
-        "--pred_file", default="", type=str, help="point to model prediction file"
-    )
-    parser.add_argument(
-        "--truth_file", default="", type=str, help="point to model prediction file"
-    )
+    parser.add_argument("--pred_file", default="", type=str, help="point to model prediction file")
+    parser.add_argument("--truth_file", default="", type=str, help="point to model prediction file")
     # parser.add_argument("--metrics", default="f1,precision,recall", type=str, help="file with .lst contain lists to process")
     # parser.add_argument("--out_folder", default="", type=str, help="set output folder")
     # parser.add_argument("--coarse_grained", default=True, type=str2bool, help="may switch to fine grained tags")
     # parser.add_argument("--val_ratio", default=0.0, type=float, help="if not 0, data is split in train, val, test")
     # parser.add_argument("--test_ratio", default=0.0, type=float, help="if not 0, data is split in train, val, test")
-    add_args_group(
-        parser, group="data", default=NERDataParams(), params_cls=NERDataParams
-    )
+    add_args_group(parser, group="data", default=NERDataParams(), params_cls=NERDataParams)
     args_ = parser.parse_args(args)
     return args_
 
 
 def load_csv_conll(fn):
-    pd_csv = pandas.read_csv(
-        fn,
-        sep="\t",
-        header=None,
-        usecols=[1, 2, 4],
-        encoding="utf8",
-        quoting=csv.QUOTE_NONE,
-    )
+    pd_csv = pandas.read_csv(fn, sep="\t", header=None, usecols=[1, 2, 4], encoding="utf8", quoting=csv.QUOTE_NONE)
     print(pd_csv)
     return pd_csv
 
@@ -106,11 +93,7 @@ def main(args):
 
     result, _ = evaluator.evaluate()
 
-    correct, possible, actual = (
-        result["strict"]["correct"],
-        result["strict"]["possible"],
-        result["strict"]["actual"],
-    )
+    correct, possible, actual = result["strict"]["correct"], result["strict"]["possible"], result["strict"]["actual"]
     precision = float(correct) / max(actual, 1.0)
     recall = float(correct) / max(possible, 1.0)
     f1 = 2 * precision * recall / max(precision + recall, 1.0)

@@ -13,7 +13,7 @@
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tfaip. If not, see http://www.gnu.org/licenses/.
+# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 from dataclasses import dataclass
 from typing import Dict, Any, List, Tuple
@@ -25,10 +25,7 @@ from paiargparse import pai_dataclass
 from tfaip import Sample
 from tfaip.model.graphbase import GraphBase
 from tfaip.util.tftyping import AnyTensor
-from tfaip_scenario.nlp.bert_pretraining.mlm.model import (
-    ModelMLMParams,
-    MLMModel as ModelMLM,
-)
+from tfaip_scenario.nlp.bert_pretraining.mlm.model import ModelMLMParams, MLMModel as ModelMLM
 
 if TYPE_CHECKING:
     from tfaip_scenario.nlp.data.sop import SOPData
@@ -57,25 +54,15 @@ class SOPModel(ModelMLM):
             tags_sop = args[2]
             tags_sop = tags_sop[:, 0]
             sop_logits = tf.reduce_mean(tf.transpose(args[3], [0, 2, 1]), axis=-1)
-            res_mlm = tf.losses.sparse_categorical_crossentropy(
-                y_true=args[0], y_pred=args[1], from_logits=True
-            )
+            res_mlm = tf.losses.sparse_categorical_crossentropy(y_true=args[0], y_pred=args[1], from_logits=True)
             res_sop = tf.expand_dims(
-                tf.losses.sparse_categorical_crossentropy(
-                    y_true=tags_sop, y_pred=sop_logits, from_logits=True
-                ),
-                -1,
+                tf.losses.sparse_categorical_crossentropy(y_true=tags_sop, y_pred=sop_logits, from_logits=True), -1
             )
             return res_mlm + res_sop
 
         return {
             "softmax_cross_entropy": loss_fn(
-                (
-                    targets["tgt_mlm"],
-                    outputs["logits_mlm"],
-                    targets["tgt_sop"],
-                    outputs["logits_sop"],
-                )
+                (targets["tgt_mlm"], outputs["logits_mlm"], targets["tgt_sop"], outputs["logits_sop"])
             )
         }
 
@@ -84,9 +71,7 @@ class SOPModel(ModelMLM):
 
     def _target_output_metric(self) -> List[Tuple[str, str, tf.keras.metrics.Metric]]:
         metrics = super()._target_output_metric()
-        return metrics + [
-            ("tgt_sop", "pred_ids_sop", MyAccuracySOP(name="accuracy_sop"))
-        ]
+        return metrics + [("tgt_sop", "pred_ids_sop", MyAccuracySOP(name="accuracy_sop"))]
 
     def _sample_weights(self, inputs, targets) -> Dict[str, Any]:
         dict = super()._sample_weights(inputs, targets)
@@ -127,16 +112,10 @@ class BERTSOP(GraphBase):
         self._last_layer_sop = tf.keras.layers.Dense(2)
 
     def build_graph(self, inputs, training=None):
-        bert_out = self.bert(
-            inputs, training=training
-        )  # (batch_size, inp_seq_len, d_model)
+        bert_out = self.bert(inputs, training=training)  # (batch_size, inp_seq_len, d_model)
 
-        mlm_logits = self._last_layer_mlm(
-            bert_out["enc_output"]
-        )  # (batch_size, tar_seq_len, target_vocab_size)
-        sop_logits = self._last_layer_sop(
-            bert_out["enc_output"]
-        )  # (batch_size, tar_seq_len, 2)
+        mlm_logits = self._last_layer_mlm(bert_out["enc_output"])  # (batch_size, tar_seq_len, target_vocab_size)
+        sop_logits = self._last_layer_sop(bert_out["enc_output"])  # (batch_size, tar_seq_len, 2)
         mlm_pred_ids = tf.argmax(input=mlm_logits, axis=2, output_type=tf.int32)
         sop_pred_ids = tf.argmax(input=sop_logits, axis=2, output_type=tf.int32)
         graph_out = {
@@ -154,10 +133,8 @@ class MyAccuracySOP(tf.keras.metrics.Accuracy):
         super(MyAccuracySOP, self).__init__(**kwargs)
 
     def update_state(self, y_true, y_pred, sample_weight=None):
-        float_res = tf.reduce_sum(
-            tf.cast(y_pred, tf.float32) * tf.cast(sample_weight, tf.float32), axis=-1
-        ) / tf.cast(tf.reduce_sum(sample_weight, axis=-1), tf.float32)
-        sop_pred_ids = tf.cast(tf.round(float_res), tf.int32)
-        super(MyAccuracySOP, self).update_state(
-            y_true=y_true[:, 0], y_pred=sop_pred_ids
+        float_res = tf.reduce_sum(tf.cast(y_pred, tf.float32) * tf.cast(sample_weight, tf.float32), axis=-1) / tf.cast(
+            tf.reduce_sum(sample_weight, axis=-1), tf.float32
         )
+        sop_pred_ids = tf.cast(tf.round(float_res), tf.int32)
+        super(MyAccuracySOP, self).update_state(y_true=y_true[:, 0], y_pred=sop_pred_ids)

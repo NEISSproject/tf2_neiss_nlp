@@ -13,7 +13,7 @@
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tfaip. If not, see http://www.gnu.org/licenses/.
+# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 from dataclasses import dataclass
 from typing import Dict, Any, List, Tuple
@@ -55,34 +55,22 @@ class NSPModel(MLMModel):
             tags_nsp = args[2]
             tags_nsp = tags_nsp[:, 0]
             nsp_logits = tf.reduce_mean(tf.transpose(args[3], [0, 2, 1]), axis=-1)
-            res_mlm = tf.losses.sparse_categorical_crossentropy(
-                y_true=args[0], y_pred=args[1], from_logits=True
-            )
+            res_mlm = tf.losses.sparse_categorical_crossentropy(y_true=args[0], y_pred=args[1], from_logits=True)
             res_nsp = tf.expand_dims(
-                tf.losses.sparse_categorical_crossentropy(
-                    y_true=tags_nsp, y_pred=nsp_logits, from_logits=True
-                ),
-                -1,
+                tf.losses.sparse_categorical_crossentropy(y_true=tags_nsp, y_pred=nsp_logits, from_logits=True), -1
             )
             # res = res * args[2]
             return res_mlm + res_nsp
 
         return {
             "softmax_cross_entropy": loss_fn(
-                (
-                    targets["tgt_mlm"],
-                    outputs["logits_mlm"],
-                    targets["tgt_nsp"],
-                    outputs["logits_nsp"],
-                )
+                (targets["tgt_mlm"], outputs["logits_mlm"], targets["tgt_nsp"], outputs["logits_nsp"])
             )
         }
 
     def _target_output_metric(self) -> List[Tuple[str, str, tf.keras.metrics.Metric]]:
         metrics = super()._target_output_metric()
-        return metrics + [
-            ("tgt_nsp", "pred_ids_nsp", MyAccuracyNSP(name="accuracy_nsp"))
-        ]
+        return metrics + [("tgt_nsp", "pred_ids_nsp", MyAccuracyNSP(name="accuracy_nsp"))]
 
     def _sample_weights(self, inputs, targets) -> Dict[str, Any]:
         dict = super()._sample_weights(inputs, targets)
@@ -123,16 +111,10 @@ class BERTNSP(GraphBase[ModelNSPParams]):
         self._last_layer_nsp = tf.keras.layers.Dense(2)
 
     def build_graph(self, inputs, training=None):
-        bert_out = self.bert(
-            inputs, training=training
-        )  # (batch_size, inp_seq_len, d_model)
+        bert_out = self.bert(inputs, training=training)  # (batch_size, inp_seq_len, d_model)
 
-        mlm_logits = self._last_layer_mlm(
-            bert_out["enc_output"]
-        )  # (batch_size, tar_seq_len, target_vocab_size)
-        nsp_logits = self._last_layer_nsp(
-            bert_out["enc_output"]
-        )  # (batch_size, tar_seq_len, 2)
+        mlm_logits = self._last_layer_mlm(bert_out["enc_output"])  # (batch_size, tar_seq_len, target_vocab_size)
+        nsp_logits = self._last_layer_nsp(bert_out["enc_output"])  # (batch_size, tar_seq_len, 2)
         mlm_pred_ids = tf.argmax(input=mlm_logits, axis=2, output_type=tf.int32)
         nsp_pred_ids = tf.argmax(input=nsp_logits, axis=2, output_type=tf.int32)
         self._graph_out = {
@@ -151,11 +133,9 @@ class MyAccuracyNSP(tf.keras.metrics.Accuracy):
         super(MyAccuracyNSP, self).__init__(**kwargs)
 
     def update_state(self, y_true, y_pred, sample_weight=None):
-        float_res = tf.reduce_sum(
-            tf.cast(y_pred, tf.float32) * tf.cast(sample_weight, tf.float32), axis=-1
-        ) / tf.cast(tf.reduce_sum(sample_weight, axis=-1), tf.float32)
+        float_res = tf.reduce_sum(tf.cast(y_pred, tf.float32) * tf.cast(sample_weight, tf.float32), axis=-1) / tf.cast(
+            tf.reduce_sum(sample_weight, axis=-1), tf.float32
+        )
         nsp_pred_ids = tf.cast(tf.round(float_res), tf.int32)
 
-        super(MyAccuracyNSP, self).update_state(
-            y_true=y_true[:, 0], y_pred=nsp_pred_ids
-        )
+        super(MyAccuracyNSP, self).update_state(y_true=y_true[:, 0], y_pred=nsp_pred_ids)

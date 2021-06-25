@@ -13,7 +13,7 @@
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tfaip. If not, see http://www.gnu.org/licenses/.
+# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 from dataclasses import dataclass
 from typing import Type, TypeVar
@@ -50,14 +50,10 @@ class Scenario(ListFileScenario[ScenarioParams]):
         self._params.model.target_vocab_size = self.data.tokenizer.vocab_size + 3
         self._params.model.oov_id_ = self.data.tag_string_mapper.get_oov_id()
         self._params.model.use_hf_model_ = self._params.data.use_hf_model
-        self._params.model.use_hf_electra_model_ = (
-            self._params.data.use_hf_electra_model
-        )
+        self._params.model.use_hf_electra_model_ = self._params.data.use_hf_electra_model
         self._params.model.pretrained_hf_model_ = self._params.data.pretrained_hf_model
 
-        self._params.model.whole_word_attention_ = (
-            self._params.data.whole_word_attention
-        )
+        self._params.model.whole_word_attention_ = self._params.data.whole_word_attention
         self._params.model.bet_tagging_ = self._params.data.bet_tagging
         self._params.model.wordwise_output_ = self._params.data.wordwise_output
         self._params.model.wwo_mode_ = self._params.data.wwo_mode
@@ -65,9 +61,7 @@ class Scenario(ListFileScenario[ScenarioParams]):
         return super(Scenario, self).create_model_and_graph()
 
 
-class FromDatasetsScenario(
-    ScenarioBase[ScenarioParams, FromDatasetsTrainerGeneratorParams]
-):
+class FromDatasetsScenario(ScenarioBase[ScenarioParams, FromDatasetsTrainerGeneratorParams]):
     @classmethod
     def evaluator_cls(cls) -> Type["SeqEvalF1HugFace"]:
         return SeqEvalF1HugFace
@@ -78,14 +72,10 @@ class FromDatasetsScenario(
         self._params.model.target_vocab_size = self.data.tokenizer.vocab_size + 3
         self._params.model.oov_id_ = self.data.tag_string_mapper.get_oov_id()
         self._params.model.use_hf_model_ = self._params.data.use_hf_model
-        self._params.model.use_hf_electra_model_ = (
-            self._params.data.use_hf_electra_model
-        )
+        self._params.model.use_hf_electra_model_ = self._params.data.use_hf_electra_model
         self._params.model.pretrained_hf_model_ = self._params.data.pretrained_hf_model
 
-        self._params.model.whole_word_attention_ = (
-            self._params.data.whole_word_attention
-        )
+        self._params.model.whole_word_attention_ = self._params.data.whole_word_attention
         self._params.model.bet_tagging_ = self._params.data.bet_tagging
         self._params.model.wordwise_output_ = self._params.data.wordwise_output
         self._params.model.wwo_mode_ = self._params.data.wwo_mode

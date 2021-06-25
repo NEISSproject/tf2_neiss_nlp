@@ -13,9 +13,9 @@
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tfaip. If not, see http://www.gnu.org/licenses/.
+# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
-"""Utilities for reading references"""
+# """Utilities for reading references"""
 
 
 def read_utf8_textline_reference_from_file(fn: str) -> str:

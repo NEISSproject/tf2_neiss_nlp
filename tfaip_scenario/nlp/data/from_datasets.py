@@ -13,7 +13,7 @@
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tfaip. If not, see http://www.gnu.org/licenses/.
+# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 from dataclasses import field, dataclass
 from typing import Type, Iterable, Optional
@@ -29,22 +29,15 @@ from tfaip.data.pipeline.datagenerator import DataGenerator
 @dataclass
 class FromDatasetsDataGeneratorParams(DataGeneratorParams):
     dataset_name: str = field(
-        default="germeval_14",
-        metadata=pai_meta(help="The dataset to select (chose also fashion_mnist)."),
+        default="germeval_14", metadata=pai_meta(help="The dataset to select (chose also fashion_mnist).")
     )
 
     dataset_config_name: Optional[str] = field(
-        default=None,
-        metadata=pai_meta(
-            help="The configuration name of the dataset to use (via the datasets library)."
-        ),
+        default=None, metadata=pai_meta(help="The configuration name of the dataset to use (via the datasets library).")
     )
     eval_on_test_list: Optional[bool] = field(
         default=False, metadata=pai_meta(help="Set True for evaluation on test list")
     )
-
-    print(dataset_name)
-    pass
 
     @staticmethod
     def cls() -> Type["DataGenerator"]:
@@ -74,10 +67,7 @@ class FromDatasetsDataGenerator(DataGenerator[FromDatasetsDataGeneratorParams]):
     @staticmethod
     def to_samples(data) -> Iterable[Sample]:
         for sample_ in data:
-            sample = Sample(
-                inputs={"text": sample_["tokens"]},
-                targets={"tag_ids": sample_["ner_tags"]},
-            )
+            sample = Sample(inputs={"text": sample_["tokens"]}, targets={"tag_ids": sample_["ner_tags"]})
             yield sample
 
     def __len__(self):
@@ -90,9 +80,7 @@ class FromDatasetsDataGenerator(DataGenerator[FromDatasetsDataGeneratorParams]):
 @pai_dataclass
 @dataclass
 class FromDatasetsTrainerGeneratorParams(
-    TrainerPipelineParamsBase[
-        FromDatasetsDataGeneratorParams, FromDatasetsDataGeneratorParams
-    ]
+    TrainerPipelineParamsBase[FromDatasetsDataGeneratorParams, FromDatasetsDataGeneratorParams]
 ):
     train_val: FromDatasetsDataGeneratorParams = field(
         default_factory=FromDatasetsDataGeneratorParams, metadata=pai_meta(mode="flat")

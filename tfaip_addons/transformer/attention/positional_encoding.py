@@ -13,7 +13,7 @@
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tfaip. If not, see http://www.gnu.org/licenses/.
+# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 import numpy as np
 import tensorflow as tf
@@ -25,9 +25,7 @@ def get_angles(pos, i, d_model):
 
 
 def positional_encoding(position, d_model, random_roll=None):
-    angle_rads = get_angles(
-        np.arange(position)[:, np.newaxis], np.arange(d_model)[np.newaxis, :], d_model
-    )
+    angle_rads = get_angles(np.arange(position)[:, np.newaxis], np.arange(d_model)[np.newaxis, :], d_model)
 
     # apply sin to even indices in the array; 2i
     angle_rads[:, 0::2] = np.sin(angle_rads[:, 0::2])
@@ -46,8 +44,6 @@ def positional_encoding(position, d_model, random_roll=None):
         def noop():
             return pos_encoding
 
-        pos_encoding = tf.cond(
-            tf.less(tf.random.uniform([1]), random_roll), call_random_roll, noop
-        )
+        pos_encoding = tf.cond(tf.less(tf.random.uniform([1]), random_roll), call_random_roll, noop)
 
     return tf.cast(pos_encoding, dtype=tf.float32)

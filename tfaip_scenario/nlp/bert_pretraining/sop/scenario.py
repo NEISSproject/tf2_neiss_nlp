@@ -13,7 +13,7 @@
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tfaip. If not, see http://www.gnu.org/licenses/.
+# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 from dataclasses import dataclass
 
@@ -37,8 +37,6 @@ class ScenarioSOPBaseParams(ScenarioBaseParams[SOPDataParams, ModelSOPParams]):
 class Scenario(ScenarioBase[ScenarioSOPBaseParams, ListFileTrainerPipelineParams]):
     def create_model_and_graph(self) -> "ModelBase":
         self._params.model.target_vocab_size = self.data.params.tok_vocab_size + 3
-        self._params.model.whole_word_attention_ = (
-            self._params.data.whole_word_attention
-        )
+        self._params.model.whole_word_attention_ = self._params.data.whole_word_attention
 
         return super(Scenario, self).create_model_and_graph()

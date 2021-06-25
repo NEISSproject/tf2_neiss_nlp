@@ -13,7 +13,7 @@
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tfaip. If not, see http://www.gnu.org/licenses/.
+# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 import tensorflow as tf
 
@@ -37,9 +37,7 @@ def create_padding_mask(seq_len, max_len=0):
     """
     if seq_len.shape.rank == 2:
         seq_len = tf.squeeze(seq_len, axis=-1)
-    padding_mask = tf.sequence_mask(
-        seq_len, tf.maximum(tf.reduce_max(seq_len), max_len), dtype=tf.int32
-    )
+    padding_mask = tf.sequence_mask(seq_len, tf.maximum(tf.reduce_max(seq_len), max_len), dtype=tf.int32)
     # (batch_size, max_len) -- > (batch_size, 1, 1, max_len)
     # add extra dimensions to add the padding
     # to the attention logits.
@@ -62,9 +60,7 @@ def create_sparse_mask(seq_len, sparse_width, max_len=0):
     )
     seq_mask = 1 - tf.expand_dims(seq_mask, axis=2)
 
-    combined_mask = tf.maximum(
-        tf.expand_dims(tf.squeeze(padding_mask, axis=2), axis=0), seq_mask
-    )
+    combined_mask = tf.maximum(tf.expand_dims(tf.squeeze(padding_mask, axis=2), axis=0), seq_mask)
     return combined_mask
 
 

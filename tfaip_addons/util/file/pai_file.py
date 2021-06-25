@@ -13,9 +13,8 @@
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tfaip. If not, see http://www.gnu.org/licenses/.
+# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
-
 import ast
 import json
 import logging
@@ -191,30 +190,14 @@ class Box(object):
         xs = [
             round(self.x + start * self.w * math.cos(self.angle)),
             round(self.x + end * self.w * math.cos(self.angle)),
-            round(
-                self.x
-                + end * self.w * math.cos(self.angle)
-                + self.h * math.sin(self.angle)
-            ),
-            round(
-                self.x
-                + start * self.w * math.cos(self.angle)
-                + self.h * math.sin(self.angle)
-            ),
+            round(self.x + end * self.w * math.cos(self.angle) + self.h * math.sin(self.angle)),
+            round(self.x + start * self.w * math.cos(self.angle) + self.h * math.sin(self.angle)),
         ]
         ys = [
             round(self.y + start * self.w * math.sin(self.angle)),
             round(self.y + end * self.w * math.sin(self.angle)),
-            round(
-                self.y
-                + end * self.w * math.sin(self.angle)
-                - self.h * math.cos(self.angle)
-            ),
-            round(
-                self.y
-                + start * self.w * math.sin(self.angle)
-                - self.h * math.cos(self.angle)
-            ),
+            round(self.y + end * self.w * math.sin(self.angle) - self.h * math.cos(self.angle)),
+            round(self.y + start * self.w * math.sin(self.angle) - self.h * math.cos(self.angle)),
         ]
         return Polygon(xs=xs, ys=ys)
 
@@ -246,9 +229,7 @@ def decode_box(string: Optional[str]) -> Optional[Box]:
         return None
     s = string.split(",")
     if len(s) != 5:
-        raise Exception(
-            f"cannot split string '{string}' into 5 parts, obtain {len(s)}."
-        )
+        raise Exception(f"cannot split string '{string}' into 5 parts, obtain {len(s)}.")
     return Box(int(s[0]), int(s[1]), int(s[2]), int(s[3]), float(s[4]))
 
 
@@ -295,9 +276,7 @@ class ResultEntitySnippet:
     lineId: str = ""
     rangeText: Optional[IndexRange] = field(default=None)
     rangeCm: Optional[IndexRange] = field(default=None)
-    pos: Optional[Box] = field(
-        default_factory=list, metadata=config(decoder=decode_box, encoder=encode_box)
-    )
+    pos: Optional[Box] = field(default_factory=list, metadata=config(decoder=decode_box, encoder=encode_box))
     coordinates: float = 0.0
     text: str = ""
 
@@ -332,9 +311,7 @@ class ModulResultEntity:
 class Word(Base):
     id: Optional[str] = None
     text: Optional[StringConfidenced] = field(default=None)
-    wordboxBounds: Optional[Box] = field(
-        default_factory=list, metadata=config(decoder=decode_box, encoder=encode_box)
-    )
+    wordboxBounds: Optional[Box] = field(default_factory=list, metadata=config(decoder=decode_box, encoder=encode_box))
     wordboxMainBody: Optional[Box] = field(
         default_factory=list, metadata=config(decoder=decode_box, encoder=encode_box)
     )
@@ -398,9 +375,7 @@ class Page(Region):
     classifications: Dict[str, Classification] = field(default_factory=dict)
     imageDimsProcess: Optional[Dimension] = field(
         default=None,
-        metadata=config(
-            decoder=lambda x: decode_dimension(x), encoder=lambda x: encode_dimension(x)
-        ),
+        metadata=config(decoder=lambda x: decode_dimension(x), encoder=lambda x: encode_dimension(x)),
     )
     angleMod90: Optional[FloatConfidenced] = field(default=None)
 
@@ -421,9 +396,7 @@ def _skip_default(thedict: Dict[str, object]) -> Dict[str, object]:
         val = thedict[key]
         if val is None:
             pass
-        elif (
-            isinstance(val, (int, float, str, list, dict, set)) and not val
-        ):  # not val means empty or default
+        elif isinstance(val, (int, float, str, list, dict, set)) and not val:  # not val means empty or default
             pass
         elif isinstance(val, dict):
             outdict[key] = _skip_default(val)
@@ -521,9 +494,7 @@ def _get_class_list(
         for result in classification.results:
             lbl = result.label
             if float(result.score) < threshold:
-                logging.info(
-                    f"ignore class {lbl} since score {result.score} > {threshold}"
-                )
+                logging.info(f"ignore class {lbl} since score {result.score} > {threshold}")
                 continue
             id = _get_index_or_name(f"{class_id}{lbl}", category_mapper)
             if id is not None:
@@ -531,9 +502,7 @@ def _get_class_list(
     return res
 
 
-def _get_index_or_name(
-    label: str, category_mapper: Optional[StringMapper]
-) -> Optional[Union[int, str]]:
+def _get_index_or_name(label: str, category_mapper: Optional[StringMapper]) -> Optional[Union[int, str]]:
     if category_mapper is None:
         return label
     id = category_mapper.get_channel(label)

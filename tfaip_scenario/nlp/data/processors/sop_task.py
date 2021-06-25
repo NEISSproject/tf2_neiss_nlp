@@ -13,21 +13,19 @@
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tfaip. If not, see http://www.gnu.org/licenses/.
+# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 import logging
 import random
 from dataclasses import dataclass
 from typing import Iterable, TypeVar
 
+import numpy as np
 from paiargparse import pai_dataclass
 
 from tfaip import Sample, PipelineMode
 from tfaip_scenario.nlp.data.nlp_base_params import NLPDataParams
-from tfaip_scenario.nlp.data.processors.mlm_task import (
-    DataProcessorMLMTaskParams,
-    DataProcessorMLMTask,
-)
+from tfaip_scenario.nlp.data.processors.mlm_task import DataProcessorMLMTaskParams, DataProcessorMLMTask
 
 logger = logging.getLogger(__name__)
 
@@ -90,19 +88,11 @@ class DataProcessorSOPTask(DataProcessorMLMTask[TSOP]):
                 ]
             sec_enc_sentence = self.tokenizer.encode(textparttwo)
             if len(sec_enc_sentence) > self.data_params.max_token_text_part:
-                sec_enc_sentence = sec_enc_sentence[
-                    : self.data_params.max_token_text_part
-                ]
+                sec_enc_sentence = sec_enc_sentence[: self.data_params.max_token_text_part]
         else:
-            first_enc_sentence, sec_enc_sentence = self.build_two_sentence_segments(
-                sentences
-            )
-        first_mask_enc_sentence, first_masked_index_list = self.mask_enc_sentence(
-            first_enc_sentence
-        )
-        sec_mask_enc_sentence, sec_masked_index_list = self.mask_enc_sentence(
-            sec_enc_sentence
-        )
+            first_enc_sentence, sec_enc_sentence = self.build_two_sentence_segments(sentences)
+        first_mask_enc_sentence, first_masked_index_list = self.mask_enc_sentence(first_enc_sentence)
+        sec_mask_enc_sentence, sec_masked_index_list = self.mask_enc_sentence(sec_enc_sentence)
         # Add CLS-Tag and SEP-Tag
         if self.switch_sentences():
             text_index_list = (
@@ -112,9 +102,7 @@ class DataProcessorSOPTask(DataProcessorMLMTask[TSOP]):
                 + first_mask_enc_sentence
                 + [self.data_params.tok_vocab_size + 1]
             )
-            masked_index_list = (
-                [0] + sec_masked_index_list + [0] + first_masked_index_list + [0]
-            )
+            masked_index_list = [0] + sec_masked_index_list + [0] + first_masked_index_list + [0]
             tar_mlm = (
                 [self.data_params.tok_vocab_size]
                 + sec_enc_sentence
@@ -131,9 +119,7 @@ class DataProcessorSOPTask(DataProcessorMLMTask[TSOP]):
                 + sec_mask_enc_sentence
                 + [self.data_params.tok_vocab_size + 1]
             )
-            masked_index_list = (
-                [0] + first_masked_index_list + [0] + sec_masked_index_list + [0]
-            )
+            masked_index_list = [0] + first_masked_index_list + [0] + sec_masked_index_list + [0]
             tar_mlm = (
                 [self.data_params.tok_vocab_size]
                 + first_enc_sentence
@@ -142,22 +128,17 @@ class DataProcessorSOPTask(DataProcessorMLMTask[TSOP]):
                 + [self.data_params.tok_vocab_size + 1]
             )
             tar_sop = [1]
-        sop_sample.inputs = {
-            "text": text_index_list,
-            "seq_length": [len(text_index_list)],
-        }
-        sop_sample.inputs["seq_length"] = [len(text_index_list)]
+        sop_sample.inputs = {"text": np.asarray(text_index_list), "seq_length": np.asarray([len(text_index_list)])}
+        sop_sample.inputs["seq_length"] = np.asarray([len(text_index_list)])
         sop_sample.targets = {
-            "tgt_mlm": tar_mlm,
-            "mask_mlm": masked_index_list,
-            "tgt_sop": tar_sop,
+            "tgt_mlm": np.asarray(tar_mlm),
+            "mask_mlm": np.asarray(masked_index_list),
+            "tgt_sop": np.asarray(tar_sop),
         }
         if self._wwa:
-            word_length_vector, segment_ids = self.build_whole_word_attention_inputs(
-                tar_mlm
-            )
-            sop_sample.inputs["word_length_vector"] = word_length_vector
-            sop_sample.inputs["segment_ids"] = segment_ids
+            word_length_vector, segment_ids = self.build_whole_word_attention_inputs(tar_mlm)
+            sop_sample.inputs["word_length_vector"] = np.asarray(word_length_vector)
+            sop_sample.inputs["segment_ids"] = np.asarray(segment_ids)
         return sop_sample
 
     def build_two_sentence_segments(self, sentences):
@@ -170,15 +151,10 @@ class DataProcessorSOPTask(DataProcessorMLMTask[TSOP]):
         firstaddindex = splitindex - 1
         secondaddindex = splitindex + 2
         # Check if it is already to long
-        if (
-            len(first_enc_sentence) + len(second_enc_sentence)
-            > self.data_params.max_token_text_part
-        ):
+        if len(first_enc_sentence) + len(second_enc_sentence) > self.data_params.max_token_text_part:
             half = int(self.data_params.max_token_text_part / 2)
             if len(first_enc_sentence) > half:
-                first_enc_sentence = first_enc_sentence[
-                    len(first_enc_sentence) - half :
-                ]
+                first_enc_sentence = first_enc_sentence[len(first_enc_sentence) - half :]
             if len(second_enc_sentence) > half:
                 second_enc_sentence = second_enc_sentence[:half]
         else:
@@ -190,14 +166,9 @@ class DataProcessorSOPTask(DataProcessorMLMTask[TSOP]):
                 elif firstaddindex < 0:
                     stopback = False
                     while not stopback:
-                        new_sentences = (
-                            second_sentences + " " + sentences[secondaddindex]
-                        )
+                        new_sentences = second_sentences + " " + sentences[secondaddindex]
                         new_enc_sentence = self.tokenizer.encode(new_sentences)
-                        if (
-                            len(first_enc_sentence) + len(new_enc_sentence)
-                            <= self.data_params.max_token_text_part
-                        ):
+                        if len(first_enc_sentence) + len(new_enc_sentence) <= self.data_params.max_token_text_part:
                             second_sentences = new_sentences
                             second_enc_sentence = new_enc_sentence
                             secondaddindex += 1
@@ -211,10 +182,7 @@ class DataProcessorSOPTask(DataProcessorMLMTask[TSOP]):
                     while not stopfront:
                         new_sentences = sentences[firstaddindex] + " " + first_sentences
                         new_enc_sentence = self.tokenizer.encode(new_sentences)
-                        if (
-                            len(second_enc_sentence) + len(new_enc_sentence)
-                            <= self.data_params.max_token_text_part
-                        ):
+                        if len(second_enc_sentence) + len(new_enc_sentence) <= self.data_params.max_token_text_part:
                             first_sentences = new_sentences
                             first_enc_sentence = new_enc_sentence
                             firstaddindex -= 1
@@ -228,9 +196,7 @@ class DataProcessorSOPTask(DataProcessorMLMTask[TSOP]):
                         new_sentences = sentences[firstaddindex] + " " + first_sentences
                         new_enc_sentence = self.tokenizer.encode(new_sentences)
                         if (
-                            len(first_enc_sentence)
-                            + len(second_enc_sentence)
-                            + len(new_enc_sentence)
+                            len(first_enc_sentence) + len(second_enc_sentence) + len(new_enc_sentence)
                             <= self.data_params.max_token_text_part
                         ):
                             first_sentences = new_sentences
@@ -239,14 +205,10 @@ class DataProcessorSOPTask(DataProcessorMLMTask[TSOP]):
                         else:
                             firstaddindex = -1
                     else:
-                        new_sentences = (
-                            second_sentences + " " + sentences[secondaddindex]
-                        )
+                        new_sentences = second_sentences + " " + sentences[secondaddindex]
                         new_enc_sentence = self.tokenizer.encode(new_sentences)
                         if (
-                            len(first_enc_sentence)
-                            + len(second_enc_sentence)
-                            + len(new_enc_sentence)
+                            len(first_enc_sentence) + len(second_enc_sentence) + len(new_enc_sentence)
                             <= self.data_params.max_token_text_part
                         ):
                             second_sentences = new_sentences

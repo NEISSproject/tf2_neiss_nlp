@@ -13,7 +13,7 @@
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tfaip. If not, see http://www.gnu.org/licenses/.
+# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 import logging
 import os
@@ -53,10 +53,7 @@ TDP = TypeVar("TDP", bound=MLMDataParams)
 class MLMData(NLPData[TDP]):
     def __init__(self, params: TDP):
         super(MLMData, self).__init__(params)
-        self.add_types = [
-            tf.int32 if type_ == "int" else tf.float32
-            for type_ in self._params.add_types
-        ]
+        self.add_types = [tf.int32 if type_ == "int" else tf.float32 for type_ in self._params.add_types]
 
     @classmethod
     def default_params(cls) -> TDP:
@@ -76,9 +73,7 @@ class MLMData(NLPData[TDP]):
             input_layer_dict["word_length_vector"] = tf.TensorSpec(
                 shape=[None], dtype="int32", name="word_length_vector"
             )
-            input_layer_dict["segment_ids"] = tf.TensorSpec(
-                shape=[None], dtype="int32", name="segment_ids"
-            )
+            input_layer_dict["segment_ids"] = tf.TensorSpec(shape=[None], dtype="int32", name="segment_ids")
         return input_layer_dict
 
     def _target_layer_specs(self):
@@ -113,35 +108,17 @@ class MLMData(NLPData[TDP]):
             elif i == self.params.tok_vocab_size + 2:
                 token_list.append("<MASK>")
             else:
-                raise IndexError(
-                    f"{i} > tok_vocab_size + 1 (which is <EOS>), this is not allowed!"
-                )
+                raise IndexError(f"{i} > tok_vocab_size + 1 (which is <EOS>), this is not allowed!")
 
-        target_string = [
-            self.tokenizer.decode([i]) if i < self.params.tok_vocab_size else "O"
-            for i in target
-        ]
+        target_string = [self.tokenizer.decode([i]) if i < self.params.tok_vocab_size else "O" for i in target]
 
         if preds is not None:
-            pred_string = [
-                self.tokenizer.decode([i]) if i < self.params.tok_vocab_size else "O"
-                for i in preds
-            ]
+            pred_string = [self.tokenizer.decode([i]) if i < self.params.tok_vocab_size else "O" for i in preds]
             pred_string = [i if i != "UNK" else "*" for i in pred_string]
-            format_helper = [
-                max(len(s), len(t), len(u))
-                for s, t, u in zip(token_list, target_string, pred_string)
-            ]
-            preds_str = "|".join(
-                [
-                    ("{:" + str(f) + "}").format(t)
-                    for f, t in zip(format_helper, pred_string)
-                ]
-            )
+            format_helper = [max(len(s), len(t), len(u)) for s, t, u in zip(token_list, target_string, pred_string)]
+            preds_str = "|".join([("{:" + str(f) + "}").format(t) for f, t in zip(format_helper, pred_string)])
         else:
-            format_helper = [
-                max(len(s), len(t)) for s, t in zip(token_list, target_string)
-            ]
+            format_helper = [max(len(s), len(t)) for s, t in zip(token_list, target_string)]
             preds_str = ""
 
         tokens_with_visible_space = [x.replace(" ", "\u2423") for x in token_list]
@@ -156,15 +133,7 @@ class MLMData(NLPData[TDP]):
         )
         targets_with_visible_space = [x.replace(" ", "\u2423") for x in target_string]
         targets_str = "|".join(
-            [
-                ("{:" + str(f) + "}").format(t)
-                for f, t in zip(format_helper, targets_with_visible_space)
-            ]
+            [("{:" + str(f) + "}").format(t) for f, t in zip(format_helper, targets_with_visible_space)]
         )
-        mask_index_str = "|".join(
-            [
-                ("{:" + str(f) + "}").format(t)
-                for f, t in zip(format_helper, masked_index)
-            ]
-        )
+        mask_index_str = "|".join([("{:" + str(f) + "}").format(t) for f, t in zip(format_helper, masked_index)])
         return tokens_str, mask_index_str, targets_str, preds_str

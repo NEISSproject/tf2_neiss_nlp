@@ -13,7 +13,7 @@
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tfaip. If not, see http://www.gnu.org/licenses/.
+# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 import os
 from abc import abstractmethod
@@ -33,9 +33,7 @@ def set_test_trainer_params(p):
     p.gen.setup.val.prefetch = 1
     p.gen.setup.val.num_processes = 1
     data = p.scenario.data
-    data.tokenizer = Resource(
-        workdir_path(__file__, "data", "tokenizer", "tokenizer_de.subwords")
-    )
+    data.tokenizer = Resource(workdir_path(__file__, "data", "tokenizer", "tokenizer_de.subwords"))
 
     model = p.scenario.model
     model.d_model = 2

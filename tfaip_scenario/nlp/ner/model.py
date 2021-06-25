@@ -13,7 +13,7 @@
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tfaip. If not, see http://www.gnu.org/licenses/.
+# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 import logging
 import os.path
@@ -116,12 +116,8 @@ class Model(ModelBase[ModelParams]):
 
     def calc_penalty_for_tag_pair(self, probs1, probs2):
         tprobs1 = tf.transpose(probs1)
-        bvec1 = tf.transpose(
-            tprobs1[0 : self._real_tag_num]
-        )  # probs of 'B-'-tags of prob1
-        ivec1 = tf.transpose(
-            tprobs1[self._real_tag_num : 2 * self._real_tag_num]
-        )  # probs of 'I-'-tags of prob1
+        bvec1 = tf.transpose(tprobs1[0 : self._real_tag_num])  # probs of 'B-'-tags of prob1
+        ivec1 = tf.transpose(tprobs1[self._real_tag_num : 2 * self._real_tag_num])  # probs of 'I-'-tags of prob1
         ivec2 = tf.transpose(
             tf.transpose(probs2)[self._real_tag_num : 2 * self._real_tag_num]
         )  # probs of 'I-'-tags of prob2
@@ -135,12 +131,8 @@ class Model(ModelBase[ModelParams]):
         ipen = tf.reduce_sum(
             ivec1 * (ivec_sum[:, tf.newaxis] - ivec2), axis=-1
         )  # sum of penaltys for every i-tag: after every i-tag every other i-tag is not allowed
-        open = (
-            oprob * ivec_sum
-        )  # penalty for other tag: after an 'O'-tag every i-tag is not allowed
-        spen = (
-            sprob * ivec_sum
-        )  # penalty for sos tag: after an SOS-tag every i-tag is not allowed
+        open = oprob * ivec_sum  # penalty for other tag: after an 'O'-tag every i-tag is not allowed
+        spen = sprob * ivec_sum  # penalty for sos tag: after an SOS-tag every i-tag is not allowed
         epen = eprob  # penalty for eos tag: after an EOS-tag no tag is allowed
         return bpen + ipen + open + spen + epen
 
@@ -155,19 +147,12 @@ class Model(ModelBase[ModelParams]):
             return self.calc_penalty_for_tag_pair(prob1, prob2)
 
         pair_penalty = (
-            tf.transpose(
-                tf.map_fn(
-                    calc_penalty_pair, (prob1, prob2), fn_output_signature=tf.float32
-                ),
-                perm=[1, 0],
-            )
+            tf.transpose(tf.map_fn(calc_penalty_pair, (prob1, prob2), fn_output_signature=tf.float32), perm=[1, 0])
             * mask
         )
         dummy_pair_penalty = pair_penalty[:, 0] * 0.0
         dummy_pair_penalty = dummy_pair_penalty[:, tf.newaxis]
-        result = tf.concat([dummy_pair_penalty, pair_penalty], -1) + tf.concat(
-            [pair_penalty, dummy_pair_penalty], -1
-        )
+        result = tf.concat([dummy_pair_penalty, pair_penalty], -1) + tf.concat([pair_penalty, dummy_pair_penalty], -1)
         return result
 
     def _loss_weights(self) -> Optional[Dict[str, float]]:
@@ -206,9 +191,7 @@ class Model(ModelBase[ModelParams]):
                 res = tf.abs(y_true - y_pred) * mask
                 res *= 1 + y_true * self._params.loss_se_boost
             else:
-                raise AttributeError(
-                    f"{self._params.loss_se_mode} is not a valid loss_se_mode"
-                )
+                raise AttributeError(f"{self._params.loss_se_mode} is not a valid loss_se_mode")
 
             # tf.print(tf.shape(res))
             # tf.print(res[0])
@@ -221,13 +204,8 @@ class Model(ModelBase[ModelParams]):
         # print(self._tag_string_mapper.size())
         # print(inputs_start, outputs['probabilities_start'])
 
-        return_dict["softmax_cross_entropy_cls"] = keras.layers.Lambda(
-            _loss_cls, name="softmax_cross_entropy_cls"
-        )(
-            (
-                inputs_cls - self._tag_string_mapper.size() // 2,
-                outputs["probabilities_cls"],
-            )
+        return_dict["softmax_cross_entropy_cls"] = keras.layers.Lambda(_loss_cls, name="softmax_cross_entropy_cls")(
+            (inputs_cls - self._tag_string_mapper.size() // 2, outputs["probabilities_cls"])
         )
 
         if self._params.loss_se_mode == "logreg":
@@ -262,52 +240,37 @@ class Model(ModelBase[ModelParams]):
         if self._params.use_crf:
 
             def _loss_fn(args):
-                log_likelihood, _ = tfa.text.crf_log_likelihood(
-                    args[0], args[1], args[2], args[3]
-                )
+                log_likelihood, _ = tfa.text.crf_log_likelihood(args[0], args[1], args[2], args[3])
                 return -log_likelihood
 
             return {
-                "crf_log_likelihood": keras.layers.Lambda(
-                    _loss_fn, name="crf_log_likelihood"
-                )(
-                    (
-                        outputs["logits"],
-                        targets["tgt"],
-                        tar_seq_length[:, 0],
-                        outputs["trans_params"][0],
-                    )
+                "crf_log_likelihood": keras.layers.Lambda(_loss_fn, name="crf_log_likelihood")(
+                    (outputs["logits"], targets["tgt"], tar_seq_length[:, 0], outputs["trans_params"][0])
                 )
             }
         elif self._params.use_ner_loss:
 
             def _loss_fn(args):
                 res = tf.losses.sparse_categorical_crossentropy(
-                    y_true=tf.cast(args[0], tf.float32),
-                    y_pred=args[1],
-                    from_logits=False,
+                    y_true=tf.cast(args[0], tf.float32), y_pred=args[1], from_logits=False
                 )
                 ner_loss = self.calc_penalty_tag_sequence(args[1], args[2])
                 return res + ner_loss
 
             return {
-                "softm_cr_entr_with_ner_penalty": keras.layers.Lambda(
-                    _loss_fn, name="softm_cr_entr_with_ner_penalty"
-                )((targets["tgt"], outputs["probabilities"], tar_seq_length[:, 0]))
+                "softm_cr_entr_with_ner_penalty": keras.layers.Lambda(_loss_fn, name="softm_cr_entr_with_ner_penalty")(
+                    (targets["tgt"], outputs["probabilities"], tar_seq_length[:, 0])
+                )
             }
         else:
 
             def _loss_fn(args):
                 res = tf.losses.sparse_categorical_crossentropy(
-                    y_true=tf.cast(args[0], tf.float32),
-                    y_pred=args[1],
-                    from_logits=False,
+                    y_true=tf.cast(args[0], tf.float32), y_pred=args[1], from_logits=False
                 )
                 return res
 
-        return_dict["softmax_cross_entropy"] = _loss_fn(
-            (targets["tgt"], outputs["probabilities"])
-        )
+        return_dict["softmax_cross_entropy"] = _loss_fn((targets["tgt"], outputs["probabilities"]))
 
         # if self._params.use_entity_loss:
         #     def _loss_fn_2(args):
@@ -418,26 +381,14 @@ class Model(ModelBase[ModelParams]):
             if self._params.use_crf:
                 m_dict.extend(
                     [
-                        (
-                            "tgt",
-                            "pred_idsfp",
-                            EntityF1(self._params.tags_fn_, name="EntityF1FP"),
-                        ),
-                        (
-                            "tgt",
-                            "pred_idsfp",
-                            SeqEvalF1(self._params.tags_fn_, name="SeqEvalF1FP"),
-                        ),
+                        ("tgt", "pred_idsfp", EntityF1(self._params.tags_fn_, name="EntityF1FP")),
+                        ("tgt", "pred_idsfp", SeqEvalF1(self._params.tags_fn_, name="SeqEvalF1FP")),
                     ]
                 )
             else:
                 m_dict.extend(
                     [
-                        (
-                            "tgt",
-                            "logits",
-                            SeqEvalF1FP(self._params.tags_fn_, name="SeqEvalF1FP"),
-                        ),
+                        ("tgt", "logits", SeqEvalF1FP(self._params.tags_fn_, name="SeqEvalF1FP")),
                     ]
                 )
         if self._params.bet_tagging_:
@@ -445,11 +396,7 @@ class Model(ModelBase[ModelParams]):
                 (
                     "tgt_cse",
                     "probabilities_cls",
-                    ClassF1(
-                        oov_id=self._params.oov_id_,
-                        num_tags=self._tag_string_mapper.size(),
-                        name="ClassF1",
-                    ),
+                    ClassF1(oov_id=self._params.oov_id_, num_tags=self._tag_string_mapper.size(), name="ClassF1"),
                 ),
                 ("tgt_cse", "probabilities_start", StartF1(name="StartF1")),
                 ("tgt_cse", "probabilities_end", EndF1(name="EndF1")),
@@ -458,11 +405,7 @@ class Model(ModelBase[ModelParams]):
             for target, output, metric in m_dict:
                 if output == "pred_ids":
                     bet_dict.append(
-                        (
-                            target,
-                            "probabilities_cse",
-                            BetMetricWrapper(metric, tags_fn=self._params.tags_fn_),
-                        )
+                        (target, "probabilities_cse", BetMetricWrapper(metric, tags_fn=self._params.tags_fn_))
                     )
 
             m_dict = bet_dict
@@ -525,31 +468,17 @@ class Model(ModelBase[ModelParams]):
                 )
 
         elif self._params.pretrained_bert:
-            logger.info(
-                f"Attempt to load pre-trained bert from saved model: {self._params.pretrained_bert}"
-            )
+            logger.info(f"Attempt to load pre-trained bert from saved model: {self._params.pretrained_bert}")
             if os.path.basename(self._params.pretrained_bert) == "encoder_only":
                 saved_model_dir = self._params.pretrained_bert
-            elif os.path.isdir(
-                os.path.join(
-                    self._params.pretrained_bert, "export", "additional", "encoder_only"
-                )
-            ):
-                saved_model_dir = os.path.join(
-                    self._params.pretrained_bert, "export", "additional", "encoder_only"
-                )
-            elif os.path.basename(
-                self._params.pretrained_bert
-            ) == "best" and os.path.isdir(
+            elif os.path.isdir(os.path.join(self._params.pretrained_bert, "export", "additional", "encoder_only")):
+                saved_model_dir = os.path.join(self._params.pretrained_bert, "export", "additional", "encoder_only")
+            elif os.path.basename(self._params.pretrained_bert) == "best" and os.path.isdir(
                 os.path.join(self._params.pretrained_bert, "encoder_only")
             ):
-                saved_model_dir = os.path.join(
-                    self._params.pretrained_bert, "encoder_only"
-                )
+                saved_model_dir = os.path.join(self._params.pretrained_bert, "encoder_only")
             else:
-                saved_model_dir = os.path.join(
-                    self._params.pretrained_bert, "best", "encoder_only"
-                )
+                saved_model_dir = os.path.join(self._params.pretrained_bert, "best", "encoder_only")
 
             self._graph.pretrained_bert = keras.models.load_model(saved_model_dir)
         # else:
@@ -566,31 +495,17 @@ class Model(ModelBase[ModelParams]):
             sentence = inputs["sentence"]
         bet_str = ""
         if "pred_ids" not in outputs:
-            bmw_obj = BetMetricWrapper(
-                metric_obj=None, tags_fn=self._params.tags_fn_
-            )  # no metric need, just use py_fn
+            bmw_obj = BetMetricWrapper(metric_obj=None, tags_fn=self._params.tags_fn_)  # no metric need, just use py_fn
             y_pred_arr = tf.py_function(
                 bmw_obj.py_func2,
-                [
-                    tf.expand_dims(outputs["probabilities_cse"], axis=0),
-                    tf.expand_dims(targets["targetmask"], axis=0),
-                ],
+                [tf.expand_dims(outputs["probabilities_cse"], axis=0), tf.expand_dims(targets["targetmask"], axis=0)],
                 Tout=[tf.int32],
             )[0]
-            outputs["pred_ids"] = tf.cast(
-                tf.squeeze(y_pred_arr, axis=0), tf.int32
-            ).numpy()
-            start_str = " ".join(
-                [f"{x:5.0f}" for x in outputs["probabilities_start"].tolist()]
-            )
-            end_str = " ".join(
-                [f"{x:5.0f}" for x in outputs["probabilities_end"].tolist()]
-            )
+            outputs["pred_ids"] = tf.cast(tf.squeeze(y_pred_arr, axis=0), tf.int32).numpy()
+            start_str = " ".join([f"{x:5.0f}" for x in outputs["probabilities_start"].tolist()])
+            end_str = " ".join([f"{x:5.0f}" for x in outputs["probabilities_end"].tolist()])
             cls_str = " ".join(
-                [
-                    f"{self._tag_string_mapper.get_value(np.argmax(x)):>5}"
-                    for x in outputs["probabilities_cls"].tolist()
-                ]
+                [f"{self._tag_string_mapper.get_value(np.argmax(x)):>5}" for x in outputs["probabilities_cls"].tolist()]
             )
             bet_str += start_str + "\n" + end_str + "\n" + cls_str + "\n"
 
@@ -601,30 +516,18 @@ class Model(ModelBase[ModelParams]):
             probs = outputs["logits"]
             f1fpmetric = SeqEvalF1FP(self._params.tags_fn_, name="SeqEvalF1FP_print")
             seq_length = tf.argmax(tf.expand_dims(tgt, axis=0), axis=-1) + 1
-            pred_fp = f1fpmetric.get_max_feasible_path_batch(
-                tf.expand_dims(probs, axis=0), seq_length
-            )
-            tokens_str, tags_str, mask_str, preds_str = data.print_ner_sentence(
-                sentence, tgt, mask, pred, pred_fp[0]
-            )
+            pred_fp = f1fpmetric.get_max_feasible_path_batch(tf.expand_dims(probs, axis=0), seq_length)
+            tokens_str, tags_str, mask_str, preds_str = data.print_ner_sentence(sentence, tgt, mask, pred, pred_fp[0])
             f1fpmetric.update_state_with_fppreds(tf.expand_dims(tgt, axis=0), pred_fp)
             f1fp = f1fpmetric.result()
             f1fpmetric.reset_states()
         else:
-            tokens_str, tags_str, mask_str, preds_str = data.print_ner_sentence(
-                sentence, tgt, mask, pred
-            )
+            tokens_str, tags_str, mask_str, preds_str = data.print_ner_sentence(sentence, tgt, mask, pred)
 
         f1_metric = EntityF1(self._params.tags_fn_, name="EntityF1_print")
-        f1_metric.update_state(
-            tf.expand_dims(tgt, axis=0), tf.expand_dims(pred, axis=0)
-        )
+        f1_metric.update_state(tf.expand_dims(tgt, axis=0), tf.expand_dims(pred, axis=0))
         f1 = f1_metric.result()
-        c, p, a = (
-            f1_metric._correct.numpy(),
-            f1_metric._possible.numpy(),
-            f1_metric._actual.numpy(),
-        )
+        c, p, a = f1_metric._correct.numpy(), f1_metric._possible.numpy(), f1_metric._actual.numpy()
         f1_metric.reset_states()
         if c < p:
             error = "ERROR\n"
@@ -658,57 +561,39 @@ class NERwithMiniBERT(GraphBase[ModelParams]):
         self._tracked_layers = dict()
 
         # else:
-        self.pretrained_bert = getattr(transformers, self._params.bert_graph)(
-            self._params
-        )
+        self.pretrained_bert = getattr(transformers, self._params.bert_graph)(self._params)
         self.tag_vocab_size = self._tag_string_mapper.size() + 2
         self._dropout = tf.keras.layers.Dropout(self._params.dropout_last)
         if self._params.bet_tagging_:
             # print(self._params.target_vocab_size-1)
             # half of the classes is used plus O-Class, sos, eos
             self._layer_cls = tf.keras.layers.Dense(
-                int(self._tag_string_mapper.size() // 2 + 3),
-                activation=tf.keras.activations.softmax,
-                name="layer_cls",
+                int(self._tag_string_mapper.size() // 2 + 3), activation=tf.keras.activations.softmax, name="layer_cls"
             )
             if self._params.loss_se_mode == "logreg":
-                self._layer_start = tf.keras.layers.Dense(
-                    1, activation=None, name="layer_start"
-                )
-                self._layer_end = tf.keras.layers.Dense(
-                    1, activation=None, name="layer_end"
-                )
+                self._layer_start = tf.keras.layers.Dense(1, activation=None, name="layer_start")
+                self._layer_end = tf.keras.layers.Dense(1, activation=None, name="layer_end")
             else:
                 self._layer_start = tf.keras.layers.Dense(
                     1, activation=tf.keras.activations.sigmoid, name="layer_start"
                 )
-                self._layer_end = tf.keras.layers.Dense(
-                    1, activation=tf.keras.activations.sigmoid, name="layer_end"
-                )
+                self._layer_end = tf.keras.layers.Dense(1, activation=tf.keras.activations.sigmoid, name="layer_end")
 
         elif self._params.use_crf:
-            self._last_layer = tf.keras.layers.Dense(
-                self.tag_vocab_size, name="last_layer"
-            )
+            self._last_layer = tf.keras.layers.Dense(self.tag_vocab_size, name="last_layer")
             self._trans_params = tf.keras.layers.Embedding(
                 self.tag_vocab_size, self.tag_vocab_size, name="trans_params"
             )
             # ,embeddings_initializer=tf.keras.initializers.Constant(1))
             if self._params.crf_with_ner_rule:
-                self._penalty_factor = tf.keras.layers.Embedding(
-                    1, 1, name="penalty_factor"
-                )
+                self._penalty_factor = tf.keras.layers.Embedding(1, 1, name="penalty_factor")
                 # ,embeddings_initializer=tf.keras.initializers.Constant(1))
-                self._penalty_absolute = tf.keras.layers.Embedding(
-                    1, 1, name="penalty_absolute"
-                )
+                self._penalty_absolute = tf.keras.layers.Embedding(1, 1, name="penalty_absolute")
                 # ,embeddings_initializer=tf.keras.initializers.Constant(1))
             self.init_crf_with_ner_rule((self.tag_vocab_size - 3) // 2)
         else:
             self._last_layer = tf.keras.layers.Dense(
-                self.tag_vocab_size,
-                activation=tf.keras.activations.softmax,
-                name="last_layer",
+                self.tag_vocab_size, activation=tf.keras.activations.softmax, name="last_layer"
             )
 
     def init_crf_with_ner_rule(self, real_tag_num):
@@ -727,25 +612,11 @@ class NERwithMiniBERT(GraphBase[ModelParams]):
             axis=1,
         )
         eos_allowed_column = tf.concat(
-            [
-                tf.zeros([1, 2 * real_tag_num], tf.int32),
-                tf.ones([1, 1], tf.int32),
-                tf.zeros([1, 2], tf.int32),
-            ],
-            axis=1,
+            [tf.zeros([1, 2 * real_tag_num], tf.int32), tf.ones([1, 1], tf.int32), tf.zeros([1, 2], tf.int32)], axis=1
         )
-        bicolumns = tf.concat(
-            [onesmatrix, identity, onescolumn, zerocolumn, onescolumn], axis=1
-        )
+        bicolumns = tf.concat([onesmatrix, identity, onescolumn, zerocolumn, onescolumn], axis=1)
         allowed_transitions = tf.concat(
-            [
-                bicolumns,
-                bicolumns,
-                always_allowed_column,
-                always_allowed_column,
-                eos_allowed_column,
-            ],
-            axis=0,
+            [bicolumns, bicolumns, always_allowed_column, always_allowed_column, eos_allowed_column], axis=0
         )
         self._allowed_transitions = tf.cast(allowed_transitions, tf.float32)
         self._forbidden_transitions = tf.cast((1 - allowed_transitions), tf.float32)
@@ -755,9 +626,7 @@ class NERwithMiniBERT(GraphBase[ModelParams]):
             values, ind = element
             return tf.gather(values, ind)
 
-        return tf.map_fn(
-            calc_gather, (value_tens, indices), fn_output_signature=tf.float32
-        )
+        return tf.map_fn(calc_gather, (value_tens, indices), fn_output_signature=tf.float32)
 
     def reduce_token_to_word(self, input, segment_ids):
         max_word_number = tf.math.reduce_max(segment_ids)
@@ -765,8 +634,7 @@ class NERwithMiniBERT(GraphBase[ModelParams]):
         segment_ids = tf.add(
             segment_ids,
             tf.scalar_mul(
-                tf.cast(tf.add(max_word_number, 2), tf.int32),
-                tf.cast(tf.math.equal(segment_ids, -1), tf.int32),
+                tf.cast(tf.add(max_word_number, 2), tf.int32), tf.cast(tf.math.equal(segment_ids, -1), tf.int32)
             ),
         )
         dummy_seq_entry = tf.constant([[0] * self._params.d_model], tf.float32)
@@ -780,9 +648,7 @@ class NERwithMiniBERT(GraphBase[ModelParams]):
                 seg_ids_pad = tf.concat([seg_ids, dummy_max_seg_id], 0)
                 return tf.math.segment_max(inp_pad, seg_ids_pad)[:-1]
 
-            reduced_input = tf.map_fn(
-                calc_segment_max, (input, segment_ids), fn_output_signature=tf.float32
-            )
+            reduced_input = tf.map_fn(calc_segment_max, (input, segment_ids), fn_output_signature=tf.float32)
         else:
 
             def calc_segment_mean(element):
@@ -791,9 +657,7 @@ class NERwithMiniBERT(GraphBase[ModelParams]):
                 seg_ids_pad = tf.concat([seg_ids, dummy_max_seg_id], 0)
                 return tf.math.segment_mean(inp_pad, seg_ids_pad)[:-1]
 
-            reduced_input = tf.map_fn(
-                calc_segment_mean, (input, segment_ids), fn_output_signature=tf.float32
-            )
+            reduced_input = tf.map_fn(calc_segment_mean, (input, segment_ids), fn_output_signature=tf.float32)
         return reduced_input
 
     @classmethod
@@ -815,9 +679,7 @@ class NERwithMiniBERT(GraphBase[ModelParams]):
             if self._params.wwo_mode_ == "first":
                 bert_graph_out = self.gather_batch(bert_graph_out, inp["wwo_indexes"])
             elif self._params.wwo_mode_ in ["mean", "max"]:
-                bert_graph_out = self.reduce_token_to_word(
-                    bert_graph_out, inp["wwo_indexes"]
-                )
+                bert_graph_out = self.reduce_token_to_word(bert_graph_out, inp["wwo_indexes"])
             inp["tar_seq_length"] = inputs["word_seq_length"]
         else:
             inp["tar_seq_length"] = inputs["seq_length"]
@@ -849,38 +711,23 @@ class NERwithMiniBERT(GraphBase[ModelParams]):
                 return_dict["logits_start"] = tf.squeeze(logits_start, axis=-1)
                 return_dict["logits_end"] = tf.squeeze(logits_end, axis=-1)
         else:
-            final_output = self._last_layer(
-                bert_graph_out
-            )  # (batch_size, tar_seq_len, target_vocab_size)
+            final_output = self._last_layer(bert_graph_out)  # (batch_size, tar_seq_len, target_vocab_size)
             if self._params.use_crf:
                 trans_params = self._trans_params(tf.range(self.tag_vocab_size))
                 if self._params.crf_with_ner_rule:
                     penalty_factor = self._penalty_factor(tf.range(1))[0][0]
                     penalty_absolute = self._penalty_absolute(tf.range(1))[0][0]
-                    factor = self._allowed_transitions + tf.math.scalar_mul(
-                        penalty_factor, self._forbidden_transitions
-                    )
-                    absolute = tf.math.scalar_mul(
-                        penalty_absolute, self._forbidden_transitions
-                    )
+                    factor = self._allowed_transitions + tf.math.scalar_mul(penalty_factor, self._forbidden_transitions)
+                    absolute = tf.math.scalar_mul(penalty_absolute, self._forbidden_transitions)
                     trans_params = trans_params * factor - absolute
                 # CRFs
-                pred_ids, _ = tfa.text.crf_decode(
-                    final_output, trans_params, inp["tar_seq_length"][:, 0]
-                )
+                pred_ids, _ = tfa.text.crf_decode(final_output, trans_params, inp["tar_seq_length"][:, 0])
                 pred_idsfp, _ = tfa.text.crf_decode(
-                    final_output,
-                    trans_params - 1000000 * self._forbidden_transitions,
-                    inp["tar_seq_length"][:, 0],
+                    final_output, trans_params - 1000000 * self._forbidden_transitions, inp["tar_seq_length"][:, 0]
                 )
                 # broadcasting because of the lav engine: it needs netoutputs with the first shape dimension of the batch size
                 trans_params = tf.broadcast_to(
-                    trans_params,
-                    [
-                        tf.shape(pred_ids)[0],
-                        tf.shape(trans_params)[0],
-                        tf.shape(trans_params)[1],
-                    ],
+                    trans_params, [tf.shape(pred_ids)[0], tf.shape(trans_params)[0], tf.shape(trans_params)[1]]
                 )
                 return_dict = {
                     "pred_ids": pred_ids,
@@ -891,11 +738,7 @@ class NERwithMiniBERT(GraphBase[ModelParams]):
                 }
             else:
                 pred_ids = tf.argmax(input=final_output, axis=2, output_type=tf.int32)
-                return_dict = {
-                    "pred_ids": pred_ids,
-                    "logits": final_output,
-                    "probabilities": final_output,
-                }
+                return_dict = {"pred_ids": pred_ids, "logits": final_output, "probabilities": final_output}
         return return_dict
 
 
@@ -906,51 +749,33 @@ class NERwithHFBERT(GraphBase[ModelParams]):
         self.tag_vocab_size = self._tag_string_mapper.size() + 2
         self._tracked_layers = dict()
         if self._params.use_hf_electra_model_:
-            self.pretrained_bert = TFElectraModel(
-                ElectraConfig.from_pretrained(params.pretrained_hf_model_)
-            )
+            self.pretrained_bert = TFElectraModel(ElectraConfig.from_pretrained(params.pretrained_hf_model_))
         else:
-            self.pretrained_bert = TFBertModel(
-                BertConfig.from_pretrained(params.pretrained_hf_model_)
-            )
+            self.pretrained_bert = TFBertModel(BertConfig.from_pretrained(params.pretrained_hf_model_))
         self._dropout = tf.keras.layers.Dropout(self._params.dropout_last)
         if self._params.bet_tagging_:
             # print(self.tag_vocab_size-1)
             # half of the classes is used plus O-Class, sos, eos
             self._layer_cls = tf.keras.layers.Dense(
-                int(self._tag_string_mapper.size() // 2 + 3),
-                activation=tf.keras.activations.softmax,
-                name="layer_cls",
+                int(self._tag_string_mapper.size() // 2 + 3), activation=tf.keras.activations.softmax, name="layer_cls"
             )
-            self._layer_start = tf.keras.layers.Dense(
-                1, activation=tf.keras.activations.sigmoid, name="layer_start"
-            )
-            self._layer_end = tf.keras.layers.Dense(
-                1, activation=tf.keras.activations.sigmoid, name="layer_end"
-            )
+            self._layer_start = tf.keras.layers.Dense(1, activation=tf.keras.activations.sigmoid, name="layer_start")
+            self._layer_end = tf.keras.layers.Dense(1, activation=tf.keras.activations.sigmoid, name="layer_end")
         elif self._params.use_crf:
-            self._last_layer = tf.keras.layers.Dense(
-                self.tag_vocab_size, name="last_layer"
-            )
+            self._last_layer = tf.keras.layers.Dense(self.tag_vocab_size, name="last_layer")
             self._trans_params = tf.keras.layers.Embedding(
                 self.tag_vocab_size, self.tag_vocab_size, name="trans_params"
             )
             # ,embeddings_initializer=tf.keras.initializers.Constant(1))
             if self._params.crf_with_ner_rule:
-                self._penalty_factor = tf.keras.layers.Embedding(
-                    1, 1, name="penalty_factor"
-                )
+                self._penalty_factor = tf.keras.layers.Embedding(1, 1, name="penalty_factor")
                 # ,embeddings_initializer=tf.keras.initializers.Constant(1))
-                self._penalty_absolute = tf.keras.layers.Embedding(
-                    1, 1, name="penalty_absolute"
-                )
+                self._penalty_absolute = tf.keras.layers.Embedding(1, 1, name="penalty_absolute")
                 # ,embeddings_initializer=tf.keras.initializers.Constant(1))
             self.init_crf_with_ner_rule((self.tag_vocab_size - 3) // 2)
         else:
             self._last_layer = tf.keras.layers.Dense(
-                self.tag_vocab_size,
-                activation=tf.keras.activations.softmax,
-                name="last_layer",
+                self.tag_vocab_size, activation=tf.keras.activations.softmax, name="last_layer"
             )
 
     def init_crf_with_ner_rule(self, real_tag_num):
@@ -969,25 +794,11 @@ class NERwithHFBERT(GraphBase[ModelParams]):
             axis=1,
         )
         eos_allowed_column = tf.concat(
-            [
-                tf.zeros([1, 2 * real_tag_num], tf.int32),
-                tf.ones([1, 1], tf.int32),
-                tf.zeros([1, 2], tf.int32),
-            ],
-            axis=1,
+            [tf.zeros([1, 2 * real_tag_num], tf.int32), tf.ones([1, 1], tf.int32), tf.zeros([1, 2], tf.int32)], axis=1
         )
-        bicolumns = tf.concat(
-            [onesmatrix, identity, onescolumn, zerocolumn, onescolumn], axis=1
-        )
+        bicolumns = tf.concat([onesmatrix, identity, onescolumn, zerocolumn, onescolumn], axis=1)
         allowed_transitions = tf.concat(
-            [
-                bicolumns,
-                bicolumns,
-                always_allowed_column,
-                always_allowed_column,
-                eos_allowed_column,
-            ],
-            axis=0,
+            [bicolumns, bicolumns, always_allowed_column, always_allowed_column, eos_allowed_column], axis=0
         )
         self._allowed_transitions = tf.cast(allowed_transitions, tf.float32)
         self._forbidden_transitions = tf.cast((1 - allowed_transitions), tf.float32)
@@ -997,9 +808,7 @@ class NERwithHFBERT(GraphBase[ModelParams]):
             values, ind = element
             return tf.gather(values, ind)
 
-        return tf.map_fn(
-            calc_gather, (value_tens, indices), fn_output_signature=tf.float32
-        )
+        return tf.map_fn(calc_gather, (value_tens, indices), fn_output_signature=tf.float32)
 
     def reduce_token_to_word(self, input, segment_ids):
         max_word_number = tf.math.reduce_max(segment_ids)
@@ -1007,8 +816,7 @@ class NERwithHFBERT(GraphBase[ModelParams]):
         segment_ids = tf.add(
             segment_ids,
             tf.scalar_mul(
-                tf.cast(tf.add(max_word_number, 2), tf.int32),
-                tf.cast(tf.math.equal(segment_ids, -1), tf.int32),
+                tf.cast(tf.add(max_word_number, 2), tf.int32), tf.cast(tf.math.equal(segment_ids, -1), tf.int32)
             ),
         )
         dummy_seq_entry = tf.constant([[0] * self._params.d_model], tf.float32)
@@ -1022,9 +830,7 @@ class NERwithHFBERT(GraphBase[ModelParams]):
                 seg_ids_pad = tf.concat([seg_ids, dummy_max_seg_id], 0)
                 return tf.math.segment_max(inp_pad, seg_ids_pad)[:-1]
 
-            reduced_input = tf.map_fn(
-                calc_segment_max, (input, segment_ids), fn_output_signature=tf.float32
-            )
+            reduced_input = tf.map_fn(calc_segment_max, (input, segment_ids), fn_output_signature=tf.float32)
         else:
 
             def calc_segment_mean(element):
@@ -1033,9 +839,7 @@ class NERwithHFBERT(GraphBase[ModelParams]):
                 seg_ids_pad = tf.concat([seg_ids, dummy_max_seg_id], 0)
                 return tf.math.segment_mean(inp_pad, seg_ids_pad)[:-1]
 
-            reduced_input = tf.map_fn(
-                calc_segment_mean, (input, segment_ids), fn_output_signature=tf.float32
-            )
+            reduced_input = tf.map_fn(calc_segment_mean, (input, segment_ids), fn_output_signature=tf.float32)
         return reduced_input
 
     def build_graph(self, inputs, training=None):
@@ -1047,13 +851,9 @@ class NERwithHFBERT(GraphBase[ModelParams]):
         bert_graph_out = self._dropout(bert_graph_out.last_hidden_state)
         if self._params.wordwise_output_:
             if self._params.wwo_mode_ == "first":
-                bert_graph_out = self.gather_batch(
-                    bert_graph_out, inputs["wwo_indexes"]
-                )
+                bert_graph_out = self.gather_batch(bert_graph_out, inputs["wwo_indexes"])
             elif self._params.wwo_mode_ in ["mean", "max"]:
-                bert_graph_out = self.reduce_token_to_word(
-                    bert_graph_out, inputs["wwo_indexes"]
-                )
+                bert_graph_out = self.reduce_token_to_word(bert_graph_out, inputs["wwo_indexes"])
         if self._params.bet_tagging_:
 
             probs_cls = self._layer_cls(bert_graph_out)
@@ -1081,38 +881,23 @@ class NERwithHFBERT(GraphBase[ModelParams]):
             # tf.print("probabilities_start", return_dict["probabilities_start"].shape)
             # tf.print("probabilities_cls", return_dict["probabilities_cls"].shape)
         else:
-            final_output = self._last_layer(
-                bert_graph_out
-            )  # (batch_size, tar_seq_len, target_vocab_size)
+            final_output = self._last_layer(bert_graph_out)  # (batch_size, tar_seq_len, target_vocab_size)
             if self._params.use_crf:
                 trans_params = self._trans_params(tf.range(self.tag_vocab_size))
                 if self._params.crf_with_ner_rule:
                     penalty_factor = self._penalty_factor(tf.range(1))[0][0]
                     penalty_absolute = self._penalty_absolute(tf.range(1))[0][0]
-                    factor = self._allowed_transitions + tf.math.scalar_mul(
-                        penalty_factor, self._forbidden_transitions
-                    )
-                    absolute = tf.math.scalar_mul(
-                        penalty_absolute, self._forbidden_transitions
-                    )
+                    factor = self._allowed_transitions + tf.math.scalar_mul(penalty_factor, self._forbidden_transitions)
+                    absolute = tf.math.scalar_mul(penalty_absolute, self._forbidden_transitions)
                     trans_params = trans_params * factor - absolute
                 # CRFs
-                pred_ids, _ = tfa.text.crf_decode(
-                    final_output, trans_params, tar_seq_length[:, 0]
-                )
+                pred_ids, _ = tfa.text.crf_decode(final_output, trans_params, tar_seq_length[:, 0])
                 pred_idsfp, _ = tfa.text.crf_decode(
-                    final_output,
-                    trans_params - 1000000 * self._forbidden_transitions,
-                    tar_seq_length[:, 0],
+                    final_output, trans_params - 1000000 * self._forbidden_transitions, tar_seq_length[:, 0]
                 )
                 # broadcasting because of the lav engine: it needs netoutputs with the first shape dimension of the batch size
                 trans_params = tf.broadcast_to(
-                    trans_params,
-                    [
-                        tf.shape(pred_ids)[0],
-                        tf.shape(trans_params)[0],
-                        tf.shape(trans_params)[1],
-                    ],
+                    trans_params, [tf.shape(pred_ids)[0], tf.shape(trans_params)[0], tf.shape(trans_params)[1]]
                 )
                 return_dict = {
                     "pred_ids": pred_ids,
@@ -1123,9 +908,5 @@ class NERwithHFBERT(GraphBase[ModelParams]):
                 }
             else:
                 pred_ids = tf.argmax(input=final_output, axis=2, output_type=tf.int32)
-                return_dict = {
-                    "pred_ids": pred_ids,
-                    "logits": final_output,
-                    "probabilities": final_output,
-                }
+                return_dict = {"pred_ids": pred_ids, "logits": final_output, "probabilities": final_output}
         return return_dict

@@ -13,9 +13,9 @@
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tfaip. If not, see http://www.gnu.org/licenses/.
+# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
-"""Definition of string mapping helpers"""
+# """Definition of string mapping helpers"""
 import codecs
 import os
 import re
@@ -40,9 +40,7 @@ def get_sm(path) -> "StringMapper":
     if path.lower() == "id":
 
         class MapperId:
-            def get_channel_tuple(
-                self, classifications_dict: Dict[str, "Classification"]
-            ) -> List[Tuple[str, int]]:
+            def get_channel_tuple(self, classifications_dict: Dict[str, "Classification"]) -> List[Tuple[str, int]]:
                 res = []
                 for k, v in classifications_dict.items():
                     res.extend([(f"{k}:{r.label}", 0) for r in v.results])
@@ -66,9 +64,7 @@ def get_sm(path) -> "StringMapper":
         else:
             sm.load_mapping_from_sm(path)
     except Exception as inst:
-        raise RuntimeError(
-            f"Can't load StringMap! Check if this is a valid path: {os.path.abspath(path)}"
-        ) from inst
+        raise RuntimeError(f"Can't load StringMap! Check if this is a valid path: {os.path.abspath(path)}") from inst
 
     return sm
 
@@ -88,9 +84,7 @@ class StringMapper:
         # self.unknown_id = 0
         self._freq_map = {}
 
-    def get_instance_and_set_type(
-        self, key: str, value: str
-    ) -> Union[int, Tuple[str, int]]:
+    def get_instance_and_set_type(self, key: str, value: str) -> Union[int, Tuple[str, int]]:
         value = value.strip()
         if re.fullmatch("[0-9]+", value):
             if self.channel_type is not None and self.channel_type != ChannelType.INDEX:
@@ -101,15 +95,10 @@ class StringMapper:
             self.channel_type = ChannelType.INDEX
             index = int(value) - 1
             if index < 0:
-                raise Exception(
-                    f"index of key {key} is {index + 1} but has to be at least 1"
-                )
+                raise Exception(f"index of key {key} is {index + 1} but has to be at least 1")
             return index
         if re.fullmatch("[a-zA-Z_+-]+:[0-9]+", value):
-            if (
-                self.channel_type is not None
-                and self.channel_type != ChannelType.STRING_INDEX
-            ):
+            if self.channel_type is not None and self.channel_type != ChannelType.STRING_INDEX:
                 raise Exception(
                     f"channel type alread set to {self.channel_type.name} but for value {value} "
                     f"channel type {ChannelType.STRING_INDEX.name} calculated."
@@ -118,9 +107,7 @@ class StringMapper:
             parts = value.split(":")
             return parts[0], int(parts[1])
         else:
-            raise Exception(
-                f"cannot parse key '{key}' and value '{value}' of stringmapper"
-            )
+            raise Exception(f"cannot parse key '{key}' and value '{value}' of stringmapper")
 
     def __str__(self):
         return self.id_to_word_map.__str__()
@@ -139,16 +126,12 @@ class StringMapper:
             return self.unknown_id
         return None
 
-    def get_channel_tuple(
-        self, classifications_dict: Dict[str, "Classification"]
-    ) -> List[Tuple[str, int]]:
+    def get_channel_tuple(self, classifications_dict: Dict[str, "Classification"]) -> List[Tuple[str, int]]:
         if self.channel_type == ChannelType.STRING_INDEX:
             res = []
             for key, classification in classifications_dict.items():
                 for result in classification.results:
-                    label = self.get_channel(
-                        f"{key}:{result.label}", or_unknown_id=False
-                    )
+                    label = self.get_channel(f"{key}:{result.label}", or_unknown_id=False)
                     if label is not None:
                         res.append(label)
             return res

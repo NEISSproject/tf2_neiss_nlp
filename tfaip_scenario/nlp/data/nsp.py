@@ -13,7 +13,7 @@
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tfaip. If not, see http://www.gnu.org/licenses/.
+# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 import logging
 import os
@@ -41,9 +41,7 @@ class NSPDataParams(MLMDataParams):
         return NSPData
 
     segment_train: bool = False
-    max_words_text_part: int = (
-        60  # 'maximum number of words in a text part of the input function'
-    )
+    max_words_text_part: int = 60  # 'maximum number of words in a text part of the input function'
 
 
 TDP = TypeVar("TDP", bound=NSPDataParams)
@@ -64,9 +62,7 @@ class NSPData(MLMData[TDP]):
 
     def _target_layer_specs(self):
         target_layer_dict = super(NSPData, self)._target_layer_specs()
-        target_layer_dict["tgt_nsp"] = tf.TensorSpec(
-            shape=[None], dtype="int32", name="tgt_nsp"
-        )
+        target_layer_dict["tgt_nsp"] = tf.TensorSpec(shape=[None], dtype="int32", name="tgt_nsp")
         return target_layer_dict
 
     def _padding_values(self) -> Dict[str, AnyNumpy]:
@@ -74,18 +70,8 @@ class NSPData(MLMData[TDP]):
         padding_dict["tgt_nsp"] = 0
         return padding_dict
 
-    def print_sentence(
-        self,
-        sentence,
-        masked_index,
-        target_mlm,
-        target_nsp,
-        preds_mlm=None,
-        preds_nsp=None,
-    ):
-        super_res_tuple = super(NSPData, self).print_sentence(
-            sentence, masked_index, target_mlm, preds_mlm
-        )
+    def print_sentence(self, sentence, masked_index, target_mlm, target_nsp, preds_mlm=None, preds_nsp=None):
+        super_res_tuple = super(NSPData, self).print_sentence(sentence, masked_index, target_mlm, preds_mlm)
         nsp_str = f"NSP-TGT: {target_nsp}; NSP-PRED: {[x for x in preds_nsp] if preds_nsp is not None else '-'}"
         lst = [x for x in super_res_tuple]
         lst.append(nsp_str)

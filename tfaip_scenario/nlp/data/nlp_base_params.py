@@ -13,7 +13,7 @@
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tfaip. If not, see http://www.gnu.org/licenses/.
+# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 import os
 from abc import ABC
@@ -37,10 +37,7 @@ class NLPDataParams(DataBaseParams, ABC):
     tokenizer: Resource = field(
         default=None,
         metadata={
-            **pai_meta(
-                help="File specifying the tokenizer used (incl. .subwords",
-                required=True,
-            ),
+            **pai_meta(help="File specifying the tokenizer used (incl. .subwords", required=True),
             **config(encoder=Resource.encode, decoder=Resource.decode),
         },
     )
@@ -76,9 +73,7 @@ class NLPDataParams(DataBaseParams, ABC):
             self.pad_token_id_ = tokenizer.pad_token_id
         else:
             assert str(self.tokenizer).endswith(".subwords")
-            tokenizer = SubwordTextEncoder.load_from_file(
-                str(self.tokenizer).strip(".subwords")
-            )
+            tokenizer = SubwordTextEncoder.load_from_file(str(self.tokenizer).strip(".subwords"))
             self.cls_token_id_ = tokenizer.vocab_size
             self.sep_token_id_ = tokenizer.vocab_size + 1
             self.pad_token_id_ = 0

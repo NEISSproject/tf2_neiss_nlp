@@ -13,7 +13,7 @@
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tfaip. If not, see http://www.gnu.org/licenses/.
+# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 import json
 import logging
@@ -21,13 +21,12 @@ from dataclasses import dataclass
 from typing import Iterable, TypeVar
 
 import numpy
+import numpy as np
 from paiargparse import pai_dataclass
+
 from tfaip import Sample, PipelineMode
 from tfaip_scenario.nlp.data.ner_params import NERDataParams
-from tfaip_scenario.nlp.data.processors.nlp_base import (
-    DataProcessorNLPBaseParams,
-    DataProcessorNLPBase,
-)
+from tfaip_scenario.nlp.data.processors.nlp_base import DataProcessorNLPBaseParams, DataProcessorNLPBase
 
 logger = logging.getLogger(__name__)
 
@@ -61,14 +60,12 @@ class DataProcessorNERTask(DataProcessorNLPBase[TNER]):
     ):
         super(DataProcessorNERTask, self).__init__(params, data_params, mode)
         self.tag_string_mapper = data_params.get_tag_string_mapper()
-        self.max_words_per_sample_from_paifile = (
-            data_params.max_words_per_sample_from_paifile
-        )
+        self.max_words_per_sample_from_paifile = data_params.max_words_per_sample_from_paifile
         self.mark_paifile_linebreaks = data_params.mark_paifile_linebreaks
 
     def generate(self, samples: Iterable[Sample]) -> Iterable[Sample]:
         for sample in samples:
-            if "tag_ids" in sample.targets:
+            if self.mode != PipelineMode.PREDICTION and "tag_ids" in sample.targets:
                 yield self.sentence_to_ner(sample)
             else:
                 samples_ = self.load_sentences([sample])
@@ -79,9 +76,7 @@ class DataProcessorNERTask(DataProcessorNLPBase[TNER]):
         if "tag_ids" in sample.targets:
             sample.inputs["text"] = [
                 [word, self.tag_string_mapper.get_value(tag_id)]
-                for word, tag_id in zip(
-                    sample.inputs["text"], sample.targets["tag_ids"]
-                )
+                for word, tag_id in zip(sample.inputs["text"], sample.targets["tag_ids"])
             ]
             del sample.targets["tag_ids"]
 
@@ -100,13 +95,11 @@ class DataProcessorNERTask(DataProcessorNLPBase[TNER]):
         elif self.data_params.tokenizer_range == "sentence_always_space":
             res_tuple = self._parse_sentence_always_space(enc_sentence)
         else:
-            raise AttributeError(
-                f"Unknown tokenizer range: {self.data_params.tokenizer_range}"
-            )
+            raise AttributeError(f"Unknown tokenizer range: {self.data_params.tokenizer_range}")
         if self.data_params.bet_tagging:
             res_tuple = self._bet_tag_fn(res_tuple, training_data=res_tuple)
-        sample.inputs = res_tuple[0]
-        sample.targets = res_tuple[1]
+        sample.inputs = {k: np.asarray(v) for k, v in res_tuple[0].items()}
+        sample.targets = {k: np.asarray(v) for k, v in res_tuple[1].items()}
         return sample
 
     def _parse_wordwise_output(self, training_data):
@@ -127,9 +120,7 @@ class DataProcessorNERTask(DataProcessorNLPBase[TNER]):
                 curlist = [last_index]
             else:
                 curlist = []
-            while len(curlist) == 0 or training_data[j][0] not in self.tokenizer.decode(
-                curlist
-            ):
+            while len(curlist) == 0 or training_data[j][0] not in self.tokenizer.decode(curlist):
                 curlist = [enc_sentence[curindex]] + curlist
                 curindex -= 1
             if last_index is not None:
@@ -158,30 +149,23 @@ class DataProcessorNERTask(DataProcessorNLPBase[TNER]):
                 cur_word_index += 1
             wwo_indexes.append(cur_word_index)  # EOS-Token
         # Add SOS-Tag and EOS-Tag
-        enc_sentence = (
-            [self.data_params.cls_token_id]
-            + enc_sentence
-            + [self.data_params.sep_token_id]
-        )
+        enc_sentence = [self.data_params.cls_token_id] + enc_sentence + [self.data_params.sep_token_id]
         targetmask = [0] + len(tar_real) * [1] + [0]
-        tar_real = (
-            [self.tag_string_mapper.size()]
-            + tar_real
-            + [self.tag_string_mapper.size() + 1]
-        )
+        tar_real = [self.tag_string_mapper.size()] + tar_real + [self.tag_string_mapper.size() + 1]
         inputs = {
-            "sentence": enc_sentence,
-            "seq_length": [len(enc_sentence)],
-            "wwo_indexes": wwo_indexes,
-            "word_seq_length": [len(tar_real)],
+            "sentence": np.asarray(enc_sentence),
+            "seq_length": np.asarray([len(enc_sentence)]),
+            "wwo_indexes": np.asarray(wwo_indexes),
+            "word_seq_length": np.asarray([len(tar_real)]),
         }
         if self._wwa:
-            word_length_vector, segment_ids = self.build_whole_word_attention_inputs(
-                enc_sentence
-            )
-            inputs["word_length_vector"] = word_length_vector
-            inputs["segment_ids"] = segment_ids
-        tgts = {"tgt": tar_real, "targetmask": targetmask}
+            word_length_vector, segment_ids = self.build_whole_word_attention_inputs(enc_sentence)
+            inputs["word_length_vector"] = np.asarray(word_length_vector)
+            inputs["segment_ids"] = np.asarray(segment_ids)
+        tgts = {
+            "tgt": np.asarray(tar_real),
+            "targetmask": np.asarray(targetmask),
+        }
 
         return inputs, tgts
 
@@ -202,9 +186,7 @@ class DataProcessorNERTask(DataProcessorNLPBase[TNER]):
                 curlist = [last_index]
             else:
                 curlist = []
-            while len(curlist) == 0 or training_data[j][0] not in self.tokenizer.decode(
-                curlist
-            ):
+            while len(curlist) == 0 or training_data[j][0] not in self.tokenizer.decode(curlist):
                 curlist = [enc_sentence[curindex]] + curlist
                 curindex -= 1
             if last_index is not None:
@@ -222,26 +204,16 @@ class DataProcessorNERTask(DataProcessorNLPBase[TNER]):
             else:
                 last_index = None
         # Add SOS-Tag and EOS-Tag
-        enc_sentence = (
-            [self.data_params.cls_token_id]
-            + enc_sentence
-            + [self.data_params.sep_token_id]
-        )
+        enc_sentence = [self.data_params.cls_token_id] + enc_sentence + [self.data_params.sep_token_id]
         targetmask = [0] + len(tar_real) * [1] + [0]
-        tar_real = (
-            [self.tag_string_mapper.size()]
-            + tar_real
-            + [self.tag_string_mapper.size() + 1]
-        )
+        tar_real = [self.tag_string_mapper.size()] + tar_real + [self.tag_string_mapper.size() + 1]
         if self.data_params.predict_mode:
             inputs = {"sentence": [enc_sentence]}
             tgts = {"tgt": [tar_real], "targetmask": [targetmask]}
             return inputs, tgts, training_data
         inputs = {"sentence": enc_sentence, "seq_length": [len(enc_sentence)]}
         if self._wwa:
-            word_length_vector, segment_ids = self.build_whole_word_attention_inputs(
-                enc_sentence
-            )
+            word_length_vector, segment_ids = self.build_whole_word_attention_inputs(enc_sentence)
             inputs["word_length_vector"] = word_length_vector
             inputs["segment_ids"] = segment_ids
         tgts = {"tgt": tar_real, "targetmask": targetmask}
@@ -255,37 +227,24 @@ class DataProcessorNERTask(DataProcessorNLPBase[TNER]):
         # run over all [[pseudo-word, tag], ...]
         for j in range(len(training_data)):
             # do not add a space before or after special characters
-            if (
-                j > 0
-                and training_data[j][0][0] not in "])}.,;:!?"
-                and training_data[j - 1][0][0] not in "([{"
-            ):
+            if j > 0 and training_data[j][0][0] not in "])}.,;:!?" and training_data[j - 1][0][0] not in "([{":
                 sentence_string = sentence_string + " "
             start_len = len(sentence_string)
             sentence_string = sentence_string + training_data[j][0]
             end_len = len(sentence_string) - 1
             # only add the tag to the list if it is not "O" class
-            if (
-                self.tag_string_mapper.get_channel(training_data[j][1])
-                != self.tag_string_mapper.get_oov_id()
-            ):
+            if self.tag_string_mapper.get_channel(training_data[j][1]) != self.tag_string_mapper.get_oov_id():
                 tags.append(self.tag_string_mapper.get_channel(training_data[j][1]))
                 tags_se.append((start_len, end_len))
 
         # encode the hole sentence in whole results in less tokens than encoding by word
         enc_sentence = self.tokenizer.encode(sentence_string)
 
-        tokens_se = (
-            []
-        )  # list of (start, end) positions of the tokens (tag analog to tag_se)
-        enc_sentence_string = (
-            ""  # construct string from token list piece-wise to count start and end
-        )
+        tokens_se = []  # list of (start, end) positions of the tokens (tag analog to tag_se)
+        enc_sentence_string = ""  # construct string from token list piece-wise to count start and end
         for j in range(len(enc_sentence)):
             start_len = len(enc_sentence_string)
-            enc_sentence_string = enc_sentence_string + self.tokenizer.decode(
-                [enc_sentence[j]]
-            )
+            enc_sentence_string = enc_sentence_string + self.tokenizer.decode([enc_sentence[j]])
             end_len = len(enc_sentence_string) - 1
             tokens_se.append((start_len, end_len))
 
@@ -311,26 +270,16 @@ class DataProcessorNERTask(DataProcessorNLPBase[TNER]):
                     tar_real[j - 1] = tar_real[j]
 
         # Add SOS-Tag and EOS-Tag
-        enc_sentence = (
-            [self.data_params.cls_token_id]
-            + enc_sentence
-            + [self.data_params.sep_token_id]
-        )
+        enc_sentence = [self.data_params.cls_token_id] + enc_sentence + [self.data_params.sep_token_id]
         targetmask = [0] + len(tar_real) * [1] + [0]
-        tar_real = (
-            [self.tag_string_mapper.size()]
-            + tar_real
-            + [self.tag_string_mapper.size() + 1]
-        )
+        tar_real = [self.tag_string_mapper.size()] + tar_real + [self.tag_string_mapper.size() + 1]
         if self.mode != PipelineMode.TRAINING:
             inputs = {"sentence": enc_sentence, "seq_length": [len(enc_sentence)]}
             tgts = {"tgt": tar_real, "targetmask": targetmask}
             return inputs, tgts, training_data
         inputs = {"sentence": enc_sentence, "seq_length": [len(enc_sentence)]}
         if self._wwa:
-            word_length_vector, segment_ids = self.build_whole_word_attention_inputs(
-                enc_sentence
-            )
+            word_length_vector, segment_ids = self.build_whole_word_attention_inputs(enc_sentence)
             inputs["word_length_vector"] = word_length_vector
             inputs["segment_ids"] = segment_ids
         tgts = {"tgt": tar_real, "targetmask": targetmask}
@@ -344,11 +293,7 @@ class DataProcessorNERTask(DataProcessorNLPBase[TNER]):
         # run over all [[pseudo-word, tag], ...]
         for j in range(len(training_data)):
             # do not add a space before or after special characters
-            if (
-                j > 0
-                and training_data[j][0][0] not in "])}.,;:!?"
-                and training_data[j - 1][0][0] not in "([{"
-            ):
+            if j > 0 and training_data[j][0][0] not in "])}.,;:!?" and training_data[j - 1][0][0] not in "([{":
                 sentence_string = sentence_string + " "
             start_len = len(sentence_string)
             sentence_string = sentence_string + training_data[j][0]
@@ -356,22 +301,15 @@ class DataProcessorNERTask(DataProcessorNLPBase[TNER]):
             # print(sentence_string)
             # print(start_len, end_len)
             # only add the tag to the list if it is not "O" class
-            if (
-                self.tag_string_mapper.get_channel(training_data[j][1])
-                != self.tag_string_mapper.get_oov_id()
-            ):
+            if self.tag_string_mapper.get_channel(training_data[j][1]) != self.tag_string_mapper.get_oov_id():
                 tags.append(self.tag_string_mapper.get_channel(training_data[j][1]))
                 tags_se.append((start_len, end_len))
 
         # encode the hole sentence in whole results in less tokens than encoding by word
         enc_sentence = self.tokenizer.encode(sentence_string)
 
-        tokens_se = (
-            []
-        )  # list of (start, end) positions of the tokens (tag analog to tag_se)
-        enc_sentence_string = (
-            ""  # construct string from token list piece-wise to count start and end
-        )
+        tokens_se = []  # list of (start, end) positions of the tokens (tag analog to tag_se)
+        enc_sentence_string = ""  # construct string from token list piece-wise to count start and end
         for j in range(len(enc_sentence)):
             start_len = len(enc_sentence_string)
             enc_sentence_string = self.tokenizer.decode(enc_sentence[: j + 1])
@@ -398,9 +336,7 @@ class DataProcessorNERTask(DataProcessorNLPBase[TNER]):
                     tar_real[j] = self.tag_string_mapper.get_channel(i_tag)
                 if j > 0 and tokens_se[j - 1][0] == tokens_se[j][0]:
                     # if start Character consists of 2 Tokens
-                    i_tag = self.tag_string_mapper.get_value(tar_real[j - 1]).replace(
-                        "B-", "I-"
-                    )
+                    i_tag = self.tag_string_mapper.get_value(tar_real[j - 1]).replace("B-", "I-")
                     tar_real[j] = self.tag_string_mapper.get_channel(i_tag)
                 # if tag is an I-tag and the token before is a single space assign the I-tag to the space token too
                 if (
@@ -410,24 +346,14 @@ class DataProcessorNERTask(DataProcessorNLPBase[TNER]):
                     tar_real[j - 1] = tar_real[j]
 
         # Add SOS-Tag and EOS-Tag
-        enc_sentence = (
-            [self.data_params.cls_token_id]
-            + enc_sentence
-            + [self.data_params.sep_token_id]
-        )
+        enc_sentence = [self.data_params.cls_token_id] + enc_sentence + [self.data_params.sep_token_id]
         targetmask = [0] + len(tar_real) * [1] + [0]
-        tar_real = (
-            [self.tag_string_mapper.size()]
-            + tar_real
-            + [self.tag_string_mapper.size() + 1]
-        )
+        tar_real = [self.tag_string_mapper.size()] + tar_real + [self.tag_string_mapper.size() + 1]
         # print(f'\n{tag2str(tar_real[1:-1], self.tag_string_mapper)}')
 
         inputs = {"sentence": enc_sentence, "seq_length": [len(enc_sentence)]}
         if self._wwa:
-            word_length_vector, segment_ids = self.build_whole_word_attention_inputs(
-                enc_sentence
-            )
+            word_length_vector, segment_ids = self.build_whole_word_attention_inputs(enc_sentence)
             inputs["word_length_vector"] = word_length_vector
             inputs["segment_ids"] = segment_ids
         tgts = {"tgt": tar_real, "targetmask": targetmask}
@@ -441,18 +367,12 @@ class DataProcessorNERTask(DataProcessorNLPBase[TNER]):
             b_tuple_counter += str(tuple_[1]).startswith("B-")
             i_tuple_counter += str(tuple_[1]).startswith("I-")
         for tag_ in tgts["tgt"]:
-            b_tag_counter += str(self.tag_string_mapper.get_value(tag_)).startswith(
-                "B-"
-            )
-            i_tag_counter += str(self.tag_string_mapper.get_value(tag_)).startswith(
-                "I-"
-            )
+            b_tag_counter += str(self.tag_string_mapper.get_value(tag_)).startswith("B-")
+            i_tag_counter += str(self.tag_string_mapper.get_value(tag_)).startswith("I-")
         assert (
             b_tuple_counter == b_tag_counter
         ), f"The amount of B-tags cannot change without a bug! (Wrong tag-map?)\n{training_data}\n{[self.tag_string_mapper.get_value(t) for t in tgts['tgt']]}"
-        assert (
-            i_tuple_counter <= i_tag_counter
-        ), "The amount of I-tags cannot decrease without a bug!"
+        assert i_tuple_counter <= i_tag_counter, "The amount of I-tags cannot decrease without a bug!"
 
         return inputs, tgts
 
@@ -466,10 +386,7 @@ class DataProcessorNERTask(DataProcessorNLPBase[TNER]):
             end_len = len(sentence_string) - 1
             if j < len(training_data) - 1 and training_data[j + 1][0]:
                 sentence_string = sentence_string + " "
-            if (
-                self.tag_string_mapper.get_channel(training_data[j][1])
-                != self.tag_string_mapper.get_oov_id()
-            ):
+            if self.tag_string_mapper.get_channel(training_data[j][1]) != self.tag_string_mapper.get_oov_id():
                 tags.append(self.tag_string_mapper.get_channel(training_data[j][1]))
                 tags_se.append((start_len, end_len))
             # do not add a space a end of sentence
@@ -480,9 +397,7 @@ class DataProcessorNERTask(DataProcessorNLPBase[TNER]):
         enc_sentence_string = ""
         for j in range(len(enc_sentence)):
             start_len = len(enc_sentence_string)
-            enc_sentence_string = enc_sentence_string + self.tokenizer.decode(
-                [enc_sentence[j]]
-            )
+            enc_sentence_string = enc_sentence_string + self.tokenizer.decode([enc_sentence[j]])
             end_len = len(enc_sentence_string) - 1
             tokens_se.append((start_len, end_len))
 
@@ -498,26 +413,16 @@ class DataProcessorNERTask(DataProcessorNLPBase[TNER]):
                     tar_real[j] = self.tag_string_mapper.get_channel(i_tag)
 
         # Add SOS-Tag and EOS-Tag
-        enc_sentence = (
-            [self.data_params.cls_token_id]
-            + enc_sentence
-            + [self.data_params.sep_token_id]
-        )
+        enc_sentence = [self.data_params.cls_token_id] + enc_sentence + [self.data_params.sep_token_id]
         targetmask = [0] + len(tar_real) * [1] + [0]
-        tar_real = (
-            [self.tag_string_mapper.size()]
-            + tar_real
-            + [self.tag_string_mapper.size() + 1]
-        )
+        tar_real = [self.tag_string_mapper.size()] + tar_real + [self.tag_string_mapper.size() + 1]
         if self.data_params.predict_mode:
             inputs = {"sentence": [enc_sentence]}
             tgts = {"tgt": [tar_real], "targetmask": [targetmask]}
             return inputs, tgts, training_data
         inputs = {"sentence": enc_sentence, "seq_length": [len(enc_sentence)]}
         if self._wwa:
-            word_length_vector, segment_ids = self.build_whole_word_attention_inputs(
-                enc_sentence
-            )
+            word_length_vector, segment_ids = self.build_whole_word_attention_inputs(enc_sentence)
             inputs["word_length_vector"] = word_length_vector
             inputs["segment_ids"] = segment_ids
         tgts = {"tgt": tar_real, "targetmask": targetmask}
@@ -534,19 +439,11 @@ class DataProcessorNERTask(DataProcessorNLPBase[TNER]):
         tags = []
         # run over all [[pseudo-word, tag], ...]
         for j in range(len(training_data)):
-            if (
-                self.data_params.wordwise_output
-                and self.data_params.wwo_mode == "first"
-            ):
+            if self.data_params.wordwise_output and self.data_params.wwo_mode == "first":
                 wwo_indexes.append(len(enc_sentence) + 1)
-            encoded_word = self.tokenizer.encode(
-                training_data[j][0], add_special_tokens=False
-            )
+            encoded_word = self.tokenizer.encode(training_data[j][0], add_special_tokens=False)
             enc_sentence.extend(encoded_word)
-            if self.data_params.wordwise_output and self.data_params.wwo_mode in [
-                "mean",
-                "max",
-            ]:
+            if self.data_params.wordwise_output and self.data_params.wwo_mode in ["mean", "max"]:
                 wwo_indexes.extend([cur_word_index] * len(encoded_word))
                 cur_word_index += 1
             cur_tag = training_data[j][1]
@@ -555,9 +452,7 @@ class DataProcessorNERTask(DataProcessorNLPBase[TNER]):
                 tags.append(cur_tag_channel)
             else:
                 if cur_tag.startswith("B-"):
-                    i_tag_channel = self.tag_string_mapper.get_channel(
-                        cur_tag.replace("B-", "I-")
-                    )
+                    i_tag_channel = self.tag_string_mapper.get_channel(cur_tag.replace("B-", "I-"))
                     new_tags = [i_tag_channel] * len(encoded_word)
                     new_tags[0] = cur_tag_channel
                     tags.extend(new_tags)
@@ -565,34 +460,19 @@ class DataProcessorNERTask(DataProcessorNLPBase[TNER]):
                     tags.extend([cur_tag_channel] * len(encoded_word))
         if self.data_params.wordwise_output and self.data_params.wwo_mode == "first":
             wwo_indexes = [0] + wwo_indexes + [0]
-        elif self.data_params.wordwise_output and self.data_params.wwo_mode in [
-            "mean",
-            "max",
-        ]:
+        elif self.data_params.wordwise_output and self.data_params.wwo_mode in ["mean", "max"]:
             wwo_indexes.append(cur_word_index)
-        enc_sentence = (
-            [self.data_params.cls_token_id]
-            + enc_sentence
-            + [self.data_params.sep_token_id]
-        )
+        enc_sentence = [self.data_params.cls_token_id] + enc_sentence + [self.data_params.sep_token_id]
         targetmask = [0] + len(tags) * [1] + [0]
-        tar_real = (
-            [self.tag_string_mapper.size()] + tags + [self.tag_string_mapper.size() + 1]
-        )
+        tar_real = [self.tag_string_mapper.size()] + tags + [self.tag_string_mapper.size() + 1]
         attention_mask = [1] * len(enc_sentence)
 
-        inputs = {
-            "input_ids": enc_sentence,
-            "attention_mask": attention_mask,
-            "seq_length": [len(enc_sentence)],
-        }
+        inputs = {"input_ids": enc_sentence, "attention_mask": attention_mask, "seq_length": [len(enc_sentence)]}
         if self.data_params.wordwise_output:
             inputs["wwo_indexes"] = wwo_indexes
             inputs["word_seq_length"] = [len(tar_real)]
         if self._wwa:
-            word_length_vector, segment_ids = self.build_whole_word_attention_inputs(
-                enc_sentence
-            )
+            word_length_vector, segment_ids = self.build_whole_word_attention_inputs(enc_sentence)
             inputs["word_length_vector"] = word_length_vector
             inputs["segment_ids"] = segment_ids
         tgts = {"tgt": tar_real, "targetmask": targetmask}
@@ -610,17 +490,9 @@ class DataProcessorNERTask(DataProcessorNLPBase[TNER]):
         def is_b_tag(tag_id_, train_data=None):
             return str(self.tag_string_mapper.get_value(tag_id_)).startswith("B-")
 
-        tgt_cls = (
-            [tar_real[0]]
-            + [to_i_tag_id(tag_id) for tag_id in tar_real[1:-1]]
-            + [tar_real[-1]]
-        )
+        tgt_cls = [tar_real[0]] + [to_i_tag_id(tag_id) for tag_id in tar_real[1:-1]] + [tar_real[-1]]
         # use first 3 channels for 0 = Start, 1 = End,
-        tgt_start = (
-            [tar_real[0]]
-            + [1 if is_b_tag(tag_id) else 0 for tag_id in tar_real[1:-1]]
-            + [tar_real[-1]]
-        )
+        tgt_start = [tar_real[0]] + [1 if is_b_tag(tag_id) else 0 for tag_id in tar_real[1:-1]] + [tar_real[-1]]
         tgt_end_lst = []
         # if not-Other-Tag is followed by Other, B-Tag or EOS
         for idx, tag_id in enumerate(tar_real[1:-1]):
@@ -630,9 +502,7 @@ class DataProcessorNERTask(DataProcessorNLPBase[TNER]):
                 if (
                     tar_real[idx + 2] == self.tag_string_mapper.get_oov_id()
                     or tar_real[idx + 2] == tar_real[-1]
-                    or str(
-                        self.tag_string_mapper.get_value(tar_real[idx + 2])
-                    ).startswith("B-")
+                    or str(self.tag_string_mapper.get_value(tar_real[idx + 2])).startswith("B-")
                 ):
                     value = 1
             tgt_end_lst.append(value)
@@ -653,11 +523,7 @@ class DataProcessorNERTask(DataProcessorNLPBase[TNER]):
         # Extract test with word positions
         for page in paifile.get_pages():
             for line in page.get_lines():
-                if (
-                    line.text is not None
-                    and line.text.content is not None
-                    and line.text.content != ""
-                ):
+                if line.text is not None and line.text.content is not None and line.text.content != "":
                     wordlist = []
                     test = line.text.content
                     start = 0
@@ -665,9 +531,7 @@ class DataProcessorNERTask(DataProcessorNLPBase[TNER]):
                     while test.find(" ", start) >= 0:
                         start = test.find(" ", start)
                         if start > last_begin:
-                            wordlist.append(
-                                [test[last_begin:start], "O", last_begin, start]
-                            )
+                            wordlist.append([test[last_begin:start], "O", last_begin, start])
                         last_begin = start + 1
                         start += 1
                     if len(test) > last_begin:
@@ -691,10 +555,7 @@ class DataProcessorNERTask(DataProcessorNLPBase[TNER]):
         samples = []
         cur_sample = []
         for line in text_data:
-            if (
-                len(cur_sample) + len(line[1]) > self.max_words_per_sample_from_paifile
-                and len(cur_sample) > 0
-            ):
+            if len(cur_sample) + len(line[1]) > self.max_words_per_sample_from_paifile and len(cur_sample) > 0:
                 samples.append(cur_sample)
                 cur_sample = []
             if self.mark_paifile_linebreaks and len(cur_sample) > 0:

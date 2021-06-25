@@ -13,7 +13,7 @@
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tfaip. If not, see http://www.gnu.org/licenses/.
+# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 import json
 import os
@@ -42,12 +42,8 @@ class NSPWikiScenarioTest(Scenario):
     def default_trainer_params(cls):
         p = super().default_trainer_params()
         p = set_test_trainer_params(p)
-        p.gen.train = ListsFileGeneratorParams(
-            lists=[workdir_path(__file__, "lists", "dewebcrawl_msen_nsp_debug.lst")]
-        )
-        p.gen.val = ListsFileGeneratorParams(
-            lists=[workdir_path(__file__, "lists", "dewebcrawl_msen_nsp_debug.lst")]
-        )
+        p.gen.train = ListsFileGeneratorParams(lists=[workdir_path(__file__, "lists", "dewebcrawl_msen_nsp_debug.lst")])
+        p.gen.val = ListsFileGeneratorParams(lists=[workdir_path(__file__, "lists", "dewebcrawl_msen_nsp_debug.lst")])
         return p
 
 
@@ -75,12 +71,8 @@ class NSPWikiSegScenarioTest(NSPWikiScenarioTest):
     def default_trainer_params(cls):
         p = super().default_trainer_params()
         p.scenario.data.segment_train = True
-        p.gen.train = ListsFileGeneratorParams(
-            lists=[workdir_path(__file__, "lists", "dewebcrawl_nsp_debug.lst")]
-        )
-        p.gen.val = ListsFileGeneratorParams(
-            lists=[workdir_path(__file__, "lists", "dewebcrawl_nsp_debug.lst")]
-        )
+        p.gen.train = ListsFileGeneratorParams(lists=[workdir_path(__file__, "lists", "dewebcrawl_nsp_debug.lst")])
+        p.gen.val = ListsFileGeneratorParams(lists=[workdir_path(__file__, "lists", "dewebcrawl_nsp_debug.lst")])
         return p
 
 
@@ -107,9 +99,7 @@ class TestNSPData(AbstractTestNLPData, unittest.TestCase):
             expected_inputs += 2
             self.assertTrue("word_length_vector" in batch[0])
             self.assertTrue("segment_ids" in batch[0])
-        self.assertEqual(
-            len(batch[0]), expected_inputs, f"Expected {expected_inputs} inputs"
-        )
+        self.assertEqual(len(batch[0]), expected_inputs, f"Expected {expected_inputs} inputs")
         self.assertEqual(len(batch), 3, "Expected (input, output, meta) tuple")
         self.assertEqual(len(batch[1]), 3, "Expected two outputs")
         meta = json.loads(batch[2]["meta"][0, 0])
@@ -121,9 +111,7 @@ class TestNSPData(AbstractTestNLPData, unittest.TestCase):
         self.assertTrue("mask_mlm" in batch[1])
         self.assertTrue("tgt_mlm" in batch[1])
         self.assertTrue("tgt_nsp" in batch[1])
-        self.assertEqual(
-            len(batch[1]["mask_mlm"].shape), len(batch[1]["tgt_mlm"].shape)
-        )
+        self.assertEqual(len(batch[1]["mask_mlm"].shape), len(batch[1]["tgt_mlm"].shape))
 
 
 class TestNSPTrain(unittest.TestCase):

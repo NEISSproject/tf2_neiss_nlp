@@ -76,11 +76,7 @@ class MultiHeadAttention(tf.keras.layers.Layer):
             use_bias=use_bias,
         )
 
-        self.dense = (
-            tf.keras.layers.Dense(d_model, name="dense", use_bias=use_bias)
-            if post_dense
-            else None
-        )
+        self.dense = tf.keras.layers.Dense(d_model, name="dense", use_bias=use_bias) if post_dense else None
 
         self.attention_type = attention_type
         self.attention_layer = attention_type.create_layer(**attention_params)
@@ -109,9 +105,7 @@ class MultiHeadAttention(tf.keras.layers.Layer):
 
         # scaled_attention.shape == (batch_size, num_heads, seq_len_q, depth)
         # attention_weights.shape == (batch_size, num_heads, seq_len_q, seq_len_k)
-        scaled_attention, attention_weights = self.attention_layer(
-            (q, k, v), mask=mask, single_step=single_step
-        )
+        scaled_attention, attention_weights = self.attention_layer((q, k, v), mask=mask, single_step=single_step)
 
         scaled_attention = tf.transpose(
             scaled_attention, perm=[0, 2, 1, 3]
@@ -140,9 +134,7 @@ class Attention(tf.keras.layers.Layer):
 
 class ScaledDotProductAttention(Attention):
     def __init__(self, softmax_axis=-1, **kwargs):
-        super(ScaledDotProductAttention, self).__init__(
-            name="scaled_dot_attention", **kwargs
-        )
+        super(ScaledDotProductAttention, self).__init__(name="scaled_dot_attention", **kwargs)
         self.softmax_axis = softmax_axis
 
     def call(self, inputs, mask=None, **kwargs):
@@ -187,15 +179,11 @@ class ScaledDotProductAttention(Attention):
 
 class WindowedSelfAttention(Attention):
     def __init__(self, look_ahead=True, width=5, **kwargs):
-        super(WindowedSelfAttention, self).__init__(
-            name="sparse_scaled_dot_attention", **kwargs
-        )
+        super(WindowedSelfAttention, self).__init__(name="sparse_scaled_dot_attention", **kwargs)
         self.look_ahead = look_ahead
         self.width = width
         # if look ahead is set, we can only observe values from the past (negative values)
-        self.rng = list(
-            range(-(self.width // 2), (self.width // 2 if self.look_ahead else 0) + 1)
-        )
+        self.rng = list(range(-(self.width // 2), (self.width // 2 if self.look_ahead else 0) + 1))
 
     def call(self, inputs, mask=None, **kwargs):
         q, k, v = inputs
@@ -217,18 +205,11 @@ class WindowedSelfAttention(Attention):
             mask = mask[:, :, :, -seq_len:]
             scaled_attention_logits += mask * -1e9
 
-        attention_weights = tf.nn.softmax(
-            scaled_attention_logits, axis=0
-        )  # W x B x H xT
-        attention_weights_us = tf.unstack(
-            tf.expand_dims(attention_weights, axis=-1), axis=0
-        )
+        attention_weights = tf.nn.softmax(scaled_attention_logits, axis=0)  # W x B x H xT
+        attention_weights_us = tf.unstack(tf.expand_dims(attention_weights, axis=-1), axis=0)
 
         outputs_f = tf.stack(
-            [
-                tf.roll(v, axis=2, shift=-i) * d
-                for i, d in zip(rng, attention_weights_us)
-            ]
+            [tf.roll(v, axis=2, shift=-i) * d for i, d in zip(rng, attention_weights_us)]
         )  # W X B X T x F
         outputs_f = outputs_f[:, :, :, -seq_len:]
         outputs = tf.reduce_sum(outputs_f, axis=0)
@@ -273,9 +254,7 @@ def crop(input_tensors):
 
     px, py = padding
     shape = tf.shape(input=input)
-    output = tf.image.crop_to_bounding_box(
-        input, 0, 0, tf.gather(shape, 1) - px, tf.gather(shape, 2) - py
-    )
+    output = tf.image.crop_to_bounding_box(input, 0, 0, tf.gather(shape, 1) - px, tf.gather(shape, 2) - py)
     return output
 
 
@@ -287,28 +266,18 @@ class ScaledDotProductRelativeAttention(Attention):
         max_relative_position_values=-1,
         **kwargs,
     ):
-        super(ScaledDotProductRelativeAttention, self).__init__(
-            name="scaled_dot_relative_attention", **kwargs
-        )
+        super(ScaledDotProductRelativeAttention, self).__init__(name="scaled_dot_relative_attention", **kwargs)
 
         self.max_relative_position_keys = (
-            max_relative_position_keys
-            if max_relative_position_keys > 0
-            else max_relative_position
+            max_relative_position_keys if max_relative_position_keys > 0 else max_relative_position
         )
         self.max_relative_position_values = (
-            max_relative_position_values
-            if max_relative_position_values > 0
-            else max_relative_position
+            max_relative_position_values if max_relative_position_values > 0 else max_relative_position
         )
         if self.max_relative_position_keys <= 0:
-            raise ValueError(
-                f"Max relative position ({self.max_relative_position_keys}) must be > 0"
-            )
+            raise ValueError(f"Max relative position ({self.max_relative_position_keys}) must be > 0")
         if self.max_relative_position_values <= 0:
-            raise ValueError(
-                f"Max relative position ({self.max_relative_position_values}) must be > 0"
-            )
+            raise ValueError(f"Max relative position ({self.max_relative_position_values}) must be > 0")
 
         self.rel_pos_lookup_k = None
         self.rel_pos_lookup_v = None
@@ -341,19 +310,13 @@ class ScaledDotProductRelativeAttention(Attention):
         q, k, v = inputs
         keys_length = tf.shape(k)[2]
         query_length = tf.shape(q)[2]
-        relative_pos_keys = relative_positions(
-            query_length, keys_length, self.max_relative_position_keys
-        )
-        relative_pos_values = relative_positions(
-            query_length, keys_length, self.max_relative_position_values
-        )
+        relative_pos_keys = relative_positions(query_length, keys_length, self.max_relative_position_keys)
+        relative_pos_values = relative_positions(query_length, keys_length, self.max_relative_position_values)
 
         relative_repr_keys = self.rel_pos_lookup_k(relative_pos_keys)
         relative_repr_values = self.rel_pos_lookup_v(relative_pos_values)
         matmul_qk = tf.matmul(q, k, transpose_b=True)  # (..., seq_len_q, seq_len_k)
-        matmul_qk += matmul_with_relative_representations(
-            q, relative_repr_keys, transpose_b=True
-        )
+        matmul_qk += matmul_with_relative_representations(q, relative_repr_keys, transpose_b=True)
 
         # scale matmul_qk
         scalar = tf.math.reciprocal(tf.math.sqrt(tf.cast(tf.shape(k)[-1], tf.float32)))
@@ -365,14 +328,10 @@ class ScaledDotProductRelativeAttention(Attention):
 
         # softmax is normalized on the last axis (seq_len_k) so that the scores
         # add up to 1.
-        attention_weights = tf.nn.softmax(
-            scaled_attention_logits, axis=-1
-        )  # (..., seq_len_q, seq_len_k)
+        attention_weights = tf.nn.softmax(scaled_attention_logits, axis=-1)  # (..., seq_len_q, seq_len_k)
 
         output = tf.matmul(attention_weights, v)  # (..., seq_len_q, depth_v)
-        output += matmul_with_relative_representations(
-            attention_weights, relative_repr_values
-        )
+        output += matmul_with_relative_representations(attention_weights, relative_repr_values)
 
         return output, attention_weights
 
@@ -387,33 +346,21 @@ class WindowedSelfRelativeAttention(Attention):
         max_relative_position_values=-1,
         **kwargs,
     ):
-        super(WindowedSelfRelativeAttention, self).__init__(
-            name="windowed_self_relative_attention", **kwargs
-        )
+        super(WindowedSelfRelativeAttention, self).__init__(name="windowed_self_relative_attention", **kwargs)
         self.look_ahead = look_ahead
         self.width = width
         # if look ahead is set, we can only observe values from the past (negative values)
-        self.rng = list(
-            range(-(self.width // 2), (self.width // 2 if self.look_ahead else 0) + 1)
-        )
+        self.rng = list(range(-(self.width // 2), (self.width // 2 if self.look_ahead else 0) + 1))
         self.max_relative_position_keys = (
-            max_relative_position_keys
-            if max_relative_position_keys > 0
-            else max_relative_position
+            max_relative_position_keys if max_relative_position_keys > 0 else max_relative_position
         )
         self.max_relative_position_values = (
-            max_relative_position_values
-            if max_relative_position_values > 0
-            else max_relative_position
+            max_relative_position_values if max_relative_position_values > 0 else max_relative_position
         )
         if self.max_relative_position_keys <= 0:
-            raise ValueError(
-                f"Max relative position ({self.max_relative_position_keys}) must be > 0"
-            )
+            raise ValueError(f"Max relative position ({self.max_relative_position_keys}) must be > 0")
         if self.max_relative_position_values <= 0:
-            raise ValueError(
-                f"Max relative position ({self.max_relative_position_values}) must be > 0"
-            )
+            raise ValueError(f"Max relative position ({self.max_relative_position_values}) must be > 0")
 
         self.rel_pos_lookup_k = None
         self.rel_pos_lookup_v = None
@@ -430,9 +377,7 @@ class WindowedSelfRelativeAttention(Attention):
 
     def relative_window_positions(self, index, shape, max_position):
         ones = tf.ones([shape[0], shape[1], shape[2]], tf.int32)
-        clipped_index = (
-            tf.clip_by_value(index, -max_position, max_position) + max_position
-        )
+        clipped_index = tf.clip_by_value(index, -max_position, max_position) + max_position
         return ones * clipped_index
 
     def call(self, inputs, mask=None, **kwargs):
@@ -449,9 +394,7 @@ class WindowedSelfRelativeAttention(Attention):
                     * (
                         tf.roll(k, axis=2, shift=-i)
                         + self.rel_pos_lookup_k(
-                            self.relative_window_positions(
-                                i, tf.shape(k), self.max_relative_position_keys
-                            )
+                            self.relative_window_positions(i, tf.shape(k), self.max_relative_position_keys)
                         )
                     ),
                     axis=-1,
@@ -469,21 +412,15 @@ class WindowedSelfRelativeAttention(Attention):
             mask = mask[:, :, :, -seq_len:]
             scaled_attention_logits += mask * -1e9
 
-        attention_weights = tf.nn.softmax(
-            scaled_attention_logits, axis=0
-        )  # W x B x H xT
-        attention_weights_us = tf.unstack(
-            tf.expand_dims(attention_weights, axis=-1), axis=0
-        )
+        attention_weights = tf.nn.softmax(scaled_attention_logits, axis=0)  # W x B x H xT
+        attention_weights_us = tf.unstack(tf.expand_dims(attention_weights, axis=-1), axis=0)
 
         outputs_f = tf.stack(
             [
                 (
                     tf.roll(v, axis=2, shift=-i)
                     + self.rel_pos_lookup_v(
-                        self.relative_window_positions(
-                            i, tf.shape(v), self.max_relative_position_values
-                        )
+                        self.relative_window_positions(i, tf.shape(v), self.max_relative_position_values)
                     )
                 )
                 * d
@@ -524,9 +461,7 @@ def relative_positions(length_q, length_k, maximum_position):
     return distance + maximum_position  # Return positive indices.
 
 
-def matmul_with_relative_representations(
-    a, b, transpose_b=False
-):  # pylint: disable=invalid-name
+def matmul_with_relative_representations(a, b, transpose_b=False):  # pylint: disable=invalid-name
     """Multiplies :obj:`a` with the relative representations :obj:`b`.
     Args:
       a: Tensor with shape :math:`[B, H, T, _]`.

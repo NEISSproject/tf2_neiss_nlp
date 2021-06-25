@@ -13,7 +13,7 @@
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tfaip. If not, see http://www.gnu.org/licenses/.
+# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 from dataclasses import dataclass
 from typing import Any, Dict, List, Tuple
@@ -64,29 +64,19 @@ class MLMModel(ModelBase[ModelMLMParams]):
 
     def _loss(self, inputs, targets, outputs) -> Dict[str, AnyTensor]:
         def loss_fn(args):
-            res = tf.losses.sparse_categorical_crossentropy(
-                y_true=args[0], y_pred=args[1], from_logits=True
-            )
+            res = tf.losses.sparse_categorical_crossentropy(y_true=args[0], y_pred=args[1], from_logits=True)
             return res
 
-        return {
-            "softmax_cross_entropy": loss_fn(
-                (targets["tgt_mlm"], outputs["logits_mlm"])
-            )
-        }
+        return {"softmax_cross_entropy": loss_fn((targets["tgt_mlm"], outputs["logits_mlm"]))}
 
-    def _sample_weights(
-        self, inputs: Dict[str, tf.Tensor], targets: Dict[str, tf.Tensor]
-    ) -> Dict[str, Any]:
+    def _sample_weights(self, inputs: Dict[str, tf.Tensor], targets: Dict[str, tf.Tensor]) -> Dict[str, Any]:
         return {
             "softmax_cross_entropy": targets["mask_mlm"],
             "accuracy_mlm": targets["mask_mlm"],
         }
 
     def _target_output_metric(self) -> List[Tuple[str, str, tf.keras.metrics.Metric]]:
-        return [
-            ("tgt_mlm", "pred_ids_mlm", tf.keras.metrics.Accuracy(name="accuracy_mlm"))
-        ]
+        return [("tgt_mlm", "pred_ids_mlm", tf.keras.metrics.Accuracy(name="accuracy_mlm"))]
 
     def _print_evaluate(self, sample: Sample, data: "MLMData", print_fn):
         inputs, outputs, targets = sample.inputs, sample.outputs, sample.targets
@@ -94,17 +84,9 @@ class MLMModel(ModelBase[ModelMLMParams]):
         pred = outputs["pred_ids_mlm"]
         tgt = targets["tgt_mlm"]
         mask = targets["mask_mlm"]
-        tokens_str, tags_str, mask_str, preds_str = data.print_sentence(
-            sentence, tgt, mask, pred
-        )
+        tokens_str, tags_str, mask_str, preds_str = data.print_sentence(sentence, tgt, mask, pred)
 
-        print_fn(
-            f"\n"
-            f"in:  {tokens_str}\n"
-            f"mask:{mask_str}\n"
-            f"tgt: {tags_str}\n"
-            f"pred:{preds_str}\n"
-        )
+        print_fn(f"\n" f"in:  {tokens_str}\n" f"mask:{mask_str}\n" f"tgt: {tags_str}\n" f"pred:{preds_str}\n")
 
     def _export_graphs(
         self,
@@ -135,12 +117,8 @@ class BERTMLM(GraphBase):
         return ModelMLMParams
 
     def build_graph(self, inputs, training=None):
-        bert_out = self.bert(
-            inputs, training=training
-        )  # (batch_size, inp_seq_len, d_model)
-        final_output = self._last_layer(
-            bert_out["enc_output"]
-        )  # (batch_size, tar_seq_len, target_vocab_size)
+        bert_out = self.bert(inputs, training=training)  # (batch_size, inp_seq_len, d_model)
+        final_output = self._last_layer(bert_out["enc_output"])  # (batch_size, tar_seq_len, target_vocab_size)
         pred_ids = tf.argmax(input=final_output, axis=2, output_type=tf.int32)
         graph_out = {
             "pred_ids_mlm": pred_ids,

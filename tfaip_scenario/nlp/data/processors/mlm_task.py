@@ -13,20 +13,18 @@
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tfaip. If not, see http://www.gnu.org/licenses/.
+# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 import logging
 from dataclasses import dataclass
 from typing import Iterable, TypeVar
 
+import numpy as np
 from paiargparse import pai_dataclass
 
 from tfaip import Sample, PipelineMode
 from tfaip_scenario.nlp.data.nlp_base_params import NLPDataParams
-from tfaip_scenario.nlp.data.processors.nlp_base import (
-    DataProcessorNLPBaseParams,
-    DataProcessorNLPBase,
-)
+from tfaip_scenario.nlp.data.processors.nlp_base import DataProcessorNLPBaseParams, DataProcessorNLPBase
 
 logger = logging.getLogger(__name__)
 
@@ -68,29 +66,19 @@ class DataProcessorMLMTask(DataProcessorNLPBase[T]):
 
     def sentence_to_mlm(self, sample):
         enc_sentence = sample.inputs["text"]
-        tar_real = (
-            [self.data_params.tok_vocab_size]
-            + enc_sentence
-            + [self.data_params.tok_vocab_size + 1]
-        )
+        tar_real = [self.data_params.tok_vocab_size] + enc_sentence + [self.data_params.tok_vocab_size + 1]
         # Masking
         word_index_list, masked_index_list = self.mask_enc_sentence(enc_sentence)
         masked_index_list = [0] + masked_index_list + [0]
-        word_index_list = (
-            [self.data_params.tok_vocab_size]
-            + word_index_list
-            + [self.data_params.tok_vocab_size + 1]
-        )
-        sample.inputs["text"] = word_index_list
-        sample.inputs["seq_length"] = [len(word_index_list)]
-        sample.targets["mask_mlm"] = masked_index_list
-        sample.targets["tgt_mlm"] = tar_real
+        word_index_list = [self.data_params.tok_vocab_size] + word_index_list + [self.data_params.tok_vocab_size + 1]
+        sample.inputs["text"] = np.asarray(word_index_list)
+        sample.inputs["seq_length"] = np.asarray([len(word_index_list)])
+        sample.targets["mask_mlm"] = np.asarray(masked_index_list)
+        sample.targets["tgt_mlm"] = np.asarray(tar_real)
 
         if self._wwa:
-            word_length_vector, segment_ids = self.build_whole_word_attention_inputs(
-                tar_real
-            )
-            sample.inputs["word_length_vector"] = word_length_vector
-            sample.inputs["segment_ids"] = segment_ids
+            word_length_vector, segment_ids = self.build_whole_word_attention_inputs(tar_real)
+            sample.inputs["word_length_vector"] = np.asarray(word_length_vector)
+            sample.inputs["segment_ids"] = np.asarray(segment_ids)
 
         return sample

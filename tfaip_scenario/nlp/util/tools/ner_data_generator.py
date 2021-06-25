@@ -13,7 +13,7 @@
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tfaip. If not, see http://www.gnu.org/licenses/.
+# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 import argparse
 import json
@@ -50,13 +50,7 @@ def get_coarsed_grained_tag(tag):
 
 
 def txt2json(
-    conll_path: str,
-    outputfolder,
-    coarse_grained=False,
-    val_ratio=0.0,
-    test_ratio=0.0,
-    shuffle=False,
-    strip_bi=False,
+    conll_path: str, outputfolder, coarse_grained=False, val_ratio=0.0, test_ratio=0.0, shuffle=False, strip_bi=False
 ):
     assert conll_path.endswith(".txt")
     with open(conll_path, "r") as f:
@@ -112,15 +106,11 @@ def txt2json(
                 json.dump(val_list, val)
         if len(test_list) > 0:
             basename = basename.replace("_test", "")
-            with open(
-                os.path.join(outputfolder, basename + "_test.json"), "w+"
-            ) as test:
+            with open(os.path.join(outputfolder, basename + "_test.json"), "w+") as test:
                 json.dump(test_list, test)
         if len(train_list) > 0:
             basename = basename.replace("_train", "")
-            with open(
-                os.path.join(outputfolder, basename + "_train.json"), "w+"
-            ) as train:
+            with open(os.path.join(outputfolder, basename + "_train.json"), "w+") as train:
                 json.dump(train_list, train)
     return 0
 
@@ -170,34 +160,12 @@ def parse_args(args=None):
             raise argparse.ArgumentTypeError("Boolean value expected.")
 
     parser = argparse.ArgumentParser(f"Parser of '{MODULE_NAME}'")
-    parser.add_argument(
-        "--convert_to", default="txt2json", type=str, help="txt2json or json2txt"
-    )
-    parser.add_argument(
-        "--file_list",
-        default="",
-        type=str,
-        help="file with .lst contain lists to process",
-    )
+    parser.add_argument("--convert_to", default="txt2json", type=str, help="txt2json or json2txt")
+    parser.add_argument("--file_list", default="", type=str, help="file with .lst contain lists to process")
     parser.add_argument("--out_folder", default="", type=str, help="set output folder")
-    parser.add_argument(
-        "--coarse_grained",
-        default=True,
-        type=str2bool,
-        help="may switch to fine grained tags",
-    )
-    parser.add_argument(
-        "--val_ratio",
-        default=0.0,
-        type=float,
-        help="if not 0, data is split in train, val, test",
-    )
-    parser.add_argument(
-        "--test_ratio",
-        default=0.0,
-        type=float,
-        help="if not 0, data is split in train, val, test",
-    )
+    parser.add_argument("--coarse_grained", default=True, type=str2bool, help="may switch to fine grained tags")
+    parser.add_argument("--val_ratio", default=0.0, type=float, help="if not 0, data is split in train, val, test")
+    parser.add_argument("--test_ratio", default=0.0, type=float, help="if not 0, data is split in train, val, test")
 
     args_ = parser.parse_args(args)
     return args_

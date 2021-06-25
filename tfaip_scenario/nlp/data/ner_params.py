@@ -13,7 +13,7 @@
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tfaip. If not, see http://www.gnu.org/licenses/.
+# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 import os
 from dataclasses import dataclass, field
@@ -46,15 +46,11 @@ class NERDataParams(NLPDataParams):
         },
     )
     tokenizer_range: str = "sentence_v3"  # or sentence_v1
-    bet_tagging: bool = (
-        False  # use split Begin/End and Class tags for better loss calculation
-    )
+    bet_tagging: bool = False  # use split Begin/End and Class tags for better loss calculation
     wordwise_output: bool = False  # use as output only one vector per word regarding the specified method of wwo_mode
     wwo_mode: str = "first"  # use only the output of the first tokens of each word as outputs or 'mean' (mean of the tokenoutput per word) 'max' (elementwise max of the tokenoutput per word)
     max_words_per_sample_from_paifile: int = 1  # defines the maximum number of words a sample from the paifiles should contain. Lines will never be separated. Thus, if it is set to 1 every line from the paifile builds a sample
-    mark_paifile_linebreaks: bool = (
-        False  # if True linebreaks from paifiles are marked by special tokens
-    )
+    mark_paifile_linebreaks: bool = False  # if True linebreaks from paifiles are marked by special tokens
 
     def get_tag_string_mapper(self):
         return get_ner_string_mapper(str(self.tags))

@@ -13,7 +13,7 @@
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tfaip. If not, see http://www.gnu.org/licenses/.
+# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 import tensorflow as tf
 
@@ -75,20 +75,14 @@ class SelfMutualAttentionPFFLayer(tf.keras.layers.Layer):
         elif isinstance(inputs, tuple):
             q, kv = inputs
         else:
-            raise TypeError(
-                f"Only tuple or dict allowed as inputs type but got {type(inputs)} with value {inputs}"
-            )
+            raise TypeError(f"Only tuple or dict allowed as inputs type but got {type(inputs)} with value {inputs}")
 
         sa_coeffs = []
         if self.self_attention_on_q:
-            q, self_att_coef_q = self.self_attention(
-                q, single_step=single_step, mask=mask_look_ahead
-            )
+            q, self_att_coef_q = self.self_attention(q, single_step=single_step, mask=mask_look_ahead)
             sa_coeffs.append(self_att_coef_q)
         if self.self_attention_on_kv:
-            kv, self_att_coef_kv = self.self_attention(
-                kv, single_step=single_step, mask=mask_look_ahead
-            )
+            kv, self_att_coef_kv = self.self_attention(kv, single_step=single_step, mask=mask_look_ahead)
             sa_coeffs.append(self_att_coef_kv)
         att, mut_att_coef = self.mutual_attention({"q": q, "kv": kv}, mask=mask_padding)
         out = self.pff_layer(att)
@@ -125,9 +119,7 @@ class MutualAttentionPFFLayer(tf.keras.layers.Layer):
             attention_type=attention_type,
             attention_params=attention_params,
         )
-        self.pff_layer = PFFLayer(
-            d_model, dff, rate, residual=residual, layer_norm=layer_norm
-        )
+        self.pff_layer = PFFLayer(d_model, dff, rate, residual=residual, layer_norm=layer_norm)
 
         self.return_attn_coef = return_attn_coef
 
@@ -200,18 +192,10 @@ class PFFLayer(tf.keras.layers.Layer):
 
         self.use_residual = residual
 
-        self.ffn1 = tf.keras.layers.Dense(
-            dff, activation="relu", name="ffn1"
-        )  # (batch_size, seq_len, dff)
-        self.ffn2 = tf.keras.layers.Dense(
-            d_model, name="ffn2"
-        )  # (batch_size, seq_len, d_model)
+        self.ffn1 = tf.keras.layers.Dense(dff, activation="relu", name="ffn1")  # (batch_size, seq_len, dff)
+        self.ffn2 = tf.keras.layers.Dense(d_model, name="ffn2")  # (batch_size, seq_len, d_model)
 
-        self.layernorm = (
-            tf.keras.layers.LayerNormalization(epsilon=1e-6, name="layer_norm")
-            if layer_norm
-            else None
-        )
+        self.layernorm = tf.keras.layers.LayerNormalization(epsilon=1e-6, name="layer_norm") if layer_norm else None
         self.dropout = tf.keras.layers.Dropout(rate, name="dropout")
 
     def call(self, inputs, **kwargs):
@@ -254,11 +238,7 @@ class SelfAttentionLayer(tf.keras.layers.Layer):
             attention_params=attention_params,
             post_dense=post_dense,
         )
-        self.layernorm = (
-            tf.keras.layers.LayerNormalization(epsilon=1e-6, name="layer_norm")
-            if layer_norm
-            else None
-        )
+        self.layernorm = tf.keras.layers.LayerNormalization(epsilon=1e-6, name="layer_norm") if layer_norm else None
         self.dropout = tf.keras.layers.Dropout(rate, name="dropout")
 
     def call(self, inputs, single_step=False, mask=None):
@@ -308,9 +288,7 @@ class MutualAttentionLayer(tf.keras.layers.Layer):
             attention_type=attention_type,
             attention_params=attention_params,
         )
-        self.layernorm = (
-            tf.keras.layers.LayerNormalization(epsilon=1e-6) if layer_norm else None
-        )
+        self.layernorm = tf.keras.layers.LayerNormalization(epsilon=1e-6) if layer_norm else None
         self.dropout = tf.keras.layers.Dropout(rate)
 
     def call(self, inputs, mask=None):
