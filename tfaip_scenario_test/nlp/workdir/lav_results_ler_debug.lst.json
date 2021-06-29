@@ -41,9 +41,9 @@
         {
           "modes": [
             "training",
+            "prediction",
             "targets",
-            "evaluation",
-            "prediction"
+            "evaluation"
           ],
           "__cls__": "tfaip_scenario.nlp.data.processors.ner_task:DataProcessorNERTaskParams"
         }
