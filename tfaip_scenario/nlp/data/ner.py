@@ -116,12 +116,13 @@ class NERData(NLPData[TDP]):
         assert self.params.wordwise_output
         start = int(np.argwhere(sentence == self.params.cls_token_id_)) + 1
         end = int(np.argwhere(sentence == self.params.sep_token_id_))
-        start_tag = int(np.argwhere(pred_ids == self._tag_string_mapper.size())) + 1
-        end_tag = int(np.argwhere(pred_ids == self._tag_string_mapper.size() + 1))
+        #start_tag = int(np.argwhere(pred_ids == self._tag_string_mapper.size())) + 1
+        #end_tag = int(np.argwhere(pred_ids == self._tag_string_mapper.size() + 1))
         # assert end_tag == end, f"Inkonsisten EOS index in tokens({end}) and tags({end_tag}!"
-        tags = [self._tag_string_mapper.get_value(x) for x in pred_ids[start_tag:end_tag]]
+        tags = [self._tag_string_mapper.get_value(x) for x in pred_ids]#[start_tag:end_tag]]
         sentence_str = self.tokenizer.decode(sentence[start:end])
         word_list = sentence_str.split(" ")
+        tags=tags[1:len(word_list)+1]
         assert len(word_list) == len(tags)
         logger.debug(f"{word_list}")
         logger.debug(f"{tags}")
