@@ -32,7 +32,7 @@ def run(args):
         source_data_list = json.load(fp)
     predict_sample_list = []
     for source_sample, predict_sample in zip(source_data_list, predictor.predict_raw(args.input_json.split(" "))):
-        word, tags = data.prediction_to_list(predict_sample.inputs["sentence"], predict_sample.outputs["pred_ids"])
+        word, tags = data.prediction_to_list(predict_sample.inputs["sentence"], predict_sample.outputs["pred_ids"], len(source_sample))
         predict_data_sample = [list(x) for x in zip(word, tags)]
         predict_sentence = []
         for source_word_tuple, prediction_word_tuple in zip(source_sample, predict_data_sample):
