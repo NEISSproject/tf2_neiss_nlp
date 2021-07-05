@@ -568,9 +568,7 @@ class NERBERTBase(GraphBase[ModelParams], ABC):
                     self.params.pretrained_hf_model_, return_dict=True
                 )
             else:
-                self.pretrained_bert = TFBertModel.from_pretrained(
-                    self.params.pretrained_hf_model_, return_dict=True
-                )
+                self.pretrained_bert = TFBertModel.from_pretrained(self.params.pretrained_hf_model_, return_dict=True)
 
         elif self.params.pretrained_bert:
             logger.info(f"Attempt to load pre-trained bert from saved model: {self.params.pretrained_bert}")
@@ -593,6 +591,7 @@ class NERBERTBase(GraphBase[ModelParams], ABC):
         #     self.pretrained_bert = keras.models.load_model(self._params.pretrained_bert)
 
         pass
+
 
 class NERwithMiniBERT(NERBERTBase):
     def __init__(self, params: ModelParams, name="model", **kwargs):
