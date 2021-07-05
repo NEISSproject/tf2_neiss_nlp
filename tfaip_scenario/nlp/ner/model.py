@@ -17,6 +17,7 @@
 # ==============================================================================
 import logging
 import os.path
+from abc import ABC
 from dataclasses import dataclass
 from typing import Any, Dict, Optional, List, Tuple
 from typing import TYPE_CHECKING
@@ -448,44 +449,44 @@ class Model(ModelBase[ModelParams]):
 
         return sw_dict
 
-    def build(self, inputs_targets: Dict[str, AnyTensor]) -> Dict[str, AnyTensor]:
-        outputs = super(Model, self).build(inputs_targets)
+    # def build(self, inputs_targets: Dict[str, AnyTensor]) -> Dict[str, AnyTensor]:
+    #     outputs = super(Model, self).build(inputs_targets)
+    #
+    #     if self._params.pretrained_bert or self._params.use_hf_model_:
+    #         self.init_new_training()
+    #
+    #     return outputs
 
-        if self._params.pretrained_bert or self._params.use_hf_model_:
-            self.init_new_training()
-
-        return outputs
-
-    def init_new_training(self):
-        if self._params.use_hf_model_:
-            if self._params.use_hf_electra_model_:
-                self._graph.pretrained_bert = TFElectraModel.from_pretrained(
-                    self._params.pretrained_hf_model_, return_dict=True
-                )
-            else:
-                self._graph.pretrained_bert = TFBertModel.from_pretrained(
-                    self._params.pretrained_hf_model_, return_dict=True
-                )
-
-        elif self._params.pretrained_bert:
-            logger.info(f"Attempt to load pre-trained bert from saved model: {self._params.pretrained_bert}")
-            if os.path.basename(self._params.pretrained_bert) == "encoder_only":
-                saved_model_dir = self._params.pretrained_bert
-            elif os.path.isdir(os.path.join(self._params.pretrained_bert, "export", "additional", "encoder_only")):
-                saved_model_dir = os.path.join(self._params.pretrained_bert, "export", "additional", "encoder_only")
-            elif os.path.basename(self._params.pretrained_bert) == "best" and os.path.isdir(
-                os.path.join(self._params.pretrained_bert, "encoder_only")
-            ):
-                saved_model_dir = os.path.join(self._params.pretrained_bert, "encoder_only")
-            else:
-                saved_model_dir = os.path.join(self._params.pretrained_bert, "best", "encoder_only")
-
-            self._graph.pretrained_bert = keras.models.load_model(saved_model_dir)
-        # else:
-        #     logger.info(f"Attemed to load pre-trained bert from saved model: {self._params.pretrained_bert}")
-        #     self._graph.pretrained_bert = keras.models.load_model(self._params.pretrained_bert)
-
-        pass
+    # def init_new_training(self):
+    #     if self._params.use_hf_model_:
+    #         if self._params.use_hf_electra_model_:
+    #             self.pretrained_bert = TFElectraModel.from_pretrained(
+    #                 self._params.pretrained_hf_model_, return_dict=True
+    #             )
+    #         else:
+    #             self.pretrained_bert = TFBertModel.from_pretrained(
+    #                 self._params.pretrained_hf_model_, return_dict=True
+    #             )
+    #
+    #     elif self._params.pretrained_bert:
+    #         logger.info(f"Attempt to load pre-trained bert from saved model: {self._params.pretrained_bert}")
+    #         if os.path.basename(self._params.pretrained_bert) == "encoder_only":
+    #             saved_model_dir = self._params.pretrained_bert
+    #         elif os.path.isdir(os.path.join(self._params.pretrained_bert, "export", "additional", "encoder_only")):
+    #             saved_model_dir = os.path.join(self._params.pretrained_bert, "export", "additional", "encoder_only")
+    #         elif os.path.basename(self._params.pretrained_bert) == "best" and os.path.isdir(
+    #             os.path.join(self._params.pretrained_bert, "encoder_only")
+    #         ):
+    #             saved_model_dir = os.path.join(self._params.pretrained_bert, "encoder_only")
+    #         else:
+    #             saved_model_dir = os.path.join(self._params.pretrained_bert, "best", "encoder_only")
+    #
+    #         self.pretrained_bert = keras.models.load_model(saved_model_dir)
+    #     # else:
+    #     #     logger.info(f"Attemed to load pre-trained bert from saved model: {self._params.pretrained_bert}")
+    #     #     self.pretrained_bert = keras.models.load_model(self._params.pretrained_bert)
+    #
+    #     pass
 
     def _print_evaluate(self, sample: Sample, data: NERData, print_fn):
         inputs, outputs, targets = sample.inputs, sample.outputs, sample.targets
@@ -554,14 +555,54 @@ class Model(ModelBase[ModelParams]):
             )
 
 
-class NERwithMiniBERT(GraphBase[ModelParams]):
+class NERBERTBase(GraphBase[ModelParams], ABC):
+    def __init__(self, params: ModelParams, name="model", **kwargs):
+        super(NERBERTBase, self).__init__(params, name=name, **kwargs)
+        self.pretrained_bert = None
+        self.init_new_training()
+
+    def init_new_training(self):
+        if self.params.use_hf_model_:
+            if self.params.use_hf_electra_model_:
+                self.pretrained_bert = TFElectraModel.from_pretrained(
+                    self.params.pretrained_hf_model_, return_dict=True
+                )
+            else:
+                self.pretrained_bert = TFBertModel.from_pretrained(
+                    self.params.pretrained_hf_model_, return_dict=True
+                )
+
+        elif self.params.pretrained_bert:
+            logger.info(f"Attempt to load pre-trained bert from saved model: {self.params.pretrained_bert}")
+            if os.path.basename(self.params.pretrained_bert) == "encoder_only":
+                saved_model_dir = self.params.pretrained_bert
+            elif os.path.isdir(os.path.join(self.params.pretrained_bert, "export", "additional", "encoder_only")):
+                saved_model_dir = os.path.join(self.params.pretrained_bert, "export", "additional", "encoder_only")
+            elif os.path.isdir(os.path.join(self.params.pretrained_bert, "additional", "encoder_only")):
+                saved_model_dir = os.path.join(self.params.pretrained_bert, "additional", "encoder_only")
+            elif os.path.basename(self.params.pretrained_bert) == "best" and os.path.isdir(
+                os.path.join(self.params.pretrained_bert, "encoder_only")
+            ):
+                saved_model_dir = os.path.join(self.params.pretrained_bert, "encoder_only")
+            else:
+                saved_model_dir = os.path.join(self.params.pretrained_bert, "best", "encoder_only")
+
+            self.pretrained_bert = keras.models.load_model(saved_model_dir)
+        # else:
+        #     logger.info(f"Attemed to load pre-trained bert from saved model: {self._params.pretrained_bert}")
+        #     self.pretrained_bert = keras.models.load_model(self._params.pretrained_bert)
+
+        pass
+
+class NERwithMiniBERT(NERBERTBase):
     def __init__(self, params: ModelParams, name="model", **kwargs):
         super(NERwithMiniBERT, self).__init__(params, name=name, **kwargs)
         self._tag_string_mapper = get_ner_string_mapper(self._params.tags_fn_)
         self._tracked_layers = dict()
 
         # else:
-        self.pretrained_bert = getattr(transformers, self._params.bert_graph)(self._params)
+        if self.pretrained_bert is None:
+            self.pretrained_bert = getattr(transformers, self._params.bert_graph)(self._params)
         self.tag_vocab_size = self._tag_string_mapper.size() + 2
         self._dropout = tf.keras.layers.Dropout(self._params.dropout_last)
         if self._params.bet_tagging_:
@@ -742,16 +783,17 @@ class NERwithMiniBERT(GraphBase[ModelParams]):
         return return_dict
 
 
-class NERwithHFBERT(GraphBase[ModelParams]):
+class NERwithHFBERT(NERBERTBase):
     def __init__(self, params, name="model", **kwargs):
         super(NERwithHFBERT, self).__init__(params, name=name, **kwargs)
         self._tag_string_mapper = get_sm(self._params.tags_fn_)
         self.tag_vocab_size = self._tag_string_mapper.size() + 2
         self._tracked_layers = dict()
-        if self._params.use_hf_electra_model_:
-            self.pretrained_bert = TFElectraModel(ElectraConfig.from_pretrained(params.pretrained_hf_model_))
-        else:
-            self.pretrained_bert = TFBertModel(BertConfig.from_pretrained(params.pretrained_hf_model_))
+        if self.pretrained_bert is None:
+            if self._params.use_hf_electra_model_:
+                self.pretrained_bert = TFElectraModel(ElectraConfig.from_pretrained(params.pretrained_hf_model_))
+            else:
+                self.pretrained_bert = TFBertModel(BertConfig.from_pretrained(params.pretrained_hf_model_))
         self._dropout = tf.keras.layers.Dropout(self._params.dropout_last)
         if self._params.bet_tagging_:
             # print(self.tag_vocab_size-1)
