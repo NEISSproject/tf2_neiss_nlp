@@ -572,13 +572,13 @@ class NERBERTBase(GraphBase[ModelParams], ABC):
 
         elif self.params.pretrained_bert:
             logger.info(f"Attempt to load pre-trained bert from saved model: {self.params.pretrained_bert}")
-            if os.path.basename(self.params.pretrained_bert) == "encoder_only":
+            if os.path.basename(self.params.pretrained_bert.strip(os.sep)) == "encoder_only":
                 saved_model_dir = self.params.pretrained_bert
             elif os.path.isdir(os.path.join(self.params.pretrained_bert, "export", "additional", "encoder_only")):
                 saved_model_dir = os.path.join(self.params.pretrained_bert, "export", "additional", "encoder_only")
             elif os.path.isdir(os.path.join(self.params.pretrained_bert, "additional", "encoder_only")):
                 saved_model_dir = os.path.join(self.params.pretrained_bert, "additional", "encoder_only")
-            elif os.path.basename(self.params.pretrained_bert) == "best" and os.path.isdir(
+            elif os.path.basename(self.params.pretrained_bert.strip(os.sep)) == "best" and os.path.isdir(
                 os.path.join(self.params.pretrained_bert, "encoder_only")
             ):
                 saved_model_dir = os.path.join(self.params.pretrained_bert, "encoder_only")
