@@ -44,7 +44,7 @@ def run(args):
             for sentence in predict_sample_list:
                 print(sentence)
 
-        out_file_path = args.input_json.strip(".json") + ".pred.json"
+        out_file_path = args.input_json[:-5] + ".pred.json"
         if args.out is not None and os.path.isdir(args.out):
             out_file_path = os.path.join(args.out, os.path.basename(out_file_path))
         if args.out is not None and str(args.out).endswith(".json"):
