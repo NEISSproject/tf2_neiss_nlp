@@ -62,7 +62,7 @@ def parse_args(args=None):
     parser.add_argument("--export_dir", required=True, type=str)
     parser.add_argument("--input_json", required=True, type=str)
     parser.add_argument("--out", default=None, type=str, help="output folder or .json-file")
-    parser.add_argument("--print", default=False, type=bool, help="print results to console too")
+    parser.add_argument("--print", default=False, action="store_true", help="print results to console too")
     args = parser.parse_args(args=args)
     return args
 

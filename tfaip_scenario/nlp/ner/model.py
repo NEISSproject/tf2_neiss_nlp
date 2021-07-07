@@ -586,6 +586,7 @@ class NERBERTBase(GraphBase[ModelParams], ABC):
                 saved_model_dir = os.path.join(self.params.pretrained_bert, "best", "encoder_only")
 
             self.pretrained_bert = keras.models.load_model(saved_model_dir)
+            logger.info(f"Saved model loaded from: {self.params.pretrained_bert}")
         # else:
         #     logger.info(f"Attemed to load pre-trained bert from saved model: {self._params.pretrained_bert}")
         #     self.pretrained_bert = keras.models.load_model(self._params.pretrained_bert)

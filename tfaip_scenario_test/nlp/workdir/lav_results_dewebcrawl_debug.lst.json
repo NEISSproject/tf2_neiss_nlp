@@ -38,10 +38,10 @@
       "processors": [
         {
           "modes": [
-            "prediction",
             "evaluation",
-            "training",
-            "targets"
+            "prediction",
+            "targets",
+            "training"
           ],
           "__cls__": "tfaip_scenario.nlp.data.processors.mlm_task:DataProcessorMLMTaskParams"
         }
