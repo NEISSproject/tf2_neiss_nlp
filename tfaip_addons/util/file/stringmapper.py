@@ -184,8 +184,7 @@ class StringMapper:
         with codecs.open(file_path, "r", encoding="utf-8") as cm_file:
             raw = cm_file.readlines()
             for line in raw:
-                if line[-1] == "\n":
-                    line = line[:-1]
+                line = line.strip(os.linesep)
                 line = line.strip()
                 if len(line) == 0:
                     continue
@@ -213,8 +212,7 @@ class StringMapper:
             raw = cm_file.readlines()
             id = 0
             for line in raw:
-                if line[-1] == "\n":
-                    line = line[:-1]
+                line = line.strip(os.linesep)
                 split = line.rsplit("\t", 1)
                 key = split[0]
                 if key == unknown_word:
@@ -242,8 +240,9 @@ class StringMapper:
             raw = cm_file.readlines()
             id_ = 0
             for line in raw:
-                if line[-1] == "\n":
-                    line = line[:-1]
+                line = line.strip(os.linesep)
+                # if line[-1:] == "\n":
+                #     line = line[:-1]
                 key = line
                 # specific values which are escaped by '\': delete '\'
                 if key[0] == "\\":
@@ -267,7 +266,7 @@ class StringMapper:
                 cm_file.write(key)
                 cm_file.write("=")
                 cm_file.write(str(value + 1))
-                cm_file.write("\n")
+                cm_file.write(os.linesep)
                 # file.write('NaC')
                 # file.write('=')
                 # file.write(str(len(self.dictBwd)))
