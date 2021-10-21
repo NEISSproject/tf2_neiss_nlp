@@ -1,0 +1,2133 @@
+{
+  "charmapStore" : [ "0;B0006A00BA006A007C0069005C006800AC206700D7006600D8006500F80065007D0064007B0063005D0062005B0061003D0060003B005F002A005E00A7005D00A3005C0024005B003E005A003C0059002700580060005800B40058001820580019205800250057001C205600220056001D2056001E205500210054003F0053005F0052003A0051002B00500029004F0028004E0040004D0026004C00DF004B00FC004A0071014A00F600490051014900E4004800DC004700D6004600C4004500200044002C0043002E0042002D0041001320410014204100230040002F003F007A003E007C013E007E013E0079003D00FD003D0078003C0077003B0076003A0075003900FB003900FA003900F90039006B0139006F0139007301390074003800730037005B0137005F01370061013700720036005901360071003500700034006F003300F4003300F3003300F2003300F0003300F50033004D0133006E003200F10032004401320046013200480132006D0031006C0030003C013000420130006B002F0037012F006A002E0069002D00EE002D00ED002D00EC002D00EF002D002B012D002F012D0031012D0068002C0067002B001F012B0023012B0066002A0065002900E9002900EA002900E8002900EB0029001301290017012900190129001B012900640028001101280063002700E7002700070127000D0127006200260061002500E1002500E2002500E0002500E3002500E500250001012500050125005A0024007D012400590023007801230058002200570021005600200055001F00DB001F00DA001F00D9001F0054001E0053001D005E011D0060011D0052001C0058011C0051001B0050001A004F001900D4001900D3001900D2001900D50019004C0119004E0018004D0017004C001600410116004B0015004A00140049001300CE001300CD001300CC0013002E0113003001130048001200470011001E0111004600100045000F00CA000F00C9000F00C8000F0044000E00D0000E0043000D00C7000D000C010D0042000C0041000B00C2000B00C1000B00C0000B00C3000B00C5000B0000010B0039000A0038000900370008003600070035000600340005003300040032000300310002003000010000000000" ],
+  "id" : "D3016493e-9706-4198-82e2-e82f75a91e49",
+  "producer" : "MODERN_0",
+  "srcImgPath" : "a_a_l_aal23c00_88019833.tif",
+  "classifications": {
+    "dc398117-9ac6-43b5-a0b1-7ac2b257b492": {
+      "moduleId": "ab123456-7ab8-90c1-a1b2-345678901234",
+      "moduleLabel": "gt-rvl-cdip",
+      "source": "DC",
+      "results": [
+        {
+          "label": "form",
+          "score": 1.0,
+          "isValid": true
+        }
+      ]
+    }
+  },
+  "pages" : [ {
+    "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0",
+    "regions" : [ {
+      "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0",
+      "coordinates" : "60,146;60,742;663,742;663,146",
+      "angleMod90" : { },
+      "lines" : [ {
+        "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L0",
+        "coordinates" : "555,146;664,146;664,179;555,179",
+        "text" : {
+          "content" : "MAY 15 1995"
+        },
+        "confMat" : "AAAAAAAAFAAAAGsA/////wEAAAADABcA+n+ZSwAABQAAAC9/FwAFdjpMAAADAAAA838RUAAAAwALAPh/UU0AAAMAIwD4f1FNAAADAAAA1H+KVgAAAwBEAPx//EgAAAcAAABKfkQADngCAG9ylEMAAAMAAgD/fwCAAAAFAAAAO39EAB51/lMAAAUAAABwfgYA23iBUgAAAwAGAP5/XkMAAAUARABOfwAApXNAVwAABwAAAL98AgAleUQAwHdoTwAAAwACAPZ/mU4AAAMACgD0f59PAAAFAAAAYn4KACZ5TE8AAAkACgC6fgAA1HQBAPhuCQDubh5XAAAHAAYAAX4AAJB4BwDzcRhVAAAFAAAAuX8GAIBu7lMAAAAAAAAAAAAAAAA=",
+        "words" : [ {
+          "wordboxBounds" : "568,147,30,21,0.0",
+          "wordboxMainBody" : "568,147,30,21,0.0",
+          "text" : {
+            "content" : "MAY"
+          },
+          "indexEnd" : 3
+        }, {
+          "wordboxBounds" : "600,151,25,21,0.0",
+          "wordboxMainBody" : "600,151,25,21,0.0",
+          "text" : {
+            "content" : "15"
+          },
+          "indexBegin" : 4,
+          "indexEnd" : 9
+        }, {
+          "wordboxBounds" : "627,155,30,21,0.0",
+          "wordboxMainBody" : "627,155,30,21,0.0",
+          "text" : {
+            "content" : "1995"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 12
+        } ]
+      }, {
+        "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L1",
+        "coordinates" : "60,156;234,156;234,216;60,216",
+        "text" : {
+          "content" : "Lorillard"
+        },
+        "confMat" : "AAAAAAAAGgAAAGsA/////wEAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAFwAWAGx6EABadRoAqHQNAFp0HQAQcyoAC3MRAO5yDABIaSMAMGkVAB9pHAApaKtYAAADAAAA/38AgAAABQAzAJh/KQAKcY9UAAADAAAA/38AgAAAAwA2AP5/XkMAAAMAAAD8f/xIAAAFAAAAr38tAIJxKzwAAAMALQD+f15DAAADADAA/n9eQwAAAwAAAP5/XkMAAAMAMAD/fwCAAAADAAAA+X+HTAAAAwAAAP5/XkMAAAMAJQD+f15DAAADAAAA/38AgAAAAwAAAO5/11EAAAMANgD+f15DAAADAAAA/n9eQwAAAwAoAP5/XkMAAAMAAAD+f15DAAADAAAA/n9eQwAAAwAAAPp/mUsAAAAAAAAAAAAAAAA=",
+        "words" : [ {
+          "wordboxBounds" : "60,156,174,60,0.0",
+          "wordboxMainBody" : "60,156,174,60,0.0",
+          "text" : {
+            "content" : "Lorillard"
+          },
+          "indexEnd" : 9
+        } ]
+      }, {
+        "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L2",
+        "coordinates" : "191,205;629,205;629,224;191,224",
+        "text" : {
+          "content" : "MPANY Research Center, 420 Encish Strect, P.O Box 21688, Greensboro, North Carolina 27420-1688"
+        },
+        "confMat" : "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",
+        "words" : [ {
+          "wordboxBounds" : "191,205,40,14,0.0",
+          "wordboxMainBody" : "191,205,40,14,0.0",
+          "text" : {
+            "content" : "MPANY"
+          },
+          "indexEnd" : 5
+        }, {
+          "wordboxBounds" : "238,207,37,12,0.0",
+          "wordboxMainBody" : "238,207,37,12,0.0",
+          "text" : {
+            "content" : "Research"
+          },
+          "indexBegin" : 6,
+          "indexEnd" : 19
+        }, {
+          "wordboxBounds" : "281,207,25,14,0.0",
+          "wordboxMainBody" : "281,207,25,14,0.0",
+          "text" : {
+            "content" : "Center,"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 25
+        }, {
+          "wordboxBounds" : "311,208,15,12,0.0",
+          "wordboxMainBody" : "311,208,15,12,0.0",
+          "text" : {
+            "content" : "420"
+          },
+          "indexBegin" : 86,
+          "indexEnd" : 114
+        }, {
+          "wordboxBounds" : "331,208,26,14,0.0",
+          "wordboxMainBody" : "331,208,26,14,0.0",
+          "text" : {
+            "content" : "Encish"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 119
+        }, {
+          "wordboxBounds" : "361,208,25,12,0.0",
+          "wordboxMainBody" : "361,208,25,12,0.0",
+          "text" : {
+            "content" : "Strect,"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 125
+        }, {
+          "wordboxBounds" : "391,208,13,11,0.0",
+          "wordboxMainBody" : "391,208,13,11,0.0",
+          "text" : {
+            "content" : "P.O"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 127
+        }, {
+          "wordboxBounds" : "410,208,13,11,0.0",
+          "wordboxMainBody" : "410,208,13,11,0.0",
+          "text" : {
+            "content" : "Box"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 129
+        }, {
+          "wordboxBounds" : "429,208,26,12,0.0",
+          "wordboxMainBody" : "429,208,26,12,0.0",
+          "text" : {
+            "content" : "21688,"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 134
+        }, {
+          "wordboxBounds" : "460,208,46,12,0.0",
+          "wordboxMainBody" : "460,208,46,12,0.0",
+          "text" : {
+            "content" : "Greensboro,"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 144
+        }, {
+          "wordboxBounds" : "511,209,18,10,0.0",
+          "wordboxMainBody" : "511,209,18,10,0.0",
+          "text" : {
+            "content" : "North"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 148
+        }, {
+          "wordboxBounds" : "535,208,31,12,0.0",
+          "wordboxMainBody" : "535,208,31,12,0.0",
+          "text" : {
+            "content" : "Carolina"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 155
+        }, {
+          "wordboxBounds" : "572,209,42,11,0.0",
+          "wordboxMainBody" : "572,209,42,11,0.0",
+          "text" : {
+            "content" : "27420-1688"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 164
+        } ]
+      }, {
+        "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L3",
+        "coordinates" : "390,232;507,232;507,250;390,250",
+        "text" : {
+          "content" : "May 12, 1995"
+        },
+        "confMat" : "AAAAAAAAJwAAAGsA/////wEAAAADAAAA/n9eQwAAAwAXAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAlAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwA9AP9/AIAAAAMAAAD9f+pGAAADAAAA/38AgAAAAwBEAOF/uVQAAAMARADxf9pQAAADAAAA1X9sVgAAAwAAAP9/AIAAAAMAAgD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAwD/fwCAAAADAAAA/X/qRgAAAwAAAOV//1MAAAMAQwD5f4dMAAAFAAAAmX5DAHt40k8AAAUARADSfQAAjHrqRQAAAwBEAM9/GFcAAAMAAADdf1tVAAADAAAA/38AgAAABQAAAF5/AgDvdFU/AAADAAIA/38AgAAAAwAAAP9/AIAAAAMACgD/fwCAAAADAAAA+391SgAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAoA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAYA/38AgAAAAwAAAP9/AIAAAAMAAAD+f15DAAAAAAAAAAAAAAAA",
+        "words" : [ {
+          "wordboxBounds" : "401,233,28,16,0.0",
+          "wordboxMainBody" : "401,233,28,16,0.0",
+          "text" : {
+            "content" : "May"
+          },
+          "indexEnd" : 3
+        }, {
+          "wordboxBounds" : "435,233,24,15,0.0",
+          "wordboxMainBody" : "435,233,24,15,0.0",
+          "text" : {
+            "content" : "12,"
+          },
+          "indexBegin" : 4,
+          "indexEnd" : 10
+        }, {
+          "wordboxBounds" : "467,232,33,14,0.0",
+          "wordboxMainBody" : "467,232,33,14,0.0",
+          "text" : {
+            "content" : "1995"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 13
+        } ]
+      }, {
+        "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L4",
+        "coordinates" : "74,322;199,322;199,336;74,336",
+        "text" : {
+          "content" : "Ms. Anna Tsui"
+        },
+        "confMat" : "AAAAAAAAMQAAAGsA/////wEAAAADAAAA/38AgAAAAwAXAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMANwD9f+pGAAADAAAA/38AgAAAAwAAAP5/XkMAAAUAAACxf0IAP3F9RwAAAwBCAP9/AIAAAAMAAAC/f4lYAAADAEQA8n95UAAABQBEAI5/AAA7cwAAAAADAAAA+391SgAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAsA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADIA/38AgAAAAwAAAP5/XkMAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAyAP9/AIAAAAMAAAD+f15DAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAJQD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAUAAAA4f0QA+HUAAAAAAwBEAP5/XkMAAAUARAC2fQAAw3pAPgAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAB4A/n9eQwAAAwAAAP5/XkMAAAMAAAD/fwCAAAADADcA/X/qRgAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADkA/38AgAAAAwAAAPp/mUsAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAtAOZ/zVMAAAMAAADsf2hSAAADAAAA/X/qRgAAAwAAAPh/UU0AAAAAAAAAAAAAAAA=",
+        "words" : [ {
+          "wordboxBounds" : "85,322,26,14,0.0",
+          "wordboxMainBody" : "85,322,26,14,0.0",
+          "text" : {
+            "content" : "Ms."
+          },
+          "indexEnd" : 3
+        }, {
+          "wordboxBounds" : "117,322,36,14,0.0",
+          "wordboxMainBody" : "117,322,36,14,0.0",
+          "text" : {
+            "content" : "Anna"
+          },
+          "indexBegin" : 4,
+          "indexEnd" : 11
+        }, {
+          "wordboxBounds" : "157,322,35,14,0.0",
+          "wordboxMainBody" : "157,322,35,14,0.0",
+          "text" : {
+            "content" : "Tsui"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 14
+        } ]
+      }, {
+        "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L5",
+        "coordinates" : "77,335;190,335;190,350;77,350",
+        "text" : {
+          "content" : "White & Case"
+        },
+        "confMat" : "AAAAAAAAMgAAAGsA/////wEAAAADAAAA/38AgAAAAwAhAPp/mUsAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMALAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA8H80UQAAAwAtAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwA4AP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAUAAABAfykAwXUgPwAAAwApAP5/XkMAAAMAAAD+f15DAAADAAAA/X/qRgAABQBEACt+AADWee4yAAADAEQA+X+HTAAABQAAAH1+RAD/eEA+AAADAAAA/38AgAAAAwAAAP9/AIAAAAMATAD9f+pGAAADAAAA/38AgAAAAwAAANN/qFYAAAMARADgf+NUAAADAEQA8X/aUAAABQAAAKl/RADocQAAAAADAAAA/38AgAAAAwANAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADACUA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwA3AP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAANp/yFUAAAMAKQD+f15DAAADAAAA938ATgAAAwAAAP1/6kYAAAMAAAD5f4dMAAAAAAAAAAAAAAAA",
+        "words" : [ {
+          "wordboxBounds" : "86,335,42,15,0.0",
+          "wordboxMainBody" : "86,335,42,15,0.0",
+          "text" : {
+            "content" : "White"
+          },
+          "indexEnd" : 5
+        }, {
+          "wordboxBounds" : "131,335,12,15,0.0",
+          "wordboxMainBody" : "131,335,12,15,0.0",
+          "text" : {
+            "content" : "&"
+          },
+          "indexBegin" : 6,
+          "indexEnd" : 12
+        }, {
+          "wordboxBounds" : "147,335,36,15,0.0",
+          "wordboxMainBody" : "147,335,36,15,0.0",
+          "text" : {
+            "content" : "Case"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 15
+        } ]
+      }, {
+        "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L6",
+        "coordinates" : "76,347;310,347;310,360;76,360",
+        "text" : {
+          "content" : "1155 Avenue of the Americas"
+        },
+        "confMat" : "AAAAAAAAawAAAGsA/////wEAAAADAAAA/38AgAAAAwACAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAgD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAYA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/n9eQwAAAwAGAP9/AIAAAAMAAAD+f15DAAADAAAA938ATgAAAwBEANh/DFYAAAMARAD6f5lLAAAFAAAA335EAK53CT0AAAMAAAD+f15DAAADAAAA/38AgAAAAwALAP5/XkMAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAOgD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADACkA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADIA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwA5AP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAADcf4FVAAADACkA/n9eQwAAAwAAAP9/AIAAAAMAAAD9f+pGAAADAEQA/H/8SAAAAwBEAPd/AE4AAAMAAAD9f+pGAAADAAAA/38AgAAAAwAzAP5/XkMAAAMAAAD7f3VKAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAKgD/fwCAAAADAAAA+n+ZSwAAAwAAAP9/AIAAAAUAAACQfUQABXsAAAAAAwBEAP9/AIAAAAUARABMfgAAh3kAAAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADgA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAsAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP5/XkMAAAMAKQD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAUAAAAYfkQAAnoAAAAAAwBEAP5/XkMAAAUAAAAwfkQAynmbOAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAsA/n9eQwAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAxAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAKQD+f15DAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADYA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/n9eQwAAAwAtAP9/AIAAAAMAAAD+f15DAAADAAAA/38AgAAAAwAnAP9/AIAAAAMAAAD+f15DAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAJQD/fwCAAAADAAAA/n9eQwAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADcA/n9eQwAAAwAAAPx//EgAAAMAAAD6f5lLAAADAAAA9X8jTwAAAAAAAAAAAAAAAA==",
+        "words" : [ {
+          "wordboxBounds" : "86,347,34,13,0.0",
+          "wordboxMainBody" : "86,347,34,13,0.0",
+          "text" : {
+            "content" : "1155"
+          },
+          "indexEnd" : 4
+        }, {
+          "wordboxBounds" : "124,347,52,13,0.0",
+          "wordboxMainBody" : "124,347,52,13,0.0",
+          "text" : {
+            "content" : "Avenue"
+          },
+          "indexBegin" : 5,
+          "indexEnd" : 15
+        }, {
+          "wordboxBounds" : "180,347,19,13,0.0",
+          "wordboxMainBody" : "180,347,19,13,0.0",
+          "text" : {
+            "content" : "of"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 16
+        }, {
+          "wordboxBounds" : "204,347,28,13,0.0",
+          "wordboxMainBody" : "204,347,28,13,0.0",
+          "text" : {
+            "content" : "the"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 18
+        }, {
+          "wordboxBounds" : "235,347,67,13,0.0",
+          "wordboxMainBody" : "235,347,67,13,0.0",
+          "text" : {
+            "content" : "Americas"
+          },
+          "indexBegin" : 19,
+          "indexEnd" : 45
+        } ]
+      }, {
+        "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L7",
+        "coordinates" : "74,359;330,359;330,376;74,376",
+        "text" : {
+          "content" : "New York, New York 10036-2787"
+        },
+        "confMat" : "AAAAAAAAcQAAAGsA/////wEAAAADAAAA/38AgAAAAwAYAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAKQD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAOwD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAEQAyn+XVwAAAwBEAOt/q1IAAAMAAAD0f59PAAADAAAA/38AgAAAAwAjAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAMwD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADYA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAvAP9/AIAAAAMAAAD/fwCAAAADAAAA/n9eQwAAAwAAAPl/h0wAAAMAQwD/fwCAAAAFAAAAj39EAGZxGVUAAAMARAD7f3VKAAADAEQA938ATgAAAwAAAP5/XkMAAAMAAAD/fwCAAAADAAAAy39/VwAAAwAYAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP5/XkMAAAMAKQD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAOwD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD7f3VKAAADAEQA/H/8SAAABQBEAH1/AADqcwAAAAADAAAA/n9eQwAAAwAAAP9/AIAAAAMAIwD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAMwD/fwCAAAADAAAA+n+ZSwAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADYA/38AgAAAAwAAAP5/XkMAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAvAP9/AIAAAAMAAAD/fwCAAAADAAAA/n9eQwAABQAAAC9/RAAtdgAAAAADAEQA+391SgAABQBEAGN/AADJdNY9AAADAAAA/n9eQwAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAIA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAEA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwABAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMABAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMABwD/fwCAAAADAAAA/n9eQwAAAwAAAP1/6kYAAAMAAADEfyFYAAADAEEA/H/8SAAABQBBALN/AABFcQAAAAADAAAA8n95UAAAAwAAAP9/AIAAAAMAAwD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAgA/n9eQwAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAkA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAIAP9/AIAAAAMAAAD+f15DAAADAAAA/38AgAAAAAAAAAAAAAAAAA==",
+        "words" : [ {
+          "wordboxBounds" : "85,360,28,13,0.0",
+          "wordboxMainBody" : "85,360,28,13,0.0",
+          "text" : {
+            "content" : "New"
+          },
+          "indexEnd" : 3
+        }, {
+          "wordboxBounds" : "117,359,42,16,0.0",
+          "wordboxMainBody" : "117,359,42,16,0.0",
+          "text" : {
+            "content" : "York,"
+          },
+          "indexBegin" : 4,
+          "indexEnd" : 12
+        }, {
+          "wordboxBounds" : "164,360,28,13,0.0",
+          "wordboxMainBody" : "164,360,28,13,0.0",
+          "text" : {
+            "content" : "New"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 14
+        }, {
+          "wordboxBounds" : "196,359,36,14,0.0",
+          "wordboxMainBody" : "196,359,36,14,0.0",
+          "text" : {
+            "content" : "York"
+          },
+          "indexBegin" : 14,
+          "indexEnd" : 32
+        }, {
+          "wordboxBounds" : "245,359,80,14,0.0",
+          "wordboxMainBody" : "245,359,80,14,0.0",
+          "text" : {
+            "content" : "10036-2787"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 41
+        } ]
+      }, {
+        "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L8",
+        "coordinates" : "139,385;393,385;393,401;139,401",
+        "text" : {
+          "content" : "Re: CIGARETTE FILTER ASSEMBLY"
+        },
+        "confMat" : "AAAAAAAAWwAAAGsA/////wEAAAADAAAA/X/qRgAAAwAcAP5/XkMAAAMAAAD/fwCAAAADAAAA/38AgAAAAwApAP9/AIAAAAMAAAD+f15DAAADAAAA/X/qRgAAAwBRAP1/6kYAAAMAAADhf7lUAAAFAEQA1X4AANJ33kMAAAMARADLf39XAAAFAEQAxH0AAKp6oDwAAAUAAABUf0QAOHXgQAAAAwAAAL5/nVgAAAMAAADyf3lQAAAFAAAA1H4NANp3ljwAAAMADQD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAEwD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAEQD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMACwD+f15DAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAHAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMADwD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAHgD+f15DAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAHgD+f15DAAADAAAA/38AgAAAAwAAAP9/AIAAAAUADwCQfwwAU3KDUQAAAwAAAP5/XkMAAAUARAAGfwAAAHfzQAAAAwBEAPx//EgAAAUAAAC1f0QAIHH9OQAAAwAAAP9/AIAAAAMAEAD8f/xIAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAEwD/fwCAAAADAAAA/38AgAAABQAWAB9/AACEdgk6AAADABYA/n9eQwAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAB4A/n9eQwAAAwAAAP9/AIAAAAUADwDffgwAp3cFRgAAAwAAAP9/AIAAAAMAAAD/fwCAAAADABwA/38AgAAAAwAAAPt/dUoAAAMAAAD/fwCAAAAFAEQAxn4AAA94sz0AAAMARAD9f+pGAAADAAAA63+rUgAAAwALAP5/XkMAAAMAAAD+f15DAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAHQD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAHQD/fwCAAAADAAAA/38AgAAAAwAPAP9/AIAAAAMAAAD+f15DAAADAAAA/38AgAAAAwAXAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAMAP1/6kYAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAWAP9/AIAAAAMAAAD+f15DAAADAAAA/38AgAAABQAAAPh+IwBCd2A/AAADACMA/38AgAAAAwAAAP9/AIAAAAMAAAD9f+pGAAAAAAAAAAAAAAAA",
+        "words" : [ {
+          "wordboxBounds" : "149,385,25,13,0.0",
+          "wordboxMainBody" : "149,385,25,13,0.0",
+          "text" : {
+            "content" : "Re:"
+          },
+          "indexEnd" : 3
+        }, {
+          "wordboxBounds" : "188,385,75,13,0.0",
+          "wordboxMainBody" : "188,385,75,13,0.0",
+          "text" : {
+            "content" : "CIGARETTE"
+          },
+          "indexBegin" : 4,
+          "indexEnd" : 16
+        }, {
+          "wordboxBounds" : "267,385,45,12,0.0",
+          "wordboxMainBody" : "267,385,45,12,0.0",
+          "text" : {
+            "content" : "FILTER"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 21
+        }, {
+          "wordboxBounds" : "322,385,65,12,0.0",
+          "wordboxMainBody" : "322,385,65,12,0.0",
+          "text" : {
+            "content" : "ASSEMBLY"
+          },
+          "indexBegin" : 21,
+          "indexEnd" : 50
+        } ]
+      }, {
+        "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L9",
+        "coordinates" : "179,397;419,397;419,415;179,415",
+        "text" : {
+          "content" : "(Your File No.: 1126134-332)"
+        },
+        "confMat" : "AAAAAAAAXAAAAGsA/////wEAAAADAE4A4n+NVAAABQBOAGV/AACqdPBGAAADAAAA+391SgAABQAAAMB+IwAkeFxAAAADACMA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADMA/n9eQwAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADkA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADYA/38AgAAAAwAAAPx//EgAAAMAAAD8f/xIAAAFAEQAlX8AAO5yAAAAAAMARAD7f3VKAAADAAAA73+IUQAAAwAAAP9/AIAAAAMAEAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAADzfxFQAAADAC0A/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADACkA/38AgAAAAwAAAPt/dUoAAAMAAAD8f/xIAAADAEQA8n95UAAAAwBEAMV/C1gAAAMAAAD/fwCAAAADABgA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAzAP9/AIAAAAMAAAD/fwCAAAADAAAA+n+ZSwAAAwBCAP1/6kYAAAcAAAC9fUIAx3lEAIFxrEMAAAUAAADefkQAr3fWQgAAAwAAAOR/MFQAAAMAUQD/fwCAAAAFAAAAx35EANF3TVAAAAMARADaf8hVAAAFAEQANn8AAAN2AAAAAAMAAAD8f/xIAAADAAAA/38AgAAAAwACAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAANV/bFYAAAMAAgD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAwD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMABwD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAgD/fwCAAAADAAAA/n9eQwAAAwAAAP9/AIAAAAMAAAD+f15DAAADAAQA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAUA/38AgAAAAwAAAPx//EgAAAMAAAD3fwBOAAADAEEA/H/8SAAABQBBAGV/AACwdOJEAAADAAAA/H/8SAAAAwAAAP9/AIAAAAMABAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMABAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAwD/fwCAAAADAAAA/H/8SAAAAwAAAPh/UU0AAAMAAAD9f+pGAAADAE8A9X8jTwAAAwAAAO5/11EAAAAAAAAAAAAAAAA=",
+        "words" : [ {
+          "wordboxBounds" : "190,397,42,16,0.0",
+          "wordboxMainBody" : "190,397,42,16,0.0",
+          "text" : {
+            "content" : "(Your"
+          },
+          "indexEnd" : 5
+        }, {
+          "wordboxBounds" : "236,397,35,14,0.0",
+          "wordboxMainBody" : "236,397,35,14,0.0",
+          "text" : {
+            "content" : "File"
+          },
+          "indexBegin" : 6,
+          "indexEnd" : 15
+        }, {
+          "wordboxBounds" : "274,397,34,14,0.0",
+          "wordboxMainBody" : "274,397,34,14,0.0",
+          "text" : {
+            "content" : "No.:"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 18
+        }, {
+          "wordboxBounds" : "315,397,96,16,0.0",
+          "wordboxMainBody" : "315,397,96,16,0.0",
+          "text" : {
+            "content" : "1126134-332)"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 29
+        } ]
+      }, {
+        "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L10",
+        "coordinates" : "76,437;173,437;173,453;76,453",
+        "text" : {
+          "content" : "Dear Anna:"
+        },
+        "confMat" : "AAAAAAAAKwAAAGsA/////wEAAAADAAAA/38AgAAAAwAOAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAKQD/fwCAAAADAAAA3n80VQAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAlAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMANgD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD1fyNPAAADAEQA9X8jTwAAAwBEAPh/UU0AAAMAAAD1fyNPAAADAAAA/38AgAAAAwAAAP9/AIAAAAMACwD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADIA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAyAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADACUA/38AgAAAAwAAAP9/AIAAAAMAAAD1fyNPAAAFAAAARX9EAJ51G0IAAAUAAACsf1EAe278VQAAAwBRAPt/dUoAAAMAAADcf4FVAAAAAAAAAAAAAAAA",
+        "words" : [ {
+          "wordboxBounds" : "85,437,36,12,0.0",
+          "wordboxMainBody" : "85,437,36,12,0.0",
+          "text" : {
+            "content" : "Dear"
+          },
+          "indexEnd" : 4
+        }, {
+          "wordboxBounds" : "124,437,42,12,0.0",
+          "wordboxMainBody" : "124,437,42,12,0.0",
+          "text" : {
+            "content" : "Anna:"
+          },
+          "indexBegin" : 5,
+          "indexEnd" : 14
+        } ]
+      }, {
+        "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L11",
+        "coordinates" : "75,461;507,461;507,477;75,477",
+        "text" : {
+          "content" : "Thank you for your letter of April 26 re: payment of"
+        },
+        "confMat" : "AAAAAAAAuQAAAGsA/////wEAAAADAAAA/38AgAAAAwAeAP5/XkMAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAsAP9/AIAAAAMAAAD3fwBOAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAJQD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADIA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAC8A/38AgAAAAwAAAP5/XkMAAAMAAAD/fwCAAAADAAAA8H80UQAAAwBEAP5/XkMAAAMARADhf7lUAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAPQD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAMwD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAADdf1tVAAADADkA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAEQA7n/XUQAAAwBEAPx//EgAAAMAAAD9f+pGAAADAAAA/38AgAAAAwAqAP9/AIAAAAMAAAD+f15DAAADAAAA/38AgAAAAwAzAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMANgD/fwCAAAADAAAA/38AgAAAAwAAAP5/XkMAAAMARAD9f+pGAAADAEQA/H/8SAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAD0A/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADMA/38AgAAAAwAAAP5/XkMAAAMAAAD/fwCAAAADAAAA/n9eQwAAAwA5AP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAPV/I08AAAMANgD/fwCAAAADAAAA/38AgAAABQAAAHx+RAAEeQAAAAADAEQA/38AgAAABQAAAON+RACdd7k+AAADAAAA/38AgAAAAwAAAP9/AIAAAAMAMAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAKQD/fwCAAAADAAAA/n9eQwAAAwAAAP9/AIAAAAMAAAD+f15DAAADADgA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADgA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA+391SgAAAwApAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwA2AP9/AIAAAAMAAAD/fwCAAAADAAAA/n9eQwAAAwBEAOh/YFMAAAMARAD+f15DAAADAAAA8X/aUAAAAwAAAP5/XkMAAAMAMwD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD+f15DAAADACoA/38AgAAAAwAAAP9/AIAAAAUARABxfgAAJHkAAAAAAwBEAP5/XkMAAAUAAADkfUQAbnppLAAAAwAAAP9/AIAAAAMACwD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADQA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwA2AP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAABQAAAIx/LQBTcwAAAAADAC0A/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADAA/38AgAAAAwAAAP9/AIAAAAMAAADxf9pQAAADAEQA/H/8SAAAAwBEAMF/YVgAAAMAAAD/fwCAAAADAAAA/38AgAAAAwADAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAHAP5/XkMAAAMAAAD/fwCAAAADAAAA/38AgAAABQBEAIZ/AACRcwAAAAADAEQA+H9RTQAAAwAAAOt/q1IAAAMAAAD/fwCAAAADADYA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwApAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAUQDtfyFSAAADAAAA+391SgAAAwBEAPR/n08AAAMARAD6f5lLAAADAAAA+n+ZSwAAAwAAAP9/AIAAAAMANAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADACUA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAD0A/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAxAP9/AIAAAAMAAAD7f3VKAAADAAAA/38AgAAAAwAAAPN/EVAAAAMAKQD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAMgD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD8f/xIAAADADgA/38AgAAAAwAAAP9/AIAAAAMAAADpfyZTAAADAEQA/H/8SAAAAwBEAO9/iFEAAAMAAAD+f15DAAADAAAA/X/qRgAAAwAzAP9/AIAAAAMAAAD+f15DAAADAAAA/38AgAAABQAAAAl/KgD2dgAAAAADACoA/38AgAAAAwAAAP5/XkMAAAMAAAD/fwCAAAAAAAAAAAAAAAAA",
+        "words" : [ {
+          "wordboxBounds" : "84,462,48,14,0.0",
+          "wordboxMainBody" : "84,462,48,14,0.0",
+          "text" : {
+            "content" : "Thank"
+          },
+          "indexEnd" : 5
+        }, {
+          "wordboxBounds" : "132,463,28,14,0.0",
+          "wordboxMainBody" : "132,463,28,14,0.0",
+          "text" : {
+            "content" : "you"
+          },
+          "indexBegin" : 6,
+          "indexEnd" : 14
+        }, {
+          "wordboxBounds" : "165,461,27,14,0.0",
+          "wordboxMainBody" : "165,461,27,14,0.0",
+          "text" : {
+            "content" : "for"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 16
+        }, {
+          "wordboxBounds" : "191,463,43,13,0.0",
+          "wordboxMainBody" : "191,463,43,13,0.0",
+          "text" : {
+            "content" : "your"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 19
+        }, {
+          "wordboxBounds" : "236,461,51,15,0.0",
+          "wordboxMainBody" : "236,461,51,15,0.0",
+          "text" : {
+            "content" : "letter"
+          },
+          "indexBegin" : 19,
+          "indexEnd" : 44
+        }, {
+          "wordboxBounds" : "290,461,20,14,0.0",
+          "wordboxMainBody" : "290,461,20,14,0.0",
+          "text" : {
+            "content" : "of"
+          },
+          "indexBegin" : 50,
+          "indexEnd" : 96
+        }, {
+          "wordboxBounds" : "313,461,43,15,0.0",
+          "wordboxMainBody" : "313,461,43,15,0.0",
+          "text" : {
+            "content" : "April"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 100
+        }, {
+          "wordboxBounds" : "361,461,19,15,0.0",
+          "wordboxMainBody" : "361,461,19,15,0.0",
+          "text" : {
+            "content" : "26"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 101
+        }, {
+          "wordboxBounds" : "385,463,26,13,0.0",
+          "wordboxMainBody" : "385,463,26,13,0.0",
+          "text" : {
+            "content" : "re:"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 103
+        }, {
+          "wordboxBounds" : "416,461,60,16,0.0",
+          "wordboxMainBody" : "416,461,60,16,0.0",
+          "text" : {
+            "content" : "payment"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 109
+        }, {
+          "wordboxBounds" : "480,461,20,14,0.0",
+          "wordboxMainBody" : "480,461,20,14,0.0",
+          "text" : {
+            "content" : "of"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 110
+        } ]
+      }, {
+        "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L12",
+        "coordinates" : "72,474;506,474;506,490;72,490",
+        "text" : {
+          "content" : "annuity fees for the above-referenced patent matter."
+        },
+        "confMat" : "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",
+        "words" : [ {
+          "wordboxBounds" : "84,474,60,16,0.0",
+          "wordboxMainBody" : "84,474,60,16,0.0",
+          "text" : {
+            "content" : "annuity"
+          },
+          "indexEnd" : 7
+        }, {
+          "wordboxBounds" : "149,474,34,14,0.0",
+          "wordboxMainBody" : "149,474,34,14,0.0",
+          "text" : {
+            "content" : "fees"
+          },
+          "indexBegin" : 8,
+          "indexEnd" : 19
+        }, {
+          "wordboxBounds" : "188,474,25,15,0.0",
+          "wordboxMainBody" : "188,474,25,15,0.0",
+          "text" : {
+            "content" : "for"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 21
+        }, {
+          "wordboxBounds" : "219,474,24,14,0.0",
+          "wordboxMainBody" : "219,474,24,14,0.0",
+          "text" : {
+            "content" : "the"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 23
+        }, {
+          "wordboxBounds" : "251,474,130,15,0.0",
+          "wordboxMainBody" : "251,474,130,15,0.0",
+          "text" : {
+            "content" : "above-referenced"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 38
+        }, {
+          "wordboxBounds" : "385,474,49,14,0.0",
+          "wordboxMainBody" : "385,474,49,14,0.0",
+          "text" : {
+            "content" : "patent"
+          },
+          "indexBegin" : 38,
+          "indexEnd" : 82
+        }, {
+          "wordboxBounds" : "440,475,56,13,0.0",
+          "wordboxMainBody" : "440,475,56,13,0.0",
+          "text" : {
+            "content" : "matter."
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 88
+        } ]
+      }, {
+        "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L13",
+        "coordinates" : "74,487;499,487;499,504;74,504",
+        "text" : {
+          "content" : "Please proceed with payment of the annuities at the"
+        },
+        "confMat" : "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",
+        "words" : [ {
+          "wordboxBounds" : "84,487,50,13,0.0",
+          "wordboxMainBody" : "84,487,50,13,0.0",
+          "text" : {
+            "content" : "Please"
+          },
+          "indexEnd" : 6
+        }, {
+          "wordboxBounds" : "143,487,55,14,0.0",
+          "wordboxMainBody" : "143,487,55,14,0.0",
+          "text" : {
+            "content" : "proceed"
+          },
+          "indexBegin" : 7,
+          "indexEnd" : 20
+        }, {
+          "wordboxBounds" : "203,487,36,15,0.0",
+          "wordboxMainBody" : "203,487,36,15,0.0",
+          "text" : {
+            "content" : "with"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 23
+        }, {
+          "wordboxBounds" : "243,487,54,14,0.0",
+          "wordboxMainBody" : "243,487,54,14,0.0",
+          "text" : {
+            "content" : "payment"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 29
+        }, {
+          "wordboxBounds" : "305,487,16,14,0.0",
+          "wordboxMainBody" : "305,487,16,14,0.0",
+          "text" : {
+            "content" : "of"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 30
+        }, {
+          "wordboxBounds" : "329,487,28,15,0.0",
+          "wordboxMainBody" : "329,487,28,15,0.0",
+          "text" : {
+            "content" : "the"
+          },
+          "indexBegin" : 31,
+          "indexEnd" : 64
+        }, {
+          "wordboxBounds" : "361,487,74,15,0.0",
+          "wordboxMainBody" : "361,487,74,15,0.0",
+          "text" : {
+            "content" : "annuities"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 72
+        }, {
+          "wordboxBounds" : "440,488,20,12,0.0",
+          "wordboxMainBody" : "440,488,20,12,0.0",
+          "text" : {
+            "content" : "at"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 73
+        }, {
+          "wordboxBounds" : "464,487,28,13,0.0",
+          "wordboxMainBody" : "464,487,28,13,0.0",
+          "text" : {
+            "content" : "the"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 75
+        } ]
+      }, {
+        "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L14",
+        "coordinates" : "75,500;423,500;423,518;75,518",
+        "text" : {
+          "content" : "approximate amounts listed in your letter."
+        },
+        "confMat" : "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",
+        "words" : [ {
+          "wordboxBounds" : "84,500,91,16,0.0",
+          "wordboxMainBody" : "84,500,91,16,0.0",
+          "text" : {
+            "content" : "approximate"
+          },
+          "indexEnd" : 11
+        }, {
+          "wordboxBounds" : "180,500,59,14,0.0",
+          "wordboxMainBody" : "180,500,59,14,0.0",
+          "text" : {
+            "content" : "amounts"
+          },
+          "indexBegin" : 12,
+          "indexEnd" : 30
+        }, {
+          "wordboxBounds" : "243,500,51,14,0.0",
+          "wordboxMainBody" : "243,500,51,14,0.0",
+          "text" : {
+            "content" : "listed"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 35
+        }, {
+          "wordboxBounds" : "299,500,19,14,0.0",
+          "wordboxMainBody" : "299,500,19,14,0.0",
+          "text" : {
+            "content" : "in"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 36
+        }, {
+          "wordboxBounds" : "321,501,36,15,0.0",
+          "wordboxMainBody" : "321,501,36,15,0.0",
+          "text" : {
+            "content" : "your"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 39
+        }, {
+          "wordboxBounds" : "361,500,57,14,0.0",
+          "wordboxMainBody" : "361,500,57,14,0.0",
+          "text" : {
+            "content" : "letter."
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 45
+        } ]
+      }, {
+        "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L15",
+        "coordinates" : "75,525;449,525;449,543;75,543",
+        "text" : {
+          "content" : "Thank you for your assistance in this matter."
+        },
+        "confMat" : "AAAAAAAAqwAAAGsA/////wEAAAADAAAA/38AgAAAAwAeAP5/XkMAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMALAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADACUA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADIA/38AgAAAAwAAAP5/XkMAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAvAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMARAD2f5lOAAADAEQA+n+ZSwAAAwAAAPp/mUsAAAMAAAD/fwCAAAADAD0A/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAzAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAOQD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAUARACmfQAA33oyPgAAAwBEAP9/AIAAAAUAAABMf0QAeHUAAAAAAwAAAP9/AIAAAAMAKgD+f15DAAADACoA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADMA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwA2AP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwBEAOV//1MAAAMARAD+f15DAAADAAAA+n+ZSwAAAwAAAP9/AIAAAAMAAAD+f15DAAADAD0A/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADMA/38AgAAAAwAAAP5/XkMAAAMAAAD/fwCAAAADAAAA/n9eQwAAAwA5AP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMANgD/fwCAAAADAAAA/38AgAAAAwAAAP1/6kYAAAMARAD+f15DAAADAEQA4H/jVAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADACUA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwA3AP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMANwD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD+f15DAAADAC0A/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADcA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwA4AP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAJQD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAMgD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADACcA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwApAP9/AIAAAAMAAAD+f15DAAADAAAA/38AgAAAAwAAANl/61UAAAMARAD/fwCAAAAFAEQAbn4AACx5AAAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAtAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAyAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP5/XkMAAAMARAD9f+pGAAADAEQA+n+ZSwAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADgA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAAFACwA9nwAAOF7AAAAAAMALAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAC0A/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADcA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAAFAEQArH8AALZxAAAAAAMARAD/fwCAAAADAAAA0X/hVgAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADEA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAAFACUAgnwAAGJ8pz4AAAMAJQD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAOAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADgA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwApAP9/AIAAAAMAAAD+f15DAAADAAAA/38AgAAAAwAAAP9/AIAAAAMANgD/fwCAAAADAAAA/38AgAAAAwAAAP5/XkMAAAMAAAD6f5lLAAADAEIA6X8mUwAAAwAAAPt/dUoAAAMAAAD+f15DAAAAAAAAAAAAAAAA",
+        "words" : [ {
+          "wordboxBounds" : "84,526,44,14,0.0",
+          "wordboxMainBody" : "84,526,44,14,0.0",
+          "text" : {
+            "content" : "Thank"
+          },
+          "indexEnd" : 5
+        }, {
+          "wordboxBounds" : "132,528,28,14,0.0",
+          "wordboxMainBody" : "132,528,28,14,0.0",
+          "text" : {
+            "content" : "you"
+          },
+          "indexBegin" : 6,
+          "indexEnd" : 14
+        }, {
+          "wordboxBounds" : "165,526,27,13,0.0",
+          "wordboxMainBody" : "165,526,27,13,0.0",
+          "text" : {
+            "content" : "for"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 16
+        }, {
+          "wordboxBounds" : "195,527,36,15,0.0",
+          "wordboxMainBody" : "195,527,36,15,0.0",
+          "text" : {
+            "content" : "your"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 19
+        }, {
+          "wordboxBounds" : "235,525,83,14,0.0",
+          "wordboxMainBody" : "235,525,83,14,0.0",
+          "text" : {
+            "content" : "assistance"
+          },
+          "indexBegin" : 19,
+          "indexEnd" : 48
+        }, {
+          "wordboxBounds" : "322,525,20,14,0.0",
+          "wordboxMainBody" : "322,525,20,14,0.0",
+          "text" : {
+            "content" : "in"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 49
+        }, {
+          "wordboxBounds" : "345,525,35,15,0.0",
+          "wordboxMainBody" : "345,525,35,15,0.0",
+          "text" : {
+            "content" : "this"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 52
+        }, {
+          "wordboxBounds" : "384,526,58,13,0.0",
+          "wordboxMainBody" : "384,526,58,13,0.0",
+          "text" : {
+            "content" : "matter."
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 58
+        } ]
+      }, {
+        "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L16",
+        "coordinates" : "72,551;174,551;174,569;72,569",
+        "text" : {
+          "content" : "Sincerely,"
+        },
+        "confMat" : "AAAAAAAAJAAAAGsA/////wEAAAADAAAA/38AgAAAAwAdAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAPx//EgAAAMALQD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAMgD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAUAAAD+ficAKHdPOwAAAwAnAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwApAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMANgD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAKQD/fwCAAAADAAAA9n+ZTgAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADAA/38AgAAAAwAAAP5/XkMAAAMAAAD/fwCAAAADAAAA/38AgAAAAwA9AP9/AIAAAAMAAAD/fwCAAAADAAAA+X+HTAAABQBDAA1/AAB5duhRAAADAEMA1H+KVgAAAwAAAP5/XkMAAAAAAAAAAAAAAAA=",
+        "words" : [ {
+          "wordboxBounds" : "84,551,82,18,0.0",
+          "wordboxMainBody" : "84,551,82,18,0.0",
+          "text" : {
+            "content" : "Sincerely,"
+          },
+          "indexEnd" : 10
+        } ]
+      }, {
+        "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L17",
+        "coordinates" : "74,559;300,559;300,603;74,603",
+        "text" : {
+          "content" : "Hallie S. Jemp"
+        },
+        "confMat" : "AAAAAAAALgAAAGsA/////wEAAAADAAAA/H/8SAAAAwAAAP1/6kYAAAMAAAD+f15DAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwASAPl/h0wAAAMAAAD+f15DAAADAAAA5n/NUwAAAwAAAPl/h0wAAAMAJQD+f15DAAADAAAA/n9eQwAAAwAAAP1/6kYAAAMAMAD3fwBOAAADAAAA/38AgAAAAwAwAL9/iVgAAAMAAAD7f3VKAAAFAC0AuX8AALJulFMAAAUAAACmfC0AE3yzUgAACQApAGF7LQAHewAA1HQnAAtxxVgAAAUAAADtfkQAonbeVQAABQBEAN9+AAA9dydTAAADAAAAwn9MWAAAAwAAAPp/mUsAAAcAHQCVfxYABW0TABxsr1YAAAMAAADtfyFSAAAFAEIAhH4AAOV3XFgAAAcARAB2fAAAtXtCANNwelIAAAUAAACCf0QAj3MuSgAADwAUADZ/DgDVbB0ARGwRAPdpEwDvaSMA0WkkACdpnVgAAAMAAAD+f15DAAADAAAA/n9eQwAACQApAJl8AACZei0AOHI5AD1ufFcAAAMAAADhf7lUAAADAAAA/n9eQwAAAwAAAP5/XkMAAAMAAAD8f/xIAAADADEA+391SgAAAwAAAP9/AIAAAAMAAAD+f15DAAAFAAAADH40AOp5bVEAAAMANADyf3lQAAADAAAA7H9oUgAAAwAAAPl/h0wAAAMAAADzfxFQAAAAAAAAAAAAAAAA",
+        "words" : [ {
+          "wordboxBounds" : "76,565,104,38,0.0",
+          "wordboxMainBody" : "76,565,104,38,0.0",
+          "text" : {
+            "content" : "Hallie"
+          },
+          "indexEnd" : 6
+        }, {
+          "wordboxBounds" : "182,563,33,36,0.0",
+          "wordboxMainBody" : "182,563,33,36,0.0",
+          "text" : {
+            "content" : "S."
+          },
+          "indexBegin" : 7,
+          "indexEnd" : 15
+        }, {
+          "wordboxBounds" : "215,571,78,31,0.0",
+          "wordboxMainBody" : "215,571,78,31,0.0",
+          "text" : {
+            "content" : "Jemp"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 18
+        } ]
+      }, {
+        "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L18",
+        "coordinates" : "76,597;238,597;238,616;76,616",
+        "text" : {
+          "content" : "Hallie S. Jessup/"
+        },
+        "confMat" : "AAAAAAAARQAAAGsA/////wEAAAADAAAA/38AgAAAAwASAO9/iFEAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAJQD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAwAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAABQAAAAx/LQDldnA8AAADAC0A/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADACkA/38AgAAAAwAAAPt/dUoAAAMAAAD/fwCAAAAFAAAAUX9EAFF1JjoAAAMARAD9f+pGAAAFAAAALX1EAJl7AAAAAAMAAAD/fwCAAAADAB0A/n9eQwAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/X/qRgAAAwBCAP9/AIAAAAUAAAB0f0IAHnQzSQAABQBEAPR+AABVd008AAADAEQA+X+HTAAABQAAAC5+RADPeSwyAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAFAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAKQD/fwCAAAADAAAA/H/8SAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADcA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwA3AP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwA5AP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAUANACpfysAmG0nVwAAAwAAAP9/AIAAAAMAAAD+f15DAAADAAAA8H80UQAAAwAAANx/gVUAAAMAAADkfzBUAAADAAAA8X/aUAAAAwAAANR/ilYAAAUAPwCTfgAAu3jDQQAAAwA/ANx/gVUAAAMAAADsf2hSAAADAAAA/38AgAAAAwAAAP9/AIAAAAAAAAAAAAAAAAA=",
+        "words" : [ {
+          "wordboxBounds" : "81,598,55,17,0.0",
+          "wordboxMainBody" : "81,598,55,17,0.0",
+          "text" : {
+            "content" : "Hallie"
+          },
+          "indexEnd" : 6
+        }, {
+          "wordboxBounds" : "140,602,17,14,0.0",
+          "wordboxMainBody" : "140,602,17,14,0.0",
+          "text" : {
+            "content" : "S."
+          },
+          "indexBegin" : 7,
+          "indexEnd" : 15
+        }, {
+          "wordboxBounds" : "163,597,72,19,0.0",
+          "wordboxMainBody" : "163,597,72,19,0.0",
+          "text" : {
+            "content" : "Jessup/"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 21
+        } ]
+      }, {
+        "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L19",
+        "coordinates" : "74,596;286,596;286,631;74,631",
+        "text" : {
+          "content" : "Research Administrator"
+        },
+        "confMat" : "AAAAAAAAQwAAAGsA/////wEAAAADAAAA/38AgAAAAwAcAP1/6kYAAAMAAAD/fwCAAAADAAAA/H/8SAAAAwApAP9/AIAAAAMAAAD/fwCAAAADADcA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADACkA+391SgAAAwAAAP9/AIAAAAMAAAD/fwCAAAADACUA/X/qRgAAAwAAAP9/AIAAAAMANgD/fwCAAAADAAAA/n9eQwAAAwAAAP9/AIAAAAMAJwD/fwCAAAADAAAA/n9eQwAAAwAAAP1/6kYAAAMALAD/fwCAAAADAAAA/38AgAAABQBEAPZ9AABLegAAAAADAEQA/H/8SAAAAwAAAOB/41QAAAMACwD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAKAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAMQD/fwCAAAADAAAA/38AgAAAAwAtAP9/AIAAAAMAAAD+f15DAAADADIA/38AgAAAAwAAAMl/r1cAAAMAAAD/fwCAAAAFAAAAoX8tAFRyAAAAAAMALQD/fwCAAAADAAAA/38AgAAAAwA3AP9/AIAAAAMAAAD/fwCAAAADAAAA/n9eQwAAAwA4AP9/AIAAAAMAAAD+f15DAAADADYA/38AgAAAAwAAAPx//EgAAAMAAAD/fwCAAAADACUA/n9eQwAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADgA/38AgAAAAwAAAP5/XkMAAAMAMwDNf01XAAADAAAA/X/qRgAAAwAAAPh/UU0AAAMANgD1fyNPAAADAAAA439gVAAABQAAALJ/RAA1cYNGAAADAAAAy39/VwAAAwAAAPB/NFEAAAMAAAD1fyNPAAADAAAA9n+ZTgAAAwAAAPF/2lAAAAMAAAD5f4dMAAADAAAA938ATgAAAAAAAAAAAAAAAA==",
+        "words" : [ {
+          "wordboxBounds" : "83,614,69,13,0.0",
+          "wordboxMainBody" : "83,614,69,13,0.0",
+          "text" : {
+            "content" : "Research"
+          },
+          "indexEnd" : 8
+        }, {
+          "wordboxBounds" : "155,596,128,31,0.0",
+          "wordboxMainBody" : "155,596,128,31,0.0",
+          "text" : {
+            "content" : "Administrator"
+          },
+          "indexBegin" : 9,
+          "indexEnd" : 30
+        } ]
+      }, {
+        "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L20",
+        "coordinates" : "76,665;262,665;262,681;76,681",
+        "text" : {
+          "content" : "Xc: Dr. A. W. Spears"
+        },
+        "confMat" : "AAAAAAAATAAAAGsA/////wEAAAADAAAA/38AgAAAAwAiAOR/MFQAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAJwDgf+NUAAADAAAA/38AgAAAAwAAAPZ/mU4AAAMAAADuf9dRAAADAFEA838RUAAAAwAAAPJ/eVAAAAUAAAABf0QADne3RwAAAwBEANF/4VYAAAUARAB5fwAAD3RrNAAAAwAAAOR/MFQAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAA4A/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwA2AP9/AIAAAAMAAAD+f15DAAADAAAA/38AgAAAAwAAAOp/6lIAAAMAQgD/fwCAAAAFAAAAjn9CADByvFIAAAMARADKf5dXAAADAEQA3X9bVQAABQAAALN/RABMcQAAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMACwD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAADKf5dXAAADAEIA/38AgAAABQAAAGx/RACXc3FTAAADAEQA7H9oUgAABQBEAP9+AAAkd0k3AAADAAAA/38AgAAAAwAAAP9/AIAAAAMAIQD+f15DAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAEIA/38AgAAABQAAAMp8QgAOfD5JAAAFAEQA0H4AAOV3UEQAAAMARADyf3lQAAAFAAAAfX5EAAF5AAAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAdAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwA0AP9/AIAAAAMAAAD+f15DAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAKQD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAJQD/fwCAAAADAAAA/n9eQwAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADYA/38AgAAAAwAAAP1/6kYAAAMAAAD+f15DAAADAAAA/X/qRgAAAwA3AP1/6kYAAAMAAAD7f3VKAAADAAAA+391SgAAAAAAAAAAAAAAAA==",
+        "words" : [ {
+          "wordboxBounds" : "83,665,26,13,0.0",
+          "wordboxMainBody" : "83,665,26,13,0.0",
+          "text" : {
+            "content" : "Xc:"
+          },
+          "indexEnd" : 3
+        }, {
+          "wordboxBounds" : "123,665,26,14,0.0",
+          "wordboxMainBody" : "123,665,26,14,0.0",
+          "text" : {
+            "content" : "Dr."
+          },
+          "indexBegin" : 4,
+          "indexEnd" : 10
+        }, {
+          "wordboxBounds" : "155,665,18,14,0.0",
+          "wordboxMainBody" : "155,665,18,14,0.0",
+          "text" : {
+            "content" : "A."
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 11
+        }, {
+          "wordboxBounds" : "178,665,19,14,0.0",
+          "wordboxMainBody" : "178,665,19,14,0.0",
+          "text" : {
+            "content" : "W."
+          },
+          "indexBegin" : 11,
+          "indexEnd" : 24
+        }, {
+          "wordboxBounds" : "203,665,51,15,0.0",
+          "wordboxMainBody" : "203,665,51,15,0.0",
+          "text" : {
+            "content" : "Spears"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 29
+        } ]
+      }, {
+        "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L21",
+        "coordinates" : "116,678;239,678;239,691;116,691",
+        "text" : {
+          "content" : "Dr. V. Norman"
+        },
+        "confMat" : "AAAAAAAAMAAAAGsA/////wEAAAADAAAA/38AgAAAAwAOAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMANgD/fwCAAAADAAAA/n9eQwAAAwAAAP9/AIAAAAUAAACDf0IAmnObRgAAAwBCAP9/AIAAAAcAAAAUf0IAcHREAIVx0z8AAAMARADSf8VWAAAFAEQAl38AANNyAAAAAAMAAADuf9dRAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAIAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAUAQgAtfwAAOXYAAAAAAwBCAP9/AIAAAAUAAAC9fUQAlnoMUAAAAwBEAPV/I08AAAUARAB3fwAAInQAAAAAAwAAAPJ/eVAAAAMAAAD/fwCAAAADABgA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAzAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP5/XkMAAAMANgD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAADhf7lUAAADADEA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADACUA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADIA/n9eQwAAAwAAAP1/6kYAAAMAAAD9f+pGAAADAAAA+X+HTAAAAAAAAAAAAAAAAA==",
+        "words" : [ {
+          "wordboxBounds" : "123,678,26,13,0.0",
+          "wordboxMainBody" : "123,678,26,13,0.0",
+          "text" : {
+            "content" : "Dr."
+          },
+          "indexEnd" : 3
+        }, {
+          "wordboxBounds" : "155,678,18,13,0.0",
+          "wordboxMainBody" : "155,678,18,13,0.0",
+          "text" : {
+            "content" : "V."
+          },
+          "indexBegin" : 4,
+          "indexEnd" : 9
+        }, {
+          "wordboxBounds" : "178,678,53,13,0.0",
+          "wordboxMainBody" : "178,678,53,13,0.0",
+          "text" : {
+            "content" : "Norman"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 14
+        } ]
+      }, {
+        "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L22",
+        "coordinates" : "111,690;276,690;276,706;111,706",
+        "text" : {
+          "content" : "Mr. R. Goldbrenner"
+        },
+        "confMat" : "AAAAAAAARgAAAGsA/////wEAAAADAAAA/38AgAAAAwAXAP9/AIAAAAMAAAD+f15DAAADAAAA/38AgAAAAwAAAP9/AIAAAAUAAAAQfjYAFHoAAAAAAwA2AP9/AIAAAAMAAAD/fwCAAAADAAAA/n9eQwAABQAAAE5/QgBbdaFFAAADAEIA/38AgAAABQAAAJl/RACscUlSAAADAEQAy39/VwAABQBEAI1/AABJcwAAAAADAAAA2H8MVgAAAwAAAP9/AIAAAAMAAAD/fwCAAAADABwA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA+X+HTAAAAwBCAP9/AIAAAAUAAACUf0QA33GtUgAAAwBEAPZ/mU4AAAMARADTf6hWAAADAAAA+n+ZSwAAAwAAAP9/AIAAAAMAAAD/fwCAAAADABEA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAzAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAMAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAKAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADACYA/X/qRgAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwA2AP9/AIAAAAMAAAD+f15DAAADAAAA/38AgAAAAwAAAP1/6kYAAAMAKQD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAMgD+f15DAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADIA/n9eQwAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/X/qRgAAAwApAP5/XkMAAAMAAADvf4hRAAADAAAA/38AgAAAAwAAAPp/mUsAAAMANgD+f15DAAADAAAA+391SgAAAwAAAPt/dUoAAAMAAAD6f5lLAAAAAAAAAAAAAAAA",
+        "words" : [ {
+          "wordboxBounds" : "122,690,27,13,0.0",
+          "wordboxMainBody" : "122,690,27,13,0.0",
+          "text" : {
+            "content" : "Mr."
+          },
+          "indexEnd" : 3
+        }, {
+          "wordboxBounds" : "155,690,18,13,0.0",
+          "wordboxMainBody" : "155,690,18,13,0.0",
+          "text" : {
+            "content" : "R."
+          },
+          "indexBegin" : 4,
+          "indexEnd" : 9
+        }, {
+          "wordboxBounds" : "178,690,92,14,0.0",
+          "wordboxMainBody" : "178,690,92,14,0.0",
+          "text" : {
+            "content" : "Goldbrenner"
+          },
+          "indexBegin" : -1,
+          "indexEnd" : 19
+        } ]
+      }, {
+        "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L23",
+        "coordinates" : "74,728;115,728;115,743;74,743",
+        "text" : {
+          "content" : "HJ/"
+        },
+        "confMat" : "AAAAAAAADAAAAGsA/////wEAAAADAAAA/38AgAAAAwASAO9/iFEAAAMAAAD+f15DAAADAAAA/n9eQwAAAwAAAP9/AIAAAAMAFAD9f+pGAAADAAAA838RUAAABQAAAGJ/RADLdGpDAAADAD8A0n/FVgAAAwA/APp/mUsAAAMAAAD5f4dMAAADAAAA+391SgAAAAAAAAAAAAAAAA==",
+        "words" : [ {
+          "wordboxBounds" : "83,728,28,13,0.0",
+          "wordboxMainBody" : "83,728,28,13,0.0",
+          "text" : {
+            "content" : "HJ/"
+          },
+          "indexEnd" : 3
+        } ]
+      } ]
+    }, {
+      "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B1",
+      "coordinates" : "598,776;598,860;617,860;617,776",
+      "angleMod90" : {
+        "content" : 4.71238898038469
+      },
+      "lines" : [ {
+        "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B1.L0",
+        "coordinates" : "598,776;618,776;618,861;598,861",
+        "text" : {
+          "content" : "CE86IO8S"
+        },
+        "confMat" : "AAAAAAAAGAAAAGsA/////wEAAAADAAAA/38AgAAAAwANAPZ/mU4AAAMAAAD/fwCAAAADAAAA/38AgAAAAwAPAPR/n08AAAMAAAD/fwCAAAADAAAA/38AgAAAAwAJANZ/TVYAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAHAPZ/mU4AAAMAAAD/fwCAAAADAAAA/38AgAAABQATAHR/HgAgcw5UAAADAAAA/38AgAAABQAZAOd8AQDbe4JPAAADAAAA/38AgAAAAwAAAP9/AIAAAAcACQC+fB0ASHsKAOtwFFQAAAMAAAD/fwCAAAADAAAA/38AgAAABQAdAO1+CQDrdtVTAAADAAAA/X/qRgAAAwAAAPp/mUsAAAAAAAAAAAAAAAA=",
+        "words" : [ {
+          "wordboxBounds" : "598,779,18,82,0.0",
+          "wordboxMainBody" : "598,779,18,82,0.0",
+          "text" : {
+            "content" : "CE86IO8S"
+          },
+          "indexEnd" : 8
+        } ]
+      } ]
+    } ],
+    "lines" : [ {
+      "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L0",
+      "coordinates" : "555,146;664,146;664,179;555,179",
+      "text" : {
+        "content" : "MAY 15 1995"
+      },
+      "confMat" : "AAAAAAAAFAAAAGsA/////wEAAAADABcA+n+ZSwAABQAAAC9/FwAFdjpMAAADAAAA838RUAAAAwALAPh/UU0AAAMAIwD4f1FNAAADAAAA1H+KVgAAAwBEAPx//EgAAAcAAABKfkQADngCAG9ylEMAAAMAAgD/fwCAAAAFAAAAO39EAB51/lMAAAUAAABwfgYA23iBUgAAAwAGAP5/XkMAAAUARABOfwAApXNAVwAABwAAAL98AgAleUQAwHdoTwAAAwACAPZ/mU4AAAMACgD0f59PAAAFAAAAYn4KACZ5TE8AAAkACgC6fgAA1HQBAPhuCQDubh5XAAAHAAYAAX4AAJB4BwDzcRhVAAAFAAAAuX8GAIBu7lMAAAAAAAAAAAAAAAA=",
+      "words" : [ {
+        "wordboxBounds" : "568,147,30,21,0.0",
+        "wordboxMainBody" : "568,147,30,21,0.0",
+        "text" : {
+          "content" : "MAY"
+        },
+        "indexEnd" : 3
+      }, {
+        "wordboxBounds" : "600,151,25,21,0.0",
+        "wordboxMainBody" : "600,151,25,21,0.0",
+        "text" : {
+          "content" : "15"
+        },
+        "indexBegin" : 4,
+        "indexEnd" : 9
+      }, {
+        "wordboxBounds" : "627,155,30,21,0.0",
+        "wordboxMainBody" : "627,155,30,21,0.0",
+        "text" : {
+          "content" : "1995"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 12
+      } ]
+    }, {
+      "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L1",
+      "coordinates" : "60,156;234,156;234,216;60,216",
+      "text" : {
+        "content" : "Lorillard"
+      },
+      "confMat" : "AAAAAAAAGgAAAGsA/////wEAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAFwAWAGx6EABadRoAqHQNAFp0HQAQcyoAC3MRAO5yDABIaSMAMGkVAB9pHAApaKtYAAADAAAA/38AgAAABQAzAJh/KQAKcY9UAAADAAAA/38AgAAAAwA2AP5/XkMAAAMAAAD8f/xIAAAFAAAAr38tAIJxKzwAAAMALQD+f15DAAADADAA/n9eQwAAAwAAAP5/XkMAAAMAMAD/fwCAAAADAAAA+X+HTAAAAwAAAP5/XkMAAAMAJQD+f15DAAADAAAA/38AgAAAAwAAAO5/11EAAAMANgD+f15DAAADAAAA/n9eQwAAAwAoAP5/XkMAAAMAAAD+f15DAAADAAAA/n9eQwAAAwAAAPp/mUsAAAAAAAAAAAAAAAA=",
+      "words" : [ {
+        "wordboxBounds" : "60,156,174,60,0.0",
+        "wordboxMainBody" : "60,156,174,60,0.0",
+        "text" : {
+          "content" : "Lorillard"
+        },
+        "indexEnd" : 9
+      } ]
+    }, {
+      "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L2",
+      "coordinates" : "191,205;629,205;629,224;191,224",
+      "text" : {
+        "content" : "MPANY Research Center, 420 Encish Strect, P.O Box 21688, Greensboro, North Carolina 27420-1688"
+      },
+      "confMat" : "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",
+      "words" : [ {
+        "wordboxBounds" : "191,205,40,14,0.0",
+        "wordboxMainBody" : "191,205,40,14,0.0",
+        "text" : {
+          "content" : "MPANY"
+        },
+        "indexEnd" : 5
+      }, {
+        "wordboxBounds" : "238,207,37,12,0.0",
+        "wordboxMainBody" : "238,207,37,12,0.0",
+        "text" : {
+          "content" : "Research"
+        },
+        "indexBegin" : 6,
+        "indexEnd" : 19
+      }, {
+        "wordboxBounds" : "281,207,25,14,0.0",
+        "wordboxMainBody" : "281,207,25,14,0.0",
+        "text" : {
+          "content" : "Center,"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 25
+      }, {
+        "wordboxBounds" : "311,208,15,12,0.0",
+        "wordboxMainBody" : "311,208,15,12,0.0",
+        "text" : {
+          "content" : "420"
+        },
+        "indexBegin" : 86,
+        "indexEnd" : 114
+      }, {
+        "wordboxBounds" : "331,208,26,14,0.0",
+        "wordboxMainBody" : "331,208,26,14,0.0",
+        "text" : {
+          "content" : "Encish"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 119
+      }, {
+        "wordboxBounds" : "361,208,25,12,0.0",
+        "wordboxMainBody" : "361,208,25,12,0.0",
+        "text" : {
+          "content" : "Strect,"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 125
+      }, {
+        "wordboxBounds" : "391,208,13,11,0.0",
+        "wordboxMainBody" : "391,208,13,11,0.0",
+        "text" : {
+          "content" : "P.O"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 127
+      }, {
+        "wordboxBounds" : "410,208,13,11,0.0",
+        "wordboxMainBody" : "410,208,13,11,0.0",
+        "text" : {
+          "content" : "Box"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 129
+      }, {
+        "wordboxBounds" : "429,208,26,12,0.0",
+        "wordboxMainBody" : "429,208,26,12,0.0",
+        "text" : {
+          "content" : "21688,"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 134
+      }, {
+        "wordboxBounds" : "460,208,46,12,0.0",
+        "wordboxMainBody" : "460,208,46,12,0.0",
+        "text" : {
+          "content" : "Greensboro,"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 144
+      }, {
+        "wordboxBounds" : "511,209,18,10,0.0",
+        "wordboxMainBody" : "511,209,18,10,0.0",
+        "text" : {
+          "content" : "North"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 148
+      }, {
+        "wordboxBounds" : "535,208,31,12,0.0",
+        "wordboxMainBody" : "535,208,31,12,0.0",
+        "text" : {
+          "content" : "Carolina"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 155
+      }, {
+        "wordboxBounds" : "572,209,42,11,0.0",
+        "wordboxMainBody" : "572,209,42,11,0.0",
+        "text" : {
+          "content" : "27420-1688"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 164
+      } ]
+    }, {
+      "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L3",
+      "coordinates" : "390,232;507,232;507,250;390,250",
+      "text" : {
+        "content" : "May 12, 1995"
+      },
+      "confMat" : "AAAAAAAAJwAAAGsA/////wEAAAADAAAA/n9eQwAAAwAXAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAlAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwA9AP9/AIAAAAMAAAD9f+pGAAADAAAA/38AgAAAAwBEAOF/uVQAAAMARADxf9pQAAADAAAA1X9sVgAAAwAAAP9/AIAAAAMAAgD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAwD/fwCAAAADAAAA/X/qRgAAAwAAAOV//1MAAAMAQwD5f4dMAAAFAAAAmX5DAHt40k8AAAUARADSfQAAjHrqRQAAAwBEAM9/GFcAAAMAAADdf1tVAAADAAAA/38AgAAABQAAAF5/AgDvdFU/AAADAAIA/38AgAAAAwAAAP9/AIAAAAMACgD/fwCAAAADAAAA+391SgAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAoA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAYA/38AgAAAAwAAAP9/AIAAAAMAAAD+f15DAAAAAAAAAAAAAAAA",
+      "words" : [ {
+        "wordboxBounds" : "401,233,28,16,0.0",
+        "wordboxMainBody" : "401,233,28,16,0.0",
+        "text" : {
+          "content" : "May"
+        },
+        "indexEnd" : 3
+      }, {
+        "wordboxBounds" : "435,233,24,15,0.0",
+        "wordboxMainBody" : "435,233,24,15,0.0",
+        "text" : {
+          "content" : "12,"
+        },
+        "indexBegin" : 4,
+        "indexEnd" : 10
+      }, {
+        "wordboxBounds" : "467,232,33,14,0.0",
+        "wordboxMainBody" : "467,232,33,14,0.0",
+        "text" : {
+          "content" : "1995"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 13
+      } ]
+    }, {
+      "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L4",
+      "coordinates" : "74,322;199,322;199,336;74,336",
+      "text" : {
+        "content" : "Ms. Anna Tsui"
+      },
+      "confMat" : "AAAAAAAAMQAAAGsA/////wEAAAADAAAA/38AgAAAAwAXAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMANwD9f+pGAAADAAAA/38AgAAAAwAAAP5/XkMAAAUAAACxf0IAP3F9RwAAAwBCAP9/AIAAAAMAAAC/f4lYAAADAEQA8n95UAAABQBEAI5/AAA7cwAAAAADAAAA+391SgAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAsA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADIA/38AgAAAAwAAAP5/XkMAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAyAP9/AIAAAAMAAAD+f15DAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAJQD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAUAAAA4f0QA+HUAAAAAAwBEAP5/XkMAAAUARAC2fQAAw3pAPgAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAB4A/n9eQwAAAwAAAP5/XkMAAAMAAAD/fwCAAAADADcA/X/qRgAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADkA/38AgAAAAwAAAPp/mUsAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAtAOZ/zVMAAAMAAADsf2hSAAADAAAA/X/qRgAAAwAAAPh/UU0AAAAAAAAAAAAAAAA=",
+      "words" : [ {
+        "wordboxBounds" : "85,322,26,14,0.0",
+        "wordboxMainBody" : "85,322,26,14,0.0",
+        "text" : {
+          "content" : "Ms."
+        },
+        "indexEnd" : 3
+      }, {
+        "wordboxBounds" : "117,322,36,14,0.0",
+        "wordboxMainBody" : "117,322,36,14,0.0",
+        "text" : {
+          "content" : "Anna"
+        },
+        "indexBegin" : 4,
+        "indexEnd" : 11
+      }, {
+        "wordboxBounds" : "157,322,35,14,0.0",
+        "wordboxMainBody" : "157,322,35,14,0.0",
+        "text" : {
+          "content" : "Tsui"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 14
+      } ]
+    }, {
+      "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L5",
+      "coordinates" : "77,335;190,335;190,350;77,350",
+      "text" : {
+        "content" : "White & Case"
+      },
+      "confMat" : "AAAAAAAAMgAAAGsA/////wEAAAADAAAA/38AgAAAAwAhAPp/mUsAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMALAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA8H80UQAAAwAtAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwA4AP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAUAAABAfykAwXUgPwAAAwApAP5/XkMAAAMAAAD+f15DAAADAAAA/X/qRgAABQBEACt+AADWee4yAAADAEQA+X+HTAAABQAAAH1+RAD/eEA+AAADAAAA/38AgAAAAwAAAP9/AIAAAAMATAD9f+pGAAADAAAA/38AgAAAAwAAANN/qFYAAAMARADgf+NUAAADAEQA8X/aUAAABQAAAKl/RADocQAAAAADAAAA/38AgAAAAwANAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADACUA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwA3AP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAANp/yFUAAAMAKQD+f15DAAADAAAA938ATgAAAwAAAP1/6kYAAAMAAAD5f4dMAAAAAAAAAAAAAAAA",
+      "words" : [ {
+        "wordboxBounds" : "86,335,42,15,0.0",
+        "wordboxMainBody" : "86,335,42,15,0.0",
+        "text" : {
+          "content" : "White"
+        },
+        "indexEnd" : 5
+      }, {
+        "wordboxBounds" : "131,335,12,15,0.0",
+        "wordboxMainBody" : "131,335,12,15,0.0",
+        "text" : {
+          "content" : "&"
+        },
+        "indexBegin" : 6,
+        "indexEnd" : 12
+      }, {
+        "wordboxBounds" : "147,335,36,15,0.0",
+        "wordboxMainBody" : "147,335,36,15,0.0",
+        "text" : {
+          "content" : "Case"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 15
+      } ]
+    }, {
+      "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L6",
+      "coordinates" : "76,347;310,347;310,360;76,360",
+      "text" : {
+        "content" : "1155 Avenue of the Americas"
+      },
+      "confMat" : "AAAAAAAAawAAAGsA/////wEAAAADAAAA/38AgAAAAwACAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAgD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAYA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/n9eQwAAAwAGAP9/AIAAAAMAAAD+f15DAAADAAAA938ATgAAAwBEANh/DFYAAAMARAD6f5lLAAAFAAAA335EAK53CT0AAAMAAAD+f15DAAADAAAA/38AgAAAAwALAP5/XkMAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAOgD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADACkA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADIA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwA5AP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAADcf4FVAAADACkA/n9eQwAAAwAAAP9/AIAAAAMAAAD9f+pGAAADAEQA/H/8SAAAAwBEAPd/AE4AAAMAAAD9f+pGAAADAAAA/38AgAAAAwAzAP5/XkMAAAMAAAD7f3VKAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAKgD/fwCAAAADAAAA+n+ZSwAAAwAAAP9/AIAAAAUAAACQfUQABXsAAAAAAwBEAP9/AIAAAAUARABMfgAAh3kAAAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADgA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAsAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP5/XkMAAAMAKQD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAUAAAAYfkQAAnoAAAAAAwBEAP5/XkMAAAUAAAAwfkQAynmbOAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAsA/n9eQwAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAxAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAKQD+f15DAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADYA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/n9eQwAAAwAtAP9/AIAAAAMAAAD+f15DAAADAAAA/38AgAAAAwAnAP9/AIAAAAMAAAD+f15DAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAJQD/fwCAAAADAAAA/n9eQwAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADcA/n9eQwAAAwAAAPx//EgAAAMAAAD6f5lLAAADAAAA9X8jTwAAAAAAAAAAAAAAAA==",
+      "words" : [ {
+        "wordboxBounds" : "86,347,34,13,0.0",
+        "wordboxMainBody" : "86,347,34,13,0.0",
+        "text" : {
+          "content" : "1155"
+        },
+        "indexEnd" : 4
+      }, {
+        "wordboxBounds" : "124,347,52,13,0.0",
+        "wordboxMainBody" : "124,347,52,13,0.0",
+        "text" : {
+          "content" : "Avenue"
+        },
+        "indexBegin" : 5,
+        "indexEnd" : 15
+      }, {
+        "wordboxBounds" : "180,347,19,13,0.0",
+        "wordboxMainBody" : "180,347,19,13,0.0",
+        "text" : {
+          "content" : "of"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 16
+      }, {
+        "wordboxBounds" : "204,347,28,13,0.0",
+        "wordboxMainBody" : "204,347,28,13,0.0",
+        "text" : {
+          "content" : "the"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 18
+      }, {
+        "wordboxBounds" : "235,347,67,13,0.0",
+        "wordboxMainBody" : "235,347,67,13,0.0",
+        "text" : {
+          "content" : "Americas"
+        },
+        "indexBegin" : 19,
+        "indexEnd" : 45
+      } ]
+    }, {
+      "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L7",
+      "coordinates" : "74,359;330,359;330,376;74,376",
+      "text" : {
+        "content" : "New York, New York 10036-2787"
+      },
+      "confMat" : "AAAAAAAAcQAAAGsA/////wEAAAADAAAA/38AgAAAAwAYAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAKQD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAOwD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAEQAyn+XVwAAAwBEAOt/q1IAAAMAAAD0f59PAAADAAAA/38AgAAAAwAjAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAMwD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADYA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAvAP9/AIAAAAMAAAD/fwCAAAADAAAA/n9eQwAAAwAAAPl/h0wAAAMAQwD/fwCAAAAFAAAAj39EAGZxGVUAAAMARAD7f3VKAAADAEQA938ATgAAAwAAAP5/XkMAAAMAAAD/fwCAAAADAAAAy39/VwAAAwAYAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP5/XkMAAAMAKQD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAOwD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD7f3VKAAADAEQA/H/8SAAABQBEAH1/AADqcwAAAAADAAAA/n9eQwAAAwAAAP9/AIAAAAMAIwD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAMwD/fwCAAAADAAAA+n+ZSwAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADYA/38AgAAAAwAAAP5/XkMAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAvAP9/AIAAAAMAAAD/fwCAAAADAAAA/n9eQwAABQAAAC9/RAAtdgAAAAADAEQA+391SgAABQBEAGN/AADJdNY9AAADAAAA/n9eQwAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAIA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAEA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwABAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMABAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMABwD/fwCAAAADAAAA/n9eQwAAAwAAAP1/6kYAAAMAAADEfyFYAAADAEEA/H/8SAAABQBBALN/AABFcQAAAAADAAAA8n95UAAAAwAAAP9/AIAAAAMAAwD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAgA/n9eQwAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAkA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAIAP9/AIAAAAMAAAD+f15DAAADAAAA/38AgAAAAAAAAAAAAAAAAA==",
+      "words" : [ {
+        "wordboxBounds" : "85,360,28,13,0.0",
+        "wordboxMainBody" : "85,360,28,13,0.0",
+        "text" : {
+          "content" : "New"
+        },
+        "indexEnd" : 3
+      }, {
+        "wordboxBounds" : "117,359,42,16,0.0",
+        "wordboxMainBody" : "117,359,42,16,0.0",
+        "text" : {
+          "content" : "York,"
+        },
+        "indexBegin" : 4,
+        "indexEnd" : 12
+      }, {
+        "wordboxBounds" : "164,360,28,13,0.0",
+        "wordboxMainBody" : "164,360,28,13,0.0",
+        "text" : {
+          "content" : "New"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 14
+      }, {
+        "wordboxBounds" : "196,359,36,14,0.0",
+        "wordboxMainBody" : "196,359,36,14,0.0",
+        "text" : {
+          "content" : "York"
+        },
+        "indexBegin" : 14,
+        "indexEnd" : 32
+      }, {
+        "wordboxBounds" : "245,359,80,14,0.0",
+        "wordboxMainBody" : "245,359,80,14,0.0",
+        "text" : {
+          "content" : "10036-2787"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 41
+      } ]
+    }, {
+      "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L8",
+      "coordinates" : "139,385;393,385;393,401;139,401",
+      "text" : {
+        "content" : "Re: CIGARETTE FILTER ASSEMBLY"
+      },
+      "confMat" : "AAAAAAAAWwAAAGsA/////wEAAAADAAAA/X/qRgAAAwAcAP5/XkMAAAMAAAD/fwCAAAADAAAA/38AgAAAAwApAP9/AIAAAAMAAAD+f15DAAADAAAA/X/qRgAAAwBRAP1/6kYAAAMAAADhf7lUAAAFAEQA1X4AANJ33kMAAAMARADLf39XAAAFAEQAxH0AAKp6oDwAAAUAAABUf0QAOHXgQAAAAwAAAL5/nVgAAAMAAADyf3lQAAAFAAAA1H4NANp3ljwAAAMADQD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAEwD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAEQD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMACwD+f15DAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAHAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMADwD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAHgD+f15DAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAHgD+f15DAAADAAAA/38AgAAAAwAAAP9/AIAAAAUADwCQfwwAU3KDUQAAAwAAAP5/XkMAAAUARAAGfwAAAHfzQAAAAwBEAPx//EgAAAUAAAC1f0QAIHH9OQAAAwAAAP9/AIAAAAMAEAD8f/xIAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAEwD/fwCAAAADAAAA/38AgAAABQAWAB9/AACEdgk6AAADABYA/n9eQwAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAB4A/n9eQwAAAwAAAP9/AIAAAAUADwDffgwAp3cFRgAAAwAAAP9/AIAAAAMAAAD/fwCAAAADABwA/38AgAAAAwAAAPt/dUoAAAMAAAD/fwCAAAAFAEQAxn4AAA94sz0AAAMARAD9f+pGAAADAAAA63+rUgAAAwALAP5/XkMAAAMAAAD+f15DAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAHQD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAHQD/fwCAAAADAAAA/38AgAAAAwAPAP9/AIAAAAMAAAD+f15DAAADAAAA/38AgAAAAwAXAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAMAP1/6kYAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAWAP9/AIAAAAMAAAD+f15DAAADAAAA/38AgAAABQAAAPh+IwBCd2A/AAADACMA/38AgAAAAwAAAP9/AIAAAAMAAAD9f+pGAAAAAAAAAAAAAAAA",
+      "words" : [ {
+        "wordboxBounds" : "149,385,25,13,0.0",
+        "wordboxMainBody" : "149,385,25,13,0.0",
+        "text" : {
+          "content" : "Re:"
+        },
+        "indexEnd" : 3
+      }, {
+        "wordboxBounds" : "188,385,75,13,0.0",
+        "wordboxMainBody" : "188,385,75,13,0.0",
+        "text" : {
+          "content" : "CIGARETTE"
+        },
+        "indexBegin" : 4,
+        "indexEnd" : 16
+      }, {
+        "wordboxBounds" : "267,385,45,12,0.0",
+        "wordboxMainBody" : "267,385,45,12,0.0",
+        "text" : {
+          "content" : "FILTER"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 21
+      }, {
+        "wordboxBounds" : "322,385,65,12,0.0",
+        "wordboxMainBody" : "322,385,65,12,0.0",
+        "text" : {
+          "content" : "ASSEMBLY"
+        },
+        "indexBegin" : 21,
+        "indexEnd" : 50
+      } ]
+    }, {
+      "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L9",
+      "coordinates" : "179,397;419,397;419,415;179,415",
+      "text" : {
+        "content" : "(Your File No.: 1126134-332)"
+      },
+      "confMat" : "AAAAAAAAXAAAAGsA/////wEAAAADAE4A4n+NVAAABQBOAGV/AACqdPBGAAADAAAA+391SgAABQAAAMB+IwAkeFxAAAADACMA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADMA/n9eQwAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADkA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADYA/38AgAAAAwAAAPx//EgAAAMAAAD8f/xIAAAFAEQAlX8AAO5yAAAAAAMARAD7f3VKAAADAAAA73+IUQAAAwAAAP9/AIAAAAMAEAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAADzfxFQAAADAC0A/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADACkA/38AgAAAAwAAAPt/dUoAAAMAAAD8f/xIAAADAEQA8n95UAAAAwBEAMV/C1gAAAMAAAD/fwCAAAADABgA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAzAP9/AIAAAAMAAAD/fwCAAAADAAAA+n+ZSwAAAwBCAP1/6kYAAAcAAAC9fUIAx3lEAIFxrEMAAAUAAADefkQAr3fWQgAAAwAAAOR/MFQAAAMAUQD/fwCAAAAFAAAAx35EANF3TVAAAAMARADaf8hVAAAFAEQANn8AAAN2AAAAAAMAAAD8f/xIAAADAAAA/38AgAAAAwACAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAANV/bFYAAAMAAgD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAwD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMABwD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAgD/fwCAAAADAAAA/n9eQwAAAwAAAP9/AIAAAAMAAAD+f15DAAADAAQA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAUA/38AgAAAAwAAAPx//EgAAAMAAAD3fwBOAAADAEEA/H/8SAAABQBBAGV/AACwdOJEAAADAAAA/H/8SAAAAwAAAP9/AIAAAAMABAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMABAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAwD/fwCAAAADAAAA/H/8SAAAAwAAAPh/UU0AAAMAAAD9f+pGAAADAE8A9X8jTwAAAwAAAO5/11EAAAAAAAAAAAAAAAA=",
+      "words" : [ {
+        "wordboxBounds" : "190,397,42,16,0.0",
+        "wordboxMainBody" : "190,397,42,16,0.0",
+        "text" : {
+          "content" : "(Your"
+        },
+        "indexEnd" : 5
+      }, {
+        "wordboxBounds" : "236,397,35,14,0.0",
+        "wordboxMainBody" : "236,397,35,14,0.0",
+        "text" : {
+          "content" : "File"
+        },
+        "indexBegin" : 6,
+        "indexEnd" : 15
+      }, {
+        "wordboxBounds" : "274,397,34,14,0.0",
+        "wordboxMainBody" : "274,397,34,14,0.0",
+        "text" : {
+          "content" : "No.:"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 18
+      }, {
+        "wordboxBounds" : "315,397,96,16,0.0",
+        "wordboxMainBody" : "315,397,96,16,0.0",
+        "text" : {
+          "content" : "1126134-332)"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 29
+      } ]
+    }, {
+      "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L10",
+      "coordinates" : "76,437;173,437;173,453;76,453",
+      "text" : {
+        "content" : "Dear Anna:"
+      },
+      "confMat" : "AAAAAAAAKwAAAGsA/////wEAAAADAAAA/38AgAAAAwAOAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAKQD/fwCAAAADAAAA3n80VQAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAlAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMANgD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD1fyNPAAADAEQA9X8jTwAAAwBEAPh/UU0AAAMAAAD1fyNPAAADAAAA/38AgAAAAwAAAP9/AIAAAAMACwD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADIA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAyAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADACUA/38AgAAAAwAAAP9/AIAAAAMAAAD1fyNPAAAFAAAARX9EAJ51G0IAAAUAAACsf1EAe278VQAAAwBRAPt/dUoAAAMAAADcf4FVAAAAAAAAAAAAAAAA",
+      "words" : [ {
+        "wordboxBounds" : "85,437,36,12,0.0",
+        "wordboxMainBody" : "85,437,36,12,0.0",
+        "text" : {
+          "content" : "Dear"
+        },
+        "indexEnd" : 4
+      }, {
+        "wordboxBounds" : "124,437,42,12,0.0",
+        "wordboxMainBody" : "124,437,42,12,0.0",
+        "text" : {
+          "content" : "Anna:"
+        },
+        "indexBegin" : 5,
+        "indexEnd" : 14
+      } ]
+    }, {
+      "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L11",
+      "coordinates" : "75,461;507,461;507,477;75,477",
+      "text" : {
+        "content" : "Thank you for your letter of April 26 re: payment of"
+      },
+      "confMat" : "AAAAAAAAuQAAAGsA/////wEAAAADAAAA/38AgAAAAwAeAP5/XkMAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAsAP9/AIAAAAMAAAD3fwBOAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAJQD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADIA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAC8A/38AgAAAAwAAAP5/XkMAAAMAAAD/fwCAAAADAAAA8H80UQAAAwBEAP5/XkMAAAMARADhf7lUAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAPQD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAMwD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAADdf1tVAAADADkA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAEQA7n/XUQAAAwBEAPx//EgAAAMAAAD9f+pGAAADAAAA/38AgAAAAwAqAP9/AIAAAAMAAAD+f15DAAADAAAA/38AgAAAAwAzAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMANgD/fwCAAAADAAAA/38AgAAAAwAAAP5/XkMAAAMARAD9f+pGAAADAEQA/H/8SAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAD0A/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADMA/38AgAAAAwAAAP5/XkMAAAMAAAD/fwCAAAADAAAA/n9eQwAAAwA5AP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAPV/I08AAAMANgD/fwCAAAADAAAA/38AgAAABQAAAHx+RAAEeQAAAAADAEQA/38AgAAABQAAAON+RACdd7k+AAADAAAA/38AgAAAAwAAAP9/AIAAAAMAMAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAKQD/fwCAAAADAAAA/n9eQwAAAwAAAP9/AIAAAAMAAAD+f15DAAADADgA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADgA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA+391SgAAAwApAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwA2AP9/AIAAAAMAAAD/fwCAAAADAAAA/n9eQwAAAwBEAOh/YFMAAAMARAD+f15DAAADAAAA8X/aUAAAAwAAAP5/XkMAAAMAMwD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD+f15DAAADACoA/38AgAAAAwAAAP9/AIAAAAUARABxfgAAJHkAAAAAAwBEAP5/XkMAAAUAAADkfUQAbnppLAAAAwAAAP9/AIAAAAMACwD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADQA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwA2AP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAABQAAAIx/LQBTcwAAAAADAC0A/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADAA/38AgAAAAwAAAP9/AIAAAAMAAADxf9pQAAADAEQA/H/8SAAAAwBEAMF/YVgAAAMAAAD/fwCAAAADAAAA/38AgAAAAwADAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAHAP5/XkMAAAMAAAD/fwCAAAADAAAA/38AgAAABQBEAIZ/AACRcwAAAAADAEQA+H9RTQAAAwAAAOt/q1IAAAMAAAD/fwCAAAADADYA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwApAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAUQDtfyFSAAADAAAA+391SgAAAwBEAPR/n08AAAMARAD6f5lLAAADAAAA+n+ZSwAAAwAAAP9/AIAAAAMANAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADACUA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAD0A/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAxAP9/AIAAAAMAAAD7f3VKAAADAAAA/38AgAAAAwAAAPN/EVAAAAMAKQD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAMgD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD8f/xIAAADADgA/38AgAAAAwAAAP9/AIAAAAMAAADpfyZTAAADAEQA/H/8SAAAAwBEAO9/iFEAAAMAAAD+f15DAAADAAAA/X/qRgAAAwAzAP9/AIAAAAMAAAD+f15DAAADAAAA/38AgAAABQAAAAl/KgD2dgAAAAADACoA/38AgAAAAwAAAP5/XkMAAAMAAAD/fwCAAAAAAAAAAAAAAAAA",
+      "words" : [ {
+        "wordboxBounds" : "84,462,48,14,0.0",
+        "wordboxMainBody" : "84,462,48,14,0.0",
+        "text" : {
+          "content" : "Thank"
+        },
+        "indexEnd" : 5
+      }, {
+        "wordboxBounds" : "132,463,28,14,0.0",
+        "wordboxMainBody" : "132,463,28,14,0.0",
+        "text" : {
+          "content" : "you"
+        },
+        "indexBegin" : 6,
+        "indexEnd" : 14
+      }, {
+        "wordboxBounds" : "165,461,27,14,0.0",
+        "wordboxMainBody" : "165,461,27,14,0.0",
+        "text" : {
+          "content" : "for"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 16
+      }, {
+        "wordboxBounds" : "191,463,43,13,0.0",
+        "wordboxMainBody" : "191,463,43,13,0.0",
+        "text" : {
+          "content" : "your"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 19
+      }, {
+        "wordboxBounds" : "236,461,51,15,0.0",
+        "wordboxMainBody" : "236,461,51,15,0.0",
+        "text" : {
+          "content" : "letter"
+        },
+        "indexBegin" : 19,
+        "indexEnd" : 44
+      }, {
+        "wordboxBounds" : "290,461,20,14,0.0",
+        "wordboxMainBody" : "290,461,20,14,0.0",
+        "text" : {
+          "content" : "of"
+        },
+        "indexBegin" : 50,
+        "indexEnd" : 96
+      }, {
+        "wordboxBounds" : "313,461,43,15,0.0",
+        "wordboxMainBody" : "313,461,43,15,0.0",
+        "text" : {
+          "content" : "April"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 100
+      }, {
+        "wordboxBounds" : "361,461,19,15,0.0",
+        "wordboxMainBody" : "361,461,19,15,0.0",
+        "text" : {
+          "content" : "26"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 101
+      }, {
+        "wordboxBounds" : "385,463,26,13,0.0",
+        "wordboxMainBody" : "385,463,26,13,0.0",
+        "text" : {
+          "content" : "re:"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 103
+      }, {
+        "wordboxBounds" : "416,461,60,16,0.0",
+        "wordboxMainBody" : "416,461,60,16,0.0",
+        "text" : {
+          "content" : "payment"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 109
+      }, {
+        "wordboxBounds" : "480,461,20,14,0.0",
+        "wordboxMainBody" : "480,461,20,14,0.0",
+        "text" : {
+          "content" : "of"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 110
+      } ]
+    }, {
+      "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L12",
+      "coordinates" : "72,474;506,474;506,490;72,490",
+      "text" : {
+        "content" : "annuity fees for the above-referenced patent matter."
+      },
+      "confMat" : "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",
+      "words" : [ {
+        "wordboxBounds" : "84,474,60,16,0.0",
+        "wordboxMainBody" : "84,474,60,16,0.0",
+        "text" : {
+          "content" : "annuity"
+        },
+        "indexEnd" : 7
+      }, {
+        "wordboxBounds" : "149,474,34,14,0.0",
+        "wordboxMainBody" : "149,474,34,14,0.0",
+        "text" : {
+          "content" : "fees"
+        },
+        "indexBegin" : 8,
+        "indexEnd" : 19
+      }, {
+        "wordboxBounds" : "188,474,25,15,0.0",
+        "wordboxMainBody" : "188,474,25,15,0.0",
+        "text" : {
+          "content" : "for"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 21
+      }, {
+        "wordboxBounds" : "219,474,24,14,0.0",
+        "wordboxMainBody" : "219,474,24,14,0.0",
+        "text" : {
+          "content" : "the"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 23
+      }, {
+        "wordboxBounds" : "251,474,130,15,0.0",
+        "wordboxMainBody" : "251,474,130,15,0.0",
+        "text" : {
+          "content" : "above-referenced"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 38
+      }, {
+        "wordboxBounds" : "385,474,49,14,0.0",
+        "wordboxMainBody" : "385,474,49,14,0.0",
+        "text" : {
+          "content" : "patent"
+        },
+        "indexBegin" : 38,
+        "indexEnd" : 82
+      }, {
+        "wordboxBounds" : "440,475,56,13,0.0",
+        "wordboxMainBody" : "440,475,56,13,0.0",
+        "text" : {
+          "content" : "matter."
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 88
+      } ]
+    }, {
+      "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L13",
+      "coordinates" : "74,487;499,487;499,504;74,504",
+      "text" : {
+        "content" : "Please proceed with payment of the annuities at the"
+      },
+      "confMat" : "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",
+      "words" : [ {
+        "wordboxBounds" : "84,487,50,13,0.0",
+        "wordboxMainBody" : "84,487,50,13,0.0",
+        "text" : {
+          "content" : "Please"
+        },
+        "indexEnd" : 6
+      }, {
+        "wordboxBounds" : "143,487,55,14,0.0",
+        "wordboxMainBody" : "143,487,55,14,0.0",
+        "text" : {
+          "content" : "proceed"
+        },
+        "indexBegin" : 7,
+        "indexEnd" : 20
+      }, {
+        "wordboxBounds" : "203,487,36,15,0.0",
+        "wordboxMainBody" : "203,487,36,15,0.0",
+        "text" : {
+          "content" : "with"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 23
+      }, {
+        "wordboxBounds" : "243,487,54,14,0.0",
+        "wordboxMainBody" : "243,487,54,14,0.0",
+        "text" : {
+          "content" : "payment"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 29
+      }, {
+        "wordboxBounds" : "305,487,16,14,0.0",
+        "wordboxMainBody" : "305,487,16,14,0.0",
+        "text" : {
+          "content" : "of"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 30
+      }, {
+        "wordboxBounds" : "329,487,28,15,0.0",
+        "wordboxMainBody" : "329,487,28,15,0.0",
+        "text" : {
+          "content" : "the"
+        },
+        "indexBegin" : 31,
+        "indexEnd" : 64
+      }, {
+        "wordboxBounds" : "361,487,74,15,0.0",
+        "wordboxMainBody" : "361,487,74,15,0.0",
+        "text" : {
+          "content" : "annuities"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 72
+      }, {
+        "wordboxBounds" : "440,488,20,12,0.0",
+        "wordboxMainBody" : "440,488,20,12,0.0",
+        "text" : {
+          "content" : "at"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 73
+      }, {
+        "wordboxBounds" : "464,487,28,13,0.0",
+        "wordboxMainBody" : "464,487,28,13,0.0",
+        "text" : {
+          "content" : "the"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 75
+      } ]
+    }, {
+      "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L14",
+      "coordinates" : "75,500;423,500;423,518;75,518",
+      "text" : {
+        "content" : "approximate amounts listed in your letter."
+      },
+      "confMat" : "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",
+      "words" : [ {
+        "wordboxBounds" : "84,500,91,16,0.0",
+        "wordboxMainBody" : "84,500,91,16,0.0",
+        "text" : {
+          "content" : "approximate"
+        },
+        "indexEnd" : 11
+      }, {
+        "wordboxBounds" : "180,500,59,14,0.0",
+        "wordboxMainBody" : "180,500,59,14,0.0",
+        "text" : {
+          "content" : "amounts"
+        },
+        "indexBegin" : 12,
+        "indexEnd" : 30
+      }, {
+        "wordboxBounds" : "243,500,51,14,0.0",
+        "wordboxMainBody" : "243,500,51,14,0.0",
+        "text" : {
+          "content" : "listed"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 35
+      }, {
+        "wordboxBounds" : "299,500,19,14,0.0",
+        "wordboxMainBody" : "299,500,19,14,0.0",
+        "text" : {
+          "content" : "in"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 36
+      }, {
+        "wordboxBounds" : "321,501,36,15,0.0",
+        "wordboxMainBody" : "321,501,36,15,0.0",
+        "text" : {
+          "content" : "your"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 39
+      }, {
+        "wordboxBounds" : "361,500,57,14,0.0",
+        "wordboxMainBody" : "361,500,57,14,0.0",
+        "text" : {
+          "content" : "letter."
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 45
+      } ]
+    }, {
+      "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L15",
+      "coordinates" : "75,525;449,525;449,543;75,543",
+      "text" : {
+        "content" : "Thank you for your assistance in this matter."
+      },
+      "confMat" : "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",
+      "words" : [ {
+        "wordboxBounds" : "84,526,44,14,0.0",
+        "wordboxMainBody" : "84,526,44,14,0.0",
+        "text" : {
+          "content" : "Thank"
+        },
+        "indexEnd" : 5
+      }, {
+        "wordboxBounds" : "132,528,28,14,0.0",
+        "wordboxMainBody" : "132,528,28,14,0.0",
+        "text" : {
+          "content" : "you"
+        },
+        "indexBegin" : 6,
+        "indexEnd" : 14
+      }, {
+        "wordboxBounds" : "165,526,27,13,0.0",
+        "wordboxMainBody" : "165,526,27,13,0.0",
+        "text" : {
+          "content" : "for"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 16
+      }, {
+        "wordboxBounds" : "195,527,36,15,0.0",
+        "wordboxMainBody" : "195,527,36,15,0.0",
+        "text" : {
+          "content" : "your"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 19
+      }, {
+        "wordboxBounds" : "235,525,83,14,0.0",
+        "wordboxMainBody" : "235,525,83,14,0.0",
+        "text" : {
+          "content" : "assistance"
+        },
+        "indexBegin" : 19,
+        "indexEnd" : 48
+      }, {
+        "wordboxBounds" : "322,525,20,14,0.0",
+        "wordboxMainBody" : "322,525,20,14,0.0",
+        "text" : {
+          "content" : "in"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 49
+      }, {
+        "wordboxBounds" : "345,525,35,15,0.0",
+        "wordboxMainBody" : "345,525,35,15,0.0",
+        "text" : {
+          "content" : "this"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 52
+      }, {
+        "wordboxBounds" : "384,526,58,13,0.0",
+        "wordboxMainBody" : "384,526,58,13,0.0",
+        "text" : {
+          "content" : "matter."
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 58
+      } ]
+    }, {
+      "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L16",
+      "coordinates" : "72,551;174,551;174,569;72,569",
+      "text" : {
+        "content" : "Sincerely,"
+      },
+      "confMat" : "AAAAAAAAJAAAAGsA/////wEAAAADAAAA/38AgAAAAwAdAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAPx//EgAAAMALQD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAMgD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAUAAAD+ficAKHdPOwAAAwAnAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwApAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMANgD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAKQD/fwCAAAADAAAA9n+ZTgAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADAA/38AgAAAAwAAAP5/XkMAAAMAAAD/fwCAAAADAAAA/38AgAAAAwA9AP9/AIAAAAMAAAD/fwCAAAADAAAA+X+HTAAABQBDAA1/AAB5duhRAAADAEMA1H+KVgAAAwAAAP5/XkMAAAAAAAAAAAAAAAA=",
+      "words" : [ {
+        "wordboxBounds" : "84,551,82,18,0.0",
+        "wordboxMainBody" : "84,551,82,18,0.0",
+        "text" : {
+          "content" : "Sincerely,"
+        },
+        "indexEnd" : 10
+      } ]
+    }, {
+      "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L17",
+      "coordinates" : "74,559;300,559;300,603;74,603",
+      "text" : {
+        "content" : "Hallie S. Jemp"
+      },
+      "confMat" : "AAAAAAAALgAAAGsA/////wEAAAADAAAA/H/8SAAAAwAAAP1/6kYAAAMAAAD+f15DAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwASAPl/h0wAAAMAAAD+f15DAAADAAAA5n/NUwAAAwAAAPl/h0wAAAMAJQD+f15DAAADAAAA/n9eQwAAAwAAAP1/6kYAAAMAMAD3fwBOAAADAAAA/38AgAAAAwAwAL9/iVgAAAMAAAD7f3VKAAAFAC0AuX8AALJulFMAAAUAAACmfC0AE3yzUgAACQApAGF7LQAHewAA1HQnAAtxxVgAAAUAAADtfkQAonbeVQAABQBEAN9+AAA9dydTAAADAAAAwn9MWAAAAwAAAPp/mUsAAAcAHQCVfxYABW0TABxsr1YAAAMAAADtfyFSAAAFAEIAhH4AAOV3XFgAAAcARAB2fAAAtXtCANNwelIAAAUAAACCf0QAj3MuSgAADwAUADZ/DgDVbB0ARGwRAPdpEwDvaSMA0WkkACdpnVgAAAMAAAD+f15DAAADAAAA/n9eQwAACQApAJl8AACZei0AOHI5AD1ufFcAAAMAAADhf7lUAAADAAAA/n9eQwAAAwAAAP5/XkMAAAMAAAD8f/xIAAADADEA+391SgAAAwAAAP9/AIAAAAMAAAD+f15DAAAFAAAADH40AOp5bVEAAAMANADyf3lQAAADAAAA7H9oUgAAAwAAAPl/h0wAAAMAAADzfxFQAAAAAAAAAAAAAAAA",
+      "words" : [ {
+        "wordboxBounds" : "76,565,104,38,0.0",
+        "wordboxMainBody" : "76,565,104,38,0.0",
+        "text" : {
+          "content" : "Hallie"
+        },
+        "indexEnd" : 6
+      }, {
+        "wordboxBounds" : "182,563,33,36,0.0",
+        "wordboxMainBody" : "182,563,33,36,0.0",
+        "text" : {
+          "content" : "S."
+        },
+        "indexBegin" : 7,
+        "indexEnd" : 15
+      }, {
+        "wordboxBounds" : "215,571,78,31,0.0",
+        "wordboxMainBody" : "215,571,78,31,0.0",
+        "text" : {
+          "content" : "Jemp"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 18
+      } ]
+    }, {
+      "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L18",
+      "coordinates" : "76,597;238,597;238,616;76,616",
+      "text" : {
+        "content" : "Hallie S. Jessup/"
+      },
+      "confMat" : "AAAAAAAARQAAAGsA/////wEAAAADAAAA/38AgAAAAwASAO9/iFEAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAJQD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAwAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAABQAAAAx/LQDldnA8AAADAC0A/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADACkA/38AgAAAAwAAAPt/dUoAAAMAAAD/fwCAAAAFAAAAUX9EAFF1JjoAAAMARAD9f+pGAAAFAAAALX1EAJl7AAAAAAMAAAD/fwCAAAADAB0A/n9eQwAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/X/qRgAAAwBCAP9/AIAAAAUAAAB0f0IAHnQzSQAABQBEAPR+AABVd008AAADAEQA+X+HTAAABQAAAC5+RADPeSwyAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAFAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAKQD/fwCAAAADAAAA/H/8SAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADcA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwA3AP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwA5AP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAUANACpfysAmG0nVwAAAwAAAP9/AIAAAAMAAAD+f15DAAADAAAA8H80UQAAAwAAANx/gVUAAAMAAADkfzBUAAADAAAA8X/aUAAAAwAAANR/ilYAAAUAPwCTfgAAu3jDQQAAAwA/ANx/gVUAAAMAAADsf2hSAAADAAAA/38AgAAAAwAAAP9/AIAAAAAAAAAAAAAAAAA=",
+      "words" : [ {
+        "wordboxBounds" : "81,598,55,17,0.0",
+        "wordboxMainBody" : "81,598,55,17,0.0",
+        "text" : {
+          "content" : "Hallie"
+        },
+        "indexEnd" : 6
+      }, {
+        "wordboxBounds" : "140,602,17,14,0.0",
+        "wordboxMainBody" : "140,602,17,14,0.0",
+        "text" : {
+          "content" : "S."
+        },
+        "indexBegin" : 7,
+        "indexEnd" : 15
+      }, {
+        "wordboxBounds" : "163,597,72,19,0.0",
+        "wordboxMainBody" : "163,597,72,19,0.0",
+        "text" : {
+          "content" : "Jessup/"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 21
+      } ]
+    }, {
+      "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L19",
+      "coordinates" : "74,596;286,596;286,631;74,631",
+      "text" : {
+        "content" : "Research Administrator"
+      },
+      "confMat" : "AAAAAAAAQwAAAGsA/////wEAAAADAAAA/38AgAAAAwAcAP1/6kYAAAMAAAD/fwCAAAADAAAA/H/8SAAAAwApAP9/AIAAAAMAAAD/fwCAAAADADcA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADACkA+391SgAAAwAAAP9/AIAAAAMAAAD/fwCAAAADACUA/X/qRgAAAwAAAP9/AIAAAAMANgD/fwCAAAADAAAA/n9eQwAAAwAAAP9/AIAAAAMAJwD/fwCAAAADAAAA/n9eQwAAAwAAAP1/6kYAAAMALAD/fwCAAAADAAAA/38AgAAABQBEAPZ9AABLegAAAAADAEQA/H/8SAAAAwAAAOB/41QAAAMACwD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAKAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAMQD/fwCAAAADAAAA/38AgAAAAwAtAP9/AIAAAAMAAAD+f15DAAADADIA/38AgAAAAwAAAMl/r1cAAAMAAAD/fwCAAAAFAAAAoX8tAFRyAAAAAAMALQD/fwCAAAADAAAA/38AgAAAAwA3AP9/AIAAAAMAAAD/fwCAAAADAAAA/n9eQwAAAwA4AP9/AIAAAAMAAAD+f15DAAADADYA/38AgAAAAwAAAPx//EgAAAMAAAD/fwCAAAADACUA/n9eQwAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADgA/38AgAAAAwAAAP5/XkMAAAMAMwDNf01XAAADAAAA/X/qRgAAAwAAAPh/UU0AAAMANgD1fyNPAAADAAAA439gVAAABQAAALJ/RAA1cYNGAAADAAAAy39/VwAAAwAAAPB/NFEAAAMAAAD1fyNPAAADAAAA9n+ZTgAAAwAAAPF/2lAAAAMAAAD5f4dMAAADAAAA938ATgAAAAAAAAAAAAAAAA==",
+      "words" : [ {
+        "wordboxBounds" : "83,614,69,13,0.0",
+        "wordboxMainBody" : "83,614,69,13,0.0",
+        "text" : {
+          "content" : "Research"
+        },
+        "indexEnd" : 8
+      }, {
+        "wordboxBounds" : "155,596,128,31,0.0",
+        "wordboxMainBody" : "155,596,128,31,0.0",
+        "text" : {
+          "content" : "Administrator"
+        },
+        "indexBegin" : 9,
+        "indexEnd" : 30
+      } ]
+    }, {
+      "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L20",
+      "coordinates" : "76,665;262,665;262,681;76,681",
+      "text" : {
+        "content" : "Xc: Dr. A. W. Spears"
+      },
+      "confMat" : "AAAAAAAATAAAAGsA/////wEAAAADAAAA/38AgAAAAwAiAOR/MFQAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAJwDgf+NUAAADAAAA/38AgAAAAwAAAPZ/mU4AAAMAAADuf9dRAAADAFEA838RUAAAAwAAAPJ/eVAAAAUAAAABf0QADne3RwAAAwBEANF/4VYAAAUARAB5fwAAD3RrNAAAAwAAAOR/MFQAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAA4A/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwA2AP9/AIAAAAMAAAD+f15DAAADAAAA/38AgAAAAwAAAOp/6lIAAAMAQgD/fwCAAAAFAAAAjn9CADByvFIAAAMARADKf5dXAAADAEQA3X9bVQAABQAAALN/RABMcQAAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMACwD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAADKf5dXAAADAEIA/38AgAAABQAAAGx/RACXc3FTAAADAEQA7H9oUgAABQBEAP9+AAAkd0k3AAADAAAA/38AgAAAAwAAAP9/AIAAAAMAIQD+f15DAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAEIA/38AgAAABQAAAMp8QgAOfD5JAAAFAEQA0H4AAOV3UEQAAAMARADyf3lQAAAFAAAAfX5EAAF5AAAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAdAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwA0AP9/AIAAAAMAAAD+f15DAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAKQD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAJQD/fwCAAAADAAAA/n9eQwAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADYA/38AgAAAAwAAAP1/6kYAAAMAAAD+f15DAAADAAAA/X/qRgAAAwA3AP1/6kYAAAMAAAD7f3VKAAADAAAA+391SgAAAAAAAAAAAAAAAA==",
+      "words" : [ {
+        "wordboxBounds" : "83,665,26,13,0.0",
+        "wordboxMainBody" : "83,665,26,13,0.0",
+        "text" : {
+          "content" : "Xc:"
+        },
+        "indexEnd" : 3
+      }, {
+        "wordboxBounds" : "123,665,26,14,0.0",
+        "wordboxMainBody" : "123,665,26,14,0.0",
+        "text" : {
+          "content" : "Dr."
+        },
+        "indexBegin" : 4,
+        "indexEnd" : 10
+      }, {
+        "wordboxBounds" : "155,665,18,14,0.0",
+        "wordboxMainBody" : "155,665,18,14,0.0",
+        "text" : {
+          "content" : "A."
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 11
+      }, {
+        "wordboxBounds" : "178,665,19,14,0.0",
+        "wordboxMainBody" : "178,665,19,14,0.0",
+        "text" : {
+          "content" : "W."
+        },
+        "indexBegin" : 11,
+        "indexEnd" : 24
+      }, {
+        "wordboxBounds" : "203,665,51,15,0.0",
+        "wordboxMainBody" : "203,665,51,15,0.0",
+        "text" : {
+          "content" : "Spears"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 29
+      } ]
+    }, {
+      "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L21",
+      "coordinates" : "116,678;239,678;239,691;116,691",
+      "text" : {
+        "content" : "Dr. V. Norman"
+      },
+      "confMat" : "AAAAAAAAMAAAAGsA/////wEAAAADAAAA/38AgAAAAwAOAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMANgD/fwCAAAADAAAA/n9eQwAAAwAAAP9/AIAAAAUAAACDf0IAmnObRgAAAwBCAP9/AIAAAAcAAAAUf0IAcHREAIVx0z8AAAMARADSf8VWAAAFAEQAl38AANNyAAAAAAMAAADuf9dRAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAIAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAUAQgAtfwAAOXYAAAAAAwBCAP9/AIAAAAUAAAC9fUQAlnoMUAAAAwBEAPV/I08AAAUARAB3fwAAInQAAAAAAwAAAPJ/eVAAAAMAAAD/fwCAAAADABgA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAzAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP5/XkMAAAMANgD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAADhf7lUAAADADEA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADACUA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADIA/n9eQwAAAwAAAP1/6kYAAAMAAAD9f+pGAAADAAAA+X+HTAAAAAAAAAAAAAAAAA==",
+      "words" : [ {
+        "wordboxBounds" : "123,678,26,13,0.0",
+        "wordboxMainBody" : "123,678,26,13,0.0",
+        "text" : {
+          "content" : "Dr."
+        },
+        "indexEnd" : 3
+      }, {
+        "wordboxBounds" : "155,678,18,13,0.0",
+        "wordboxMainBody" : "155,678,18,13,0.0",
+        "text" : {
+          "content" : "V."
+        },
+        "indexBegin" : 4,
+        "indexEnd" : 9
+      }, {
+        "wordboxBounds" : "178,678,53,13,0.0",
+        "wordboxMainBody" : "178,678,53,13,0.0",
+        "text" : {
+          "content" : "Norman"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 14
+      } ]
+    }, {
+      "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L22",
+      "coordinates" : "111,690;276,690;276,706;111,706",
+      "text" : {
+        "content" : "Mr. R. Goldbrenner"
+      },
+      "confMat" : "AAAAAAAARgAAAGsA/////wEAAAADAAAA/38AgAAAAwAXAP9/AIAAAAMAAAD+f15DAAADAAAA/38AgAAAAwAAAP9/AIAAAAUAAAAQfjYAFHoAAAAAAwA2AP9/AIAAAAMAAAD/fwCAAAADAAAA/n9eQwAABQAAAE5/QgBbdaFFAAADAEIA/38AgAAABQAAAJl/RACscUlSAAADAEQAy39/VwAABQBEAI1/AABJcwAAAAADAAAA2H8MVgAAAwAAAP9/AIAAAAMAAAD/fwCAAAADABwA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA+X+HTAAAAwBCAP9/AIAAAAUAAACUf0QA33GtUgAAAwBEAPZ/mU4AAAMARADTf6hWAAADAAAA+n+ZSwAAAwAAAP9/AIAAAAMAAAD/fwCAAAADABEA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAzAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAMAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAKAD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADACYA/X/qRgAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/38AgAAAAwA2AP9/AIAAAAMAAAD+f15DAAADAAAA/38AgAAAAwAAAP1/6kYAAAMAKQD/fwCAAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAMgD+f15DAAADAAAA/38AgAAAAwAAAP9/AIAAAAMAAAD/fwCAAAADADIA/n9eQwAAAwAAAP9/AIAAAAMAAAD/fwCAAAADAAAA/X/qRgAAAwApAP5/XkMAAAMAAADvf4hRAAADAAAA/38AgAAAAwAAAPp/mUsAAAMANgD+f15DAAADAAAA+391SgAAAwAAAPt/dUoAAAMAAAD6f5lLAAAAAAAAAAAAAAAA",
+      "words" : [ {
+        "wordboxBounds" : "122,690,27,13,0.0",
+        "wordboxMainBody" : "122,690,27,13,0.0",
+        "text" : {
+          "content" : "Mr."
+        },
+        "indexEnd" : 3
+      }, {
+        "wordboxBounds" : "155,690,18,13,0.0",
+        "wordboxMainBody" : "155,690,18,13,0.0",
+        "text" : {
+          "content" : "R."
+        },
+        "indexBegin" : 4,
+        "indexEnd" : 9
+      }, {
+        "wordboxBounds" : "178,690,92,14,0.0",
+        "wordboxMainBody" : "178,690,92,14,0.0",
+        "text" : {
+          "content" : "Goldbrenner"
+        },
+        "indexBegin" : -1,
+        "indexEnd" : 19
+      } ]
+    }, {
+      "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B0.L23",
+      "coordinates" : "74,728;115,728;115,743;74,743",
+      "text" : {
+        "content" : "HJ/"
+      },
+      "confMat" : "AAAAAAAADAAAAGsA/////wEAAAADAAAA/38AgAAAAwASAO9/iFEAAAMAAAD+f15DAAADAAAA/n9eQwAAAwAAAP9/AIAAAAMAFAD9f+pGAAADAAAA838RUAAABQAAAGJ/RADLdGpDAAADAD8A0n/FVgAAAwA/APp/mUsAAAMAAAD5f4dMAAADAAAA+391SgAAAAAAAAAAAAAAAA==",
+      "words" : [ {
+        "wordboxBounds" : "83,728,28,13,0.0",
+        "wordboxMainBody" : "83,728,28,13,0.0",
+        "text" : {
+          "content" : "HJ/"
+        },
+        "indexEnd" : 3
+      } ]
+    }, {
+      "id" : "D3016493e-9706-4198-82e2-e82f75a91e49.P0.B1.L0",
+      "coordinates" : "598,776;618,776;618,861;598,861",
+      "text" : {
+        "content" : "CE86IO8S"
+      },
+      "confMat" : "AAAAAAAAGAAAAGsA/////wEAAAADAAAA/38AgAAAAwANAPZ/mU4AAAMAAAD/fwCAAAADAAAA/38AgAAAAwAPAPR/n08AAAMAAAD/fwCAAAADAAAA/38AgAAAAwAJANZ/TVYAAAMAAAD/fwCAAAADAAAA/38AgAAAAwAHAPZ/mU4AAAMAAAD/fwCAAAADAAAA/38AgAAABQATAHR/HgAgcw5UAAADAAAA/38AgAAABQAZAOd8AQDbe4JPAAADAAAA/38AgAAAAwAAAP9/AIAAAAcACQC+fB0ASHsKAOtwFFQAAAMAAAD/fwCAAAADAAAA/38AgAAABQAdAO1+CQDrdtVTAAADAAAA/X/qRgAAAwAAAPp/mUsAAAAAAAAAAAAAAAA=",
+      "words" : [ {
+        "wordboxBounds" : "598,779,18,82,0.0",
+        "wordboxMainBody" : "598,779,18,82,0.0",
+        "text" : {
+          "content" : "CE86IO8S"
+        },
+        "indexEnd" : 8
+      } ]
+    } ],
+    "imageDimsOriginal" : "754,1000",
+    "imageDimsProcess" : "754,1000"
+  } ]
+}
