@@ -1,19 +1,19 @@
-# Copyright 2020 The neiss authors. All Rights Reserved.
+# Copyright 2021 The neiss authors. All Rights Reserved.
 #
-# This file is part of tf2_neiss_nlp.
+# This file is part of tf_neiss_nlp.
 #
-# tf2_neiss_nlp is free software: you can redistribute it and/or modify
+# tf_neiss_nlp is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by the
 # Free Software Foundation, either version 3 of the License, or (at your
 # option) any later version.
 #
-# tf2_neiss_nlp is distributed in the hope that it will be useful, but
+# tf_neiss_nlp is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
 # or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
+# tf_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 import logging
 import os.path
@@ -37,9 +37,7 @@ from tfaip.util.tftyping import AnyTensor
 from tfaip_addons.util.file.stringmapper import get_sm
 from tfaip_scenario.nlp.data.ner import NERData
 from tfaip_scenario.nlp.util.ner_eval import (
-    EntityRecall,
     EntityF1,
-    EntityPrecision,
     SeqEvalF1,
     FixRuleMetricWrapper,
     SeqEvalF1FP,
@@ -100,6 +98,7 @@ class ModelParams(ModelBaseParams):
     loss_se_mode: str = "l2"
     feasible_pred_ids: bool = False
     crf_with_ner_rule: bool = False
+    crf_with_ner_forb_trans: bool = False
 
     wordwise_output_: bool = False
     wwo_mode_: str = "first"
@@ -631,6 +630,10 @@ class NERwithMiniBERT(NERBERTBase):
                 # ,embeddings_initializer=tf.keras.initializers.Constant(1))
                 self._penalty_absolute = tf.keras.layers.Embedding(1, 1, name="penalty_absolute")
                 # ,embeddings_initializer=tf.keras.initializers.Constant(1))
+            elif self.params.crf_with_ner_forb_trans:
+                self._penalty_factor = tf.constant(0.0, name="penalty_factor", dtype=tf.float32)
+                self._penalty_absolute = tf.constant(100000.0, name="penalty_absolute", dtype=tf.float32)
+
             self.init_crf_with_ner_rule((self.tag_vocab_size - 3) // 2)
         else:
             self._last_layer = tf.keras.layers.Dense(
@@ -755,9 +758,13 @@ class NERwithMiniBERT(NERBERTBase):
             final_output = self._last_layer(bert_graph_out)  # (batch_size, tar_seq_len, target_vocab_size)
             if self._params.use_crf:
                 trans_params = self._trans_params(tf.range(self.tag_vocab_size))
-                if self._params.crf_with_ner_rule:
-                    penalty_factor = self._penalty_factor(tf.range(1))[0][0]
-                    penalty_absolute = self._penalty_absolute(tf.range(1))[0][0]
+                if self._params.crf_with_ner_rule or self.params.crf_with_ner_forb_trans:
+                    if self._params.crf_with_ner_rule:
+                        penalty_factor = self._penalty_factor(tf.range(1))[0][0]
+                        penalty_absolute = self._penalty_absolute(tf.range(1))[0][0]
+                    else:
+                        penalty_factor = self._penalty_factor
+                        penalty_absolute = self._penalty_absolute
                     factor = self._allowed_transitions + tf.math.scalar_mul(penalty_factor, self._forbidden_transitions)
                     absolute = tf.math.scalar_mul(penalty_absolute, self._forbidden_transitions)
                     trans_params = trans_params * factor - absolute
@@ -814,6 +821,9 @@ class NERwithHFBERT(NERBERTBase):
                 # ,embeddings_initializer=tf.keras.initializers.Constant(1))
                 self._penalty_absolute = tf.keras.layers.Embedding(1, 1, name="penalty_absolute")
                 # ,embeddings_initializer=tf.keras.initializers.Constant(1))
+            elif self.params.crf_with_ner_forb_trans:
+                self._penalty_factor = tf.constant(0.0, name="penalty_factor", dtype=tf.float32)
+                self._penalty_absolute = tf.constant(-100000.0, name="penalty_absolute", dtype=tf.float32)
             self.init_crf_with_ner_rule((self.tag_vocab_size - 3) // 2)
         else:
             self._last_layer = tf.keras.layers.Dense(
@@ -926,9 +936,13 @@ class NERwithHFBERT(NERBERTBase):
             final_output = self._last_layer(bert_graph_out)  # (batch_size, tar_seq_len, target_vocab_size)
             if self._params.use_crf:
                 trans_params = self._trans_params(tf.range(self.tag_vocab_size))
-                if self._params.crf_with_ner_rule:
-                    penalty_factor = self._penalty_factor(tf.range(1))[0][0]
-                    penalty_absolute = self._penalty_absolute(tf.range(1))[0][0]
+                if self._params.crf_with_ner_rule or self.params.crf_with_ner_forb_trans:
+                    if self._params.crf_with_ner_rule:
+                        penalty_factor = self._penalty_factor(tf.range(1))[0][0]
+                        penalty_absolute = self._penalty_absolute(tf.range(1))[0][0]
+                    else:
+                        penalty_factor = self._penalty_factor
+                        penalty_absolute = self._penalty_absolute
                     factor = self._allowed_transitions + tf.math.scalar_mul(penalty_factor, self._forbidden_transitions)
                     absolute = tf.math.scalar_mul(penalty_absolute, self._forbidden_transitions)
                     trans_params = trans_params * factor - absolute

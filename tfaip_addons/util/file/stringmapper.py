@@ -1,21 +1,21 @@
-# Copyright 2020 The neiss authors. All Rights Reserved.
+# Copyright 2021 The neiss authors. All Rights Reserved.
 #
-# This file is part of tf2_neiss_nlp.
+# This file is part of tf_neiss_nlp.
 #
-# tf2_neiss_nlp is free software: you can redistribute it and/or modify
+# tf_neiss_nlp is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by the
 # Free Software Foundation, either version 3 of the License, or (at your
 # option) any later version.
 #
-# tf2_neiss_nlp is distributed in the hope that it will be useful, but
+# tf_neiss_nlp is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
 # or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
+# tf_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
-# """Definition of string mapping helpers"""
+"""Definition of string mapping helpers"""
 import codecs
 import os
 import re
@@ -75,7 +75,7 @@ class ChannelType(str):
 
 
 class StringMapper:
-    def __init__(self):
+    def __init__(self, sep="=", force_zero_oov=False):
         self.word_to_id_map: Dict[str, Union[int, Tuple[str, int]]] = {}
         self.id_to_word_map: Dict[Union[int, Tuple[str, int]], str] = {}
         self.loaded: bool = False
@@ -83,6 +83,8 @@ class StringMapper:
         self.unknown_id = -1
         # self.unknown_id = 0
         self._freq_map = {}
+        self.sep = sep
+        self.force_zero_oov = force_zero_oov
 
     def get_instance_and_set_type(self, key: str, value: str) -> Union[int, Tuple[str, int]]:
         value = value.strip()
@@ -152,7 +154,7 @@ class StringMapper:
     def size(self):
         return len(self.id_to_word_map)
 
-    def add(self, string: str, channel: Union[int, Tuple[str, int]]):
+    def add(self, string: str, channel: Union[int, Tuple[str, int]], force_override=False):
         # if channel == None:
         #     channel = len(self.word_to_id_map)
         # print("len = " + str(index))
@@ -161,7 +163,7 @@ class StringMapper:
         assert isinstance(channel, (int, tuple))
         assert isinstance(string, str)
         self.word_to_id_map[string] = channel
-        if channel not in self.id_to_word_map:
+        if force_override or channel not in self.id_to_word_map:
             self.id_to_word_map[channel] = string
         # print("pos = " + str(index))
         # self.unknown_id = len(self.id_to_word_map)
@@ -188,7 +190,7 @@ class StringMapper:
                 line = line.strip()
                 if len(line) == 0:
                     continue
-                split = line.rsplit("=", 1)
+                split = line.rsplit(self.sep, 1)
                 value = split[1]
                 key = split[0]
                 index = self.get_instance_and_set_type(key, value)
@@ -204,6 +206,8 @@ class StringMapper:
         if self.unknown_id < 0 and self.channel_type == ChannelType.INDEX:
             self.unknown_id = len(self.id_to_word_map)
             self.add(unknown_word, self.unknown_id)
+        if self.force_zero_oov:
+            self.oov_to_zero()
 
     def load_mapping_from_freq(self, file_path):
         if self.loaded:
@@ -213,7 +217,7 @@ class StringMapper:
             id = 0
             for line in raw:
                 line = line.strip(os.linesep)
-                split = line.rsplit("\t", 1)
+                split = line.rsplit(self.sep, 1)
                 key = split[0]
                 if key == unknown_word:
                     self.unknown_id = id
@@ -231,6 +235,9 @@ class StringMapper:
         if self.unknown_id < 0:
             self.unknown_id = len(self.id_to_word_map)
             self.add(unknown_word, self.unknown_id)
+            self._freq_map[self.unknown_id] = 0
+        if self.force_zero_oov and self.unknown_id != 0:
+            self.oov_to_zero()
         # print("unknown id: ", self.unknown_id)
 
     def load_mapping_from_txt(self, file_path):
@@ -241,8 +248,6 @@ class StringMapper:
             id_ = 0
             for line in raw:
                 line = line.strip(os.linesep)
-                # if line[-1:] == "\n":
-                #     line = line[:-1]
                 key = line
                 # specific values which are escaped by '\': delete '\'
                 if key[0] == "\\":
@@ -257,6 +262,8 @@ class StringMapper:
         if self.unknown_id < 0:
             self.unknown_id = len(self.id_to_word_map)
             self.add(unknown_word, self.unknown_id)
+        if self.force_zero_oov:
+            self.oov_to_zero()
 
     def save_mapping(self, file_path):
         with codecs.open(file_path, "w", encoding="utf-8") as cm_file:
@@ -271,3 +278,29 @@ class StringMapper:
                 # file.write('=')
                 # file.write(str(len(self.dictBwd)))
         self.loaded = True
+
+    def oov_to_zero(self):
+
+        unknown_freq = self._freq_map[self.unknown_id]
+        self.unknown_id = 0
+        last_word = self.id_to_word_map[0]
+        last_freq = self._freq_map[0]
+        self.add(unknown_word, self.unknown_id, force_override=True)
+        self._freq_map[self.unknown_id] = unknown_freq
+        id = 0
+        while last_word != unknown_word:
+            id += 1
+            key = last_word
+            freq = last_freq
+            last_word = self.id_to_word_map[id]
+            last_freq = self._freq_map[id]
+            self.add(key, id, force_override=True)
+            self._freq_map[id] = freq
+
+
+if __name__ == "__main__":
+    sm = StringMapper(sep=",", force_zero_oov=True)
+    sm.load_mapping_from_freq("/home/tobias/devel/projects/autolm/labels.vocab")
+    print(sm.id_to_word_map)
+    print(sm.word_to_id_map)
+    print(sm._freq_map)

@@ -1,19 +1,19 @@
-# Copyright 2020 The neiss authors. All Rights Reserved.
+# Copyright 2021 The neiss authors. All Rights Reserved.
 #
-# This file is part of tf2_neiss_nlp.
+# This file is part of tf_neiss_nlp.
 #
-# tf2_neiss_nlp is free software: you can redistribute it and/or modify
+# tf_neiss_nlp is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by the
 # Free Software Foundation, either version 3 of the License, or (at your
 # option) any later version.
 #
-# tf2_neiss_nlp is distributed in the hope that it will be useful, but
+# tf_neiss_nlp is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
 # or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
+# tf_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 import tensorflow as tf
 import logging
@@ -39,12 +39,7 @@ def cast_like(x, y):
             x_name = x.name
         except AttributeError:
             pass
-        logger.warning(
-            "Cast for %s may induce copy from '%s' to '%s'",
-            x_name,
-            x.device,
-            cast_x.device,
-        )
+        logger.warning("Cast for %s may induce copy from '%s' to '%s'", x_name, x.device, cast_x.device)
     return cast_x
 
 
@@ -94,11 +89,5 @@ def top_kth_iterative(x, k):
         return cur_x * to_float(cur_x < top_x)
 
     # We only do k-1 steps of the loop and compute the final max separately.
-    fin_x = tf.foldl(
-        next_x,
-        tf.range(k - 1),
-        initializer=tf.stop_gradient(x),
-        parallel_iterations=2,
-        back_prop=False,
-    )
+    fin_x = tf.foldl(next_x, tf.range(k - 1), initializer=tf.stop_gradient(x), parallel_iterations=2, back_prop=False)
     return tf.stop_gradient(tf.reduce_max(fin_x, axis=-1, keep_dims=True))

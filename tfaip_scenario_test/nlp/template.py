@@ -1,26 +1,26 @@
-# Copyright 2020 The neiss authors. All Rights Reserved.
+# Copyright 2021 The neiss authors. All Rights Reserved.
 #
-# This file is part of tf2_neiss_nlp.
+# This file is part of tf_neiss_nlp.
 #
-# tf2_neiss_nlp is free software: you can redistribute it and/or modify
+# tf_neiss_nlp is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by the
 # Free Software Foundation, either version 3 of the License, or (at your
 # option) any later version.
 #
-# tf2_neiss_nlp is distributed in the hope that it will be useful, but
+# tf_neiss_nlp is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
 # or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
+# tf_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 import os
 from abc import abstractmethod
 
-from tensorflow.python.keras.backend import clear_session
+from tensorflow.keras.backend import clear_session
 
-from tfaip_scenario_test.util.workdir import workdir_path
+from tfaip.util.testing.workdir import workdir_path
 from tfaip.resource.resource import Resource
 
 
@@ -52,12 +52,12 @@ class AbstractTestNLPData(object):
 
     def data_loading(self, data_cls, trainer_params):
         data = data_cls(trainer_params.scenario.data)
-        with trainer_params.gen.train_data(data) as rd:
-            train_data = next(rd.generate_input_samples())
-        with trainer_params.gen.train_data(data) as rd:
-            train_data = next(rd.input_dataset().as_numpy_iterator())
-        with trainer_params.gen.val_data(data) as rd:
-            val_data = next(rd.input_dataset().as_numpy_iterator())
+        with trainer_params.gen.train_data(data).generate_input_samples() as samples:
+            train_data = next(samples)
+        with trainer_params.gen.train_data(data).generate_input_batches() as batches:
+            train_data = next(batches)
+        with trainer_params.gen.val_data(data).generate_input_batches() as batches:
+            val_data = next(batches)
         self.check_batch_content(train_data, trainer_params)
         self.check_batch_content(val_data, trainer_params)
 

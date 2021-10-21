@@ -1,19 +1,19 @@
-# Copyright 2020 The neiss authors. All Rights Reserved.
+# Copyright 2021 The neiss authors. All Rights Reserved.
 #
-# This file is part of tf2_neiss_nlp.
+# This file is part of tf_neiss_nlp.
 #
-# tf2_neiss_nlp is free software: you can redistribute it and/or modify
+# tf_neiss_nlp is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by the
 # Free Software Foundation, either version 3 of the License, or (at your
 # option) any later version.
 #
-# tf2_neiss_nlp is distributed in the hope that it will be useful, but
+# tf_neiss_nlp is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
 # or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
+# tf_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 import logging
 import os
@@ -116,13 +116,13 @@ class NERData(NLPData[TDP]):
         assert self.params.wordwise_output
         start = int(np.argwhere(sentence == self.params.cls_token_id_)) + 1
         end = int(np.argwhere(sentence == self.params.sep_token_id_))
-        #start_tag = int(np.argwhere(pred_ids == self._tag_string_mapper.size())) + 1
-        #end_tag = int(np.argwhere(pred_ids == self._tag_string_mapper.size() + 1))
+        # start_tag = int(np.argwhere(pred_ids == self._tag_string_mapper.size())) + 1
+        # end_tag = int(np.argwhere(pred_ids == self._tag_string_mapper.size() + 1))
         # assert end_tag == end, f"Inkonsisten EOS index in tokens({end}) and tags({end_tag}!"
-        tags = [self._tag_string_mapper.get_value(x) for x in pred_ids]#[start_tag:end_tag]]
+        tags = [self._tag_string_mapper.get_value(x) for x in pred_ids]  # [start_tag:end_tag]]
         sentence_str = self.tokenizer.decode(sentence[start:end])
         word_list = sentence_str.split(" ")
-        tags=tags[1:number_of_words+1]
+        tags = tags[1 : number_of_words + 1]
         assert len(word_list) == len(tags)
         logger.debug(f"{word_list}")
         logger.debug(f"{tags}")

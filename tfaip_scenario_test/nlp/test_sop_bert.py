@@ -1,40 +1,32 @@
-# Copyright 2020 The neiss authors. All Rights Reserved.
+# Copyright 2021 The neiss authors. All Rights Reserved.
 #
-# This file is part of tf2_neiss_nlp.
+# This file is part of tf_neiss_nlp.
 #
-# tf2_neiss_nlp is free software: you can redistribute it and/or modify
+# tf_neiss_nlp is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by the
 # Free Software Foundation, either version 3 of the License, or (at your
 # option) any later version.
 #
-# tf2_neiss_nlp is distributed in the hope that it will be useful, but
+# tf_neiss_nlp is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
 # or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
+# tf_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 import json
 import os
 import unittest
 
-from tensorflow.python.keras.backend import clear_session
+from tensorflow.keras.backend import clear_session
 
-from tfaip_scenario_test.util.training import (
-    single_train_iter,
-    resume_training,
-    lav_test_case,
-    warmstart_training_test_case,
-)
-from tfaip_scenario_test.util.workdir import workdir_path
+from tfaip.util.testing.training import single_train_iter, resume_training, lav_test_case, warmstart_training_test_case
+from tfaip.util.testing.workdir import workdir_path
 from tfaip.scenario.listfile.params import ListsFileGeneratorParams
 from tfaip_scenario.nlp.bert_pretraining.sop.scenario import Scenario
 from tfaip_scenario.nlp.data.sop import SOPData
-from tfaip_scenario_test.nlp.template import (
-    set_test_trainer_params,
-    AbstractTestNLPData,
-)
+from tfaip_scenario_test.nlp.template import set_test_trainer_params, AbstractTestNLPData
 
 
 class SOPWikiScenarioTest(Scenario):
@@ -104,8 +96,7 @@ class TestSOPData(AbstractTestNLPData, unittest.TestCase):
         self.assertEqual(len(batch[1]), 3, "Expected two outputs")
         meta = json.loads(batch[2]["meta"][0, 0])
         self.assertTrue(
-            os.path.isfile(meta["path_to_file"].strip("\n")),
-            "Expected valid file path in meta['path_to_file']",
+            os.path.isfile(meta["path_to_file"].strip("\n")), "Expected valid file path in meta['path_to_file']"
         )
         self.assertTrue("text" in batch[0])
         self.assertTrue("mask_mlm" in batch[1])

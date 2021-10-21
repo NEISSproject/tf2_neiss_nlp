@@ -1,26 +1,23 @@
-# Copyright 2020 The neiss authors. All Rights Reserved.
+# Copyright 2021 The neiss authors. All Rights Reserved.
 #
-# This file is part of tf2_neiss_nlp.
+# This file is part of tf_neiss_nlp.
 #
-# tf2_neiss_nlp is free software: you can redistribute it and/or modify
+# tf_neiss_nlp is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by the
 # Free Software Foundation, either version 3 of the License, or (at your
 # option) any later version.
 #
-# tf2_neiss_nlp is distributed in the hope that it will be useful, but
+# tf_neiss_nlp is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
 # or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
+# tf_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 import tensorflow as tf
 
-from tfaip_addons.transformer.attention.multiheadattention import (
-    AttentionType,
-    MultiHeadAttention,
-)
+from tfaip_addons.transformer.attention.multiheadattention import AttentionType, MultiHeadAttention
 
 
 class SelfMutualAttentionPFFLayer(tf.keras.layers.Layer):
@@ -158,13 +155,7 @@ class SelfAttentionPFFLayer(tf.keras.layers.Layer):
             attention_type=attention_type,
             attention_params=attention_params,
         )
-        self.pff_layer = PFFLayer(
-            d_model=d_model,
-            dff=dff,
-            rate=rate,
-            layer_norm=layer_norm,
-            residual=residual,
-        )
+        self.pff_layer = PFFLayer(d_model=d_model, dff=dff, rate=rate, layer_norm=layer_norm, residual=residual)
 
         self.return_attn_coef = return_attn_coef
 
@@ -178,16 +169,7 @@ class SelfAttentionPFFLayer(tf.keras.layers.Layer):
 
 
 class PFFLayer(tf.keras.layers.Layer):
-    def __init__(
-        self,
-        d_model,
-        dff,
-        rate=0.1,
-        name="pff",
-        layer_norm=True,
-        residual=True,
-        **kwargs,
-    ):
+    def __init__(self, d_model, dff, rate=0.1, name="pff", layer_norm=True, residual=True, **kwargs):
         super(PFFLayer, self).__init__(name=name, **kwargs)
 
         self.use_residual = residual
@@ -232,11 +214,7 @@ class SelfAttentionLayer(tf.keras.layers.Layer):
         self.use_residual = residual
 
         self.mha = MultiHeadAttention(
-            d_model,
-            num_heads,
-            attention_type=attention_type,
-            attention_params=attention_params,
-            post_dense=post_dense,
+            d_model, num_heads, attention_type=attention_type, attention_params=attention_params, post_dense=post_dense
         )
         self.layernorm = tf.keras.layers.LayerNormalization(epsilon=1e-6, name="layer_norm") if layer_norm else None
         self.dropout = tf.keras.layers.Dropout(rate, name="dropout")
@@ -283,10 +261,7 @@ class MutualAttentionLayer(tf.keras.layers.Layer):
         self.residual = residual
 
         self.mha = MultiHeadAttention(
-            d_model,
-            num_heads,
-            attention_type=attention_type,
-            attention_params=attention_params,
+            d_model, num_heads, attention_type=attention_type, attention_params=attention_params
         )
         self.layernorm = tf.keras.layers.LayerNormalization(epsilon=1e-6) if layer_norm else None
         self.dropout = tf.keras.layers.Dropout(rate)

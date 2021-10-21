@@ -1,32 +1,34 @@
-# Copyright 2020 The neiss authors. All Rights Reserved.
+# Copyright 2021 The neiss authors. All Rights Reserved.
 #
-# This file is part of tf2_neiss_nlp.
+# This file is part of tf_neiss_nlp.
 #
-# tf2_neiss_nlp is free software: you can redistribute it and/or modify
+# tf_neiss_nlp is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by the
 # Free Software Foundation, either version 3 of the License, or (at your
 # option) any later version.
 #
-# tf2_neiss_nlp is distributed in the hope that it will be useful, but
+# tf_neiss_nlp is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
 # or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
+# tf_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
+
 import ast
 import json
 import logging
 import math
+import os
 from dataclasses import dataclass, field
 from typing import Dict, Union, Optional, List
 
 from dataclasses_json import config
 from paiargparse import pai_dataclass
 
-from tfaip_addons.util.file.stringmapper import StringMapper
 from tfaip.util.typing import enforce_types
+from tfaip_addons.util.file.stringmapper import StringMapper
 
 
 def flatten(list_list: List[List[object]]) -> List[object]:
@@ -37,7 +39,7 @@ def flatten(list_list: List[List[object]]) -> List[object]:
 @pai_dataclass
 @dataclass
 class Base(object):
-    id: str
+    id: Optional[str]
     # disabled: Optional[bool]
 
 
@@ -262,6 +264,20 @@ def decode_polygon(r: Optional[str]) -> Optional[Polygon]:
 @enforce_types
 @pai_dataclass
 @dataclass
+class PolygonConfidenced(WithConfidence):
+    content: Polygon = field(default=None, metadata=config(decoder=decode_polygon, encoder=encode_polygon))
+
+
+@enforce_types
+@pai_dataclass
+@dataclass
+class PolygonConfidenced(WithConfidence):
+    content: Polygon = field(default=None, metadata=config(decoder=decode_polygon, encoder=encode_polygon))
+
+
+@enforce_types
+@pai_dataclass
+@dataclass
 class IndexRange:
     begin: int = 0
     end: int = 0
@@ -272,8 +288,8 @@ class IndexRange:
 @pai_dataclass
 @dataclass
 class ResultEntitySnippet:
-    pageId: str = ""
-    lineId: str = ""
+    pageId: Optional[str] = ""
+    lineId: Optional[str] = field(default="")
     rangeText: Optional[IndexRange] = field(default=None)
     rangeCm: Optional[IndexRange] = field(default=None)
     pos: Optional[Box] = field(default_factory=list, metadata=config(decoder=decode_box, encoder=encode_box))
@@ -287,7 +303,7 @@ class ResultEntitySnippet:
 class ResultEntity:
     text: str = ""
     label: str = ""
-    id: str = ""
+    id: Optional[str] = ""
     score: float = 0.0
     coordinates: Optional[Polygon] = field(
         default=None, metadata=config(decoder=decode_polygon, encoder=encode_polygon)
@@ -334,6 +350,7 @@ class Line(Base):
     coordinates: Optional[Polygon] = field(
         default=None, metadata=config(decoder=decode_polygon, encoder=encode_polygon)
     )
+    baseline: Optional[PolygonConfidenced] = field(default=None)
     properties: Optional[Dict[str, str]] = field(default_factory=dict)
     words: Optional[List[Word]] = field(default_factory=list)
     text: Optional[StringConfidenced] = field(default=None)
@@ -374,8 +391,10 @@ class Region:
 class Page(Region):
     classifications: Dict[str, Classification] = field(default_factory=dict)
     imageDimsProcess: Optional[Dimension] = field(
-        default=None,
-        metadata=config(decoder=lambda x: decode_dimension(x), encoder=lambda x: encode_dimension(x)),
+        default=None, metadata=config(decoder=lambda x: decode_dimension(x), encoder=lambda x: encode_dimension(x))
+    )
+    imageDimsOriginal: Optional[Dimension] = field(
+        default=None, metadata=config(decoder=lambda x: decode_dimension(x), encoder=lambda x: encode_dimension(x))
     )
     angleMod90: Optional[FloatConfidenced] = field(default=None)
 
@@ -407,6 +426,18 @@ def _skip_default(thedict: Dict[str, object]) -> Dict[str, object]:
         else:
             outdict[key] = val
     return outdict
+
+
+def _rm_cls(thedict: Dict[str, object]) -> None:
+    if "__cls__" in thedict:
+        del thedict["__cls__"]
+    for v in thedict.values():
+        if isinstance(v, dict):
+            _rm_cls(v)
+        elif isinstance(v, list):
+            [_rm_cls(e) for e in v]
+        elif isinstance(v, set):
+            [_rm_cls(e) for e in v]
 
 
 @enforce_types
@@ -452,16 +483,27 @@ class File(Base):
             )
         return sum([line.words for line in self.get_lines()], [])
 
+    def get_classifications(self) -> Dict[str, Classification]:
+        return self.classifications
+
+    def get_entities(self) -> Dict[str, ModulResultEntity]:
+        return self.entities
+
     @staticmethod
     def load(path_to_file) -> "File":
+        if not os.path.exists(path_to_file):
+            logging.warning(f"File not found: {path_to_file}")
+            return None
         with open(path_to_file, "r") as fp:
             return File.from_json(fp.read(), infer_missing=True)
 
-    def save(self, path_to_file, skip_defaults=False) -> None:
+    def save(self, path_to_file, skip_defaults=False, skip_cls=True) -> None:
         with open(path_to_file, "w") as fp:
             saveable_dict = self.to_dict()
             if skip_defaults:
                 saveable_dict = _skip_default(saveable_dict)
+            if skip_cls:
+                _rm_cls(saveable_dict)
             json.dump(saveable_dict, fp, indent=2)
 
 

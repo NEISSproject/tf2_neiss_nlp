@@ -15,11 +15,22 @@
 # You should have received a copy of the GNU General Public License along with
 # tf_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
-"""Utilities for reading references"""
+import tensorflow.keras as keras
+import tensorflow as tf
 
 
-def read_utf8_textline_reference_from_file(fn: str) -> str:
-    with open(fn, "r") as ref_file:
-        a_line = ref_file.readline()
-        a_line = a_line.rstrip("\n")
-        return a_line
+def activation_by_str(a: str):
+    if a is None:
+        return
+    elif a == "leaky_relu":
+        return leaky_relu()
+    else:
+        return getattr(keras.activations, a)
+
+
+def leaky_relu(leak=0.1, name="leakyRelu"):
+    return keras.layers.LeakyReLU(alpha=leak, name=name)
+
+
+def relu(features, name=None):
+    return tf.nn.relu(features, name=name)

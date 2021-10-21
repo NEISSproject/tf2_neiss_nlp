@@ -1,34 +1,29 @@
-# Copyright 2020 The neiss authors. All Rights Reserved.
+# Copyright 2021 The neiss authors. All Rights Reserved.
 #
-# This file is part of tf2_neiss_nlp.
+# This file is part of tf_neiss_nlp.
 #
-# tf2_neiss_nlp is free software: you can redistribute it and/or modify
+# tf_neiss_nlp is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by the
 # Free Software Foundation, either version 3 of the License, or (at your
 # option) any later version.
 #
-# tf2_neiss_nlp is distributed in the hope that it will be useful, but
+# tf_neiss_nlp is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
 # or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
+# tf_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 import json
 import os
 import tempfile
 import unittest
 
-from tensorflow.python.keras.backend import clear_session
+from tensorflow.keras.backend import clear_session
 
-from tfaip_scenario_test.util.training import (
-    single_train_iter,
-    resume_training,
-    lav_test_case,
-    warmstart_training_test_case,
-)
-from tfaip_scenario_test.util.workdir import workdir_path
+from tfaip.util.testing.training import single_train_iter, resume_training, lav_test_case, warmstart_training_test_case
+from tfaip.util.testing.workdir import workdir_path
 from tfaip.resource.resource import Resource
 from tfaip.scenario.listfile.params import ListsFileGeneratorParams
 from tfaip_scenario.nlp.data.from_datasets import FromDatasetsTrainerGeneratorParams
@@ -36,10 +31,7 @@ from tfaip_scenario.nlp.data.ner import NERData
 from tfaip_scenario.nlp.ner.scenario import Scenario, FromDatasetsScenario
 from tfaip_scenario.nlp.util.nlp_helper import load_txt_conll
 from tfaip_scenario.nlp.util.tools.ner_data_generator import txt2json
-from tfaip_scenario_test.nlp.template import (
-    set_test_trainer_params,
-    AbstractTestNLPData,
-)
+from tfaip_scenario_test.nlp.template import set_test_trainer_params, AbstractTestNLPData
 
 
 class LERScenarioTest(Scenario):
@@ -143,8 +135,7 @@ class TestNERData(AbstractTestNLPData, unittest.TestCase):
         meta = json.loads(batch[2]["meta"][0, 0])
         if not isinstance(trainer_params.gen, FromDatasetsTrainerGeneratorParams):
             self.assertTrue(
-                os.path.isfile(meta["path_to_file"].strip("\n")),
-                "Expected valid file path in meta['path_to_file']",
+                os.path.isfile(meta["path_to_file"].strip("\n")), "Expected valid file path in meta['path_to_file']"
             )
         self.assertTrue("sentence" in batch[0])
         self.assertTrue("tgt" in batch[1])
@@ -173,13 +164,15 @@ class TestNERData(AbstractTestNLPData, unittest.TestCase):
         conll_txt_scenario = CONLLScenarioTest.default_trainer_params()
         conll_json_scenario = CONLLScenarioJsonTest.default_trainer_params()
         data = NERData(conll_json_scenario.scenario.data)  # same for both, only data generator differs
-        with conll_txt_scenario.gen.train_data(data) as rd:
-            train_data = next(rd.generate_input_samples())
-        with conll_json_scenario.gen.train_data(data) as rd:
-            train_data = next(rd.generate_input_samples())
-        with conll_txt_scenario.gen.val_data(data) as data_txt, conll_json_scenario.gen.val_data(data) as data_json:
-            dataset_txt = data_txt.input_dataset().as_numpy_iterator()
-            dataset_json = data_json.input_dataset().as_numpy_iterator()
+        with conll_txt_scenario.gen.train_data(data).generate_input_samples() as samples:
+            train_data = next(samples)
+        with conll_json_scenario.gen.train_data(data).generate_input_samples() as samples:
+            train_data = next(samples)
+        with conll_txt_scenario.gen.val_data(
+            data
+        ).generate_input_batches() as dataset_txt, conll_json_scenario.gen.val_data(
+            data
+        ).generate_input_batches() as dataset_json:
             while True:
                 try:
                     b_txt = next(dataset_txt)

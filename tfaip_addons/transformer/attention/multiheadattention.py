@@ -1,19 +1,19 @@
-# Copyright 2020 The neiss authors. All Rights Reserved.
+# Copyright 2021 The neiss authors. All Rights Reserved.
 #
-# This file is part of tf2_neiss_nlp.
+# This file is part of tf_neiss_nlp.
 #
-# tf2_neiss_nlp is free software: you can redistribute it and/or modify
+# tf_neiss_nlp is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by the
 # Free Software Foundation, either version 3 of the License, or (at your
 # option) any later version.
 #
-# tf2_neiss_nlp is distributed in the hope that it will be useful, but
+# tf_neiss_nlp is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
 # or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tfaip. If not, see http://www.gnu.org/licenses/.
+# tf_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 import tensorflow as tf
 
@@ -193,8 +193,7 @@ class WindowedSelfAttention(Attention):
 
         # speed up in T=1 case (decoder), roll is not required, just make the normal mat mul and keep the last n entries
         windowed_qk = tf.stack(
-            [tf.reduce_sum(q * tf.roll(k, axis=2, shift=-i), axis=-1) for i in rng],
-            axis=0,
+            [tf.reduce_sum(q * tf.roll(k, axis=2, shift=-i), axis=-1) for i in rng], axis=0
         )  # W x B x H x T
         windowed_qk = windowed_qk[:, :, :, -seq_len:]
 
@@ -233,11 +232,7 @@ def pad(input_tensors):
     px, py = padding
     shape = tf.keras.backend.shape(input)
     output = tf.image.pad_to_bounding_box(
-        input,
-        0,
-        0,
-        tf.keras.backend.gather(shape, 1) + px,
-        tf.keras.backend.gather(shape, 2) + py,
+        input, 0, 0, tf.keras.backend.gather(shape, 1) + px, tf.keras.backend.gather(shape, 2) + py
     )
     return output
 

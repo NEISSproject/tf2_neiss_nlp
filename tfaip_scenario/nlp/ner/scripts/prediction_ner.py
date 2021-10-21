@@ -1,19 +1,19 @@
-# Copyright 2020 The neiss authors. All Rights Reserved.
+# Copyright 2021 The neiss authors. All Rights Reserved.
 #
-# This file is part of tf2_neiss_nlp.
+# This file is part of tf_neiss_nlp.
 #
-# tf2_neiss_nlp is free software: you can redistribute it and/or modify
+# tf_neiss_nlp is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by the
 # Free Software Foundation, either version 3 of the License, or (at your
 # option) any later version.
 #
-# tf2_neiss_nlp is distributed in the hope that it will be useful, but
+# tf_neiss_nlp is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
 # or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 # more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# tf2_neiss_nlp. If not, see http://www.gnu.org/licenses/.
+# tf_neiss_nlp. If not, see http://www.gnu.org/licenses/.
 # ==============================================================================
 import json
 import os
@@ -32,7 +32,9 @@ def run(args):
         source_data_list = json.load(fp)
     predict_sample_list = []
     for source_sample, predict_sample in zip(source_data_list, predictor.predict_raw(args.input_json.split(" "))):
-        word, tags = data.prediction_to_list(predict_sample.inputs["sentence"], predict_sample.outputs["pred_ids"], len(source_sample))
+        word, tags = data.prediction_to_list(
+            predict_sample.inputs["sentence"], predict_sample.outputs["pred_ids"], len(source_sample)
+        )
         predict_data_sample = [list(x) for x in zip(word, tags)]
         predict_sentence = []
         for source_word_tuple, prediction_word_tuple in zip(source_sample, predict_data_sample):
@@ -44,7 +46,7 @@ def run(args):
             for sentence in predict_sample_list:
                 print(sentence)
 
-        out_file_path = args.input_json[:-5] + ".pred.json"
+        out_file_path = args.input_json.strip(".json") + ".pred.json"
         if args.out is not None and os.path.isdir(args.out):
             out_file_path = os.path.join(args.out, os.path.basename(out_file_path))
         if args.out is not None and str(args.out).endswith(".json"):
