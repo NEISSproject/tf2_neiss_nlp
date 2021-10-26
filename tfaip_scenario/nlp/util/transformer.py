@@ -82,10 +82,10 @@ class EncoderLayer(tf.keras.layers.Layer):
             attn_output_word_expanded = self.expand_word_to_token(
                 attn_output_word, inputs["word_length_vector"]
             )  # (batch_size, input_seq_len, d_model)
-            attn_output_window, _ = self.window_mha({"q": x, "k": x, "v": x}, mask=mask)
+            attn_output_window, attention_weights = self.window_mha({"q": x, "k": x, "v": x}, mask=mask)
             attn_output = attn_output_word_expanded + attn_output_window
         else:
-            attn_output, _ = self.mha({"q": x, "k": x, "v": x}, mask=mask)  # (batch_size, input_seq_len, d_model)
+            attn_output, attention_weights = self.mha({"q": x, "k": x, "v": x}, mask=mask)  # (batch_size, input_seq_len, d_model)
         attn_output = self.dropout1(attn_output, training=training)
         out1 = self.layernorm1(x + attn_output)  # (batch_size, input_seq_len, d_model)
 
