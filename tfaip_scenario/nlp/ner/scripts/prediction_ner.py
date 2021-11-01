@@ -53,8 +53,8 @@ def run(args):
             assert os.path.isdir(os.path.dirname(args.out)), f"Parent directory of {args.out} does not exist!"
             out_file_path = args.out
 
-        with open(out_file_path, "w") as fp:
-            json.dump(predict_sample_list, fp)
+    with open(out_file_path, "w") as fp:
+        json.dump(predict_sample_list, fp)
 
     return 0
 
