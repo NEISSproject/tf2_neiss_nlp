@@ -76,7 +76,7 @@ class EncoderLayer(tf.keras.layers.Layer):
 
         if self.wwa:
             x_word = self.reduce_token_to_word(x, inputs["segment_ids"])
-            attn_output_word, _ = self.mha(
+            attn_output_word, attention_weights = self.mha(
                 {"q": x_word, "k": x_word, "v": x_word}, mask=inputs["word_mask"]
             )  # (batch_size, input_word_seq_len, d_model)
             attn_output_word_expanded = self.expand_word_to_token(
@@ -94,7 +94,7 @@ class EncoderLayer(tf.keras.layers.Layer):
         ffn_output = self.dropout2(ffn_output, training=training)
         out2 = self.layernorm2(out1 + ffn_output)  # (batch_size, input_seq_len, d_model)
 
-        return out2
+        return out2, attention_weights
 
     def reduce_token_to_word(self, input, segment_ids):
         max_word_number = tf.math.reduce_max(segment_ids)
@@ -209,15 +209,18 @@ class Encoder(tf.keras.layers.Layer):
             x += self.pos_encoding[:, :seq_len, :]
         # x = self.dropout(x, training=training)
 
+        attention_weight_list = []
         for i in range(self.num_layers):
             input_dict = {"x": x, "mask": mask}
             if self.wwa:
                 input_dict["word_length_vector"] = inputs["word_length_vector"]
                 input_dict["segment_ids"] = inputs["segment_ids"]
                 input_dict["word_mask"] = inputs["word_mask"]
-            x = self.enc_layers[i](input_dict)
+            x, attention_weight = self.enc_layers[i](input_dict)
+            #attention_weight_list.append(attention_weight)
+            #attention_weights = tf.reshape(tf.concat(1,attention_weight_list), [-1,attention_weight.shape()])
 
-        return x  # (batch_size, input_seq_len, d_model)
+        return x, attention_weight # (batch_size, input_seq_len, d_model)
 
 
 class AlbertEncoder(tf.keras.layers.Layer):
@@ -388,9 +391,9 @@ class BERT(tf.keras.models.Model):
             )
         else:
             input_dict["mask"] = create_padding_mask(seq_length, max_len=tf.shape(inp)[-1])
-        enc_output = self._encoder(input_dict, training)  # (batch_size, inp_seq_len, d_model)
+        enc_output, attention_weight_list = self._encoder(input_dict, training)  # (batch_size, inp_seq_len, d_model)
 
-        return {"enc_output": enc_output}
+        return {"enc_output": enc_output, "attention_weights": attention_weight_list}
 
     def create_padding_mask_trans(self, seq):
         seq = tf.cast(tf.math.equal(seq, 0), tf.float32)

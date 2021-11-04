@@ -717,6 +717,7 @@ class NERwithMiniBERT(NERBERTBase):
             inp["word_length_vector"] = inputs["word_length_vector"]
             inp["segment_ids"] = inputs["segment_ids"]
         bert_graph_out = self.pretrained_bert(inp, training=training)
+        attention_weights = bert_graph_out["attention_weights"]
         bert_graph_out = self._dropout(bert_graph_out["enc_output"])
         if self._params.wordwise_output_:
             inp["wwo_indexes"] = inputs["wwo_indexes"]
@@ -750,6 +751,7 @@ class NERwithMiniBERT(NERBERTBase):
                 "probabilities_start": tf.squeeze(probs_start, axis=-1),
                 "probabilities_end": tf.squeeze(probs_end, axis=-1),
                 "probabilities_cse": p_cse,
+                "attention_weights": attention_weights
             }
             if self._params.loss_se_mode == "logreg":
                 return_dict["logits_start"] = tf.squeeze(logits_start, axis=-1)
@@ -783,10 +785,11 @@ class NERwithMiniBERT(NERBERTBase):
                     "probabilities": final_output,
                     "trans_params": trans_params,
                     "pred_idsfp": pred_idsfp,
+                    "attention_weights": attention_weights
                 }
             else:
                 pred_ids = tf.argmax(input=final_output, axis=2, output_type=tf.int32)
-                return_dict = {"pred_ids": pred_ids, "logits": final_output, "probabilities": final_output}
+                return_dict = {"pred_ids": pred_ids, "logits": final_output, "probabilities": final_output, "attention_weights": attention_weights}
         return return_dict
 
 

@@ -31,6 +31,7 @@ def run(args):
     with open(args.input_json, "r") as fp:
         source_data_list = json.load(fp)
     predict_sample_list = []
+    attention_weight_list = []
     for source_sample, predict_sample in zip(source_data_list, predictor.predict_raw(args.input_json.split(" "))):
         word, tags = data.prediction_to_list(
             predict_sample.inputs["sentence"], predict_sample.outputs["pred_ids"], len(source_sample)
@@ -42,19 +43,22 @@ def run(args):
             source_word_tuple[1] = prediction_word_tuple[1]
             predict_sentence.append(source_word_tuple)
         predict_sample_list.append(predict_sentence)
-        if args.print:
-            for sentence in predict_sample_list:
-                print(sentence)
+        attention_weight_list.append(predict_sample.outputs['attention_weights'])
+    if args.print:
+        for index in range(len(predict_sample_list)):
+            print(predict_sample_list[index])
+            print(attention_weight_list[index])
 
-        out_file_path = args.input_json.strip(".json") + ".pred.json"
-        if args.out is not None and os.path.isdir(args.out):
-            out_file_path = os.path.join(args.out, os.path.basename(out_file_path))
-        if args.out is not None and str(args.out).endswith(".json"):
-            assert os.path.isdir(os.path.dirname(args.out)), f"Parent directory of {args.out} does not exist!"
-            out_file_path = args.out
 
-        with open(out_file_path, "w") as fp:
-            json.dump(predict_sample_list, fp)
+    out_file_path = args.input_json.strip(".json") + ".pred.json"
+    if args.out is not None and os.path.isdir(args.out):
+        out_file_path = os.path.join(args.out, os.path.basename(out_file_path))
+    if args.out is not None and str(args.out).endswith(".json"):
+        assert os.path.isdir(os.path.dirname(args.out)), f"Parent directory of {args.out} does not exist!"
+        out_file_path = args.out
+
+    with open(out_file_path, "w") as fp:
+        json.dump(predict_sample_list, fp)
 
     return 0
 

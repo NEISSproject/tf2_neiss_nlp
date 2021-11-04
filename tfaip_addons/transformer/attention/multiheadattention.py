@@ -169,7 +169,7 @@ class ScaledDotProductAttention(Attention):
         # softmax is normalized on the last axis (seq_len_k) so that the scores
         # add up to 1.
         attention_weights = tf.nn.softmax(
-            scaled_attention_logits, axis=self.softmax_axis
+            scaled_attention_logits, axis=self.softmax_axis #default is set by -1, which indicates the last dimension
         )  # (..., seq_len_q, seq_len_k)
 
         output = tf.matmul(attention_weights, v)  # (..., seq_len_q, depth_v)
