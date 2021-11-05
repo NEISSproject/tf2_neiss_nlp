@@ -18,10 +18,12 @@
 import json
 import os
 
+
 from tfaip import PredictorParams
 from tfaip.util.tfaipargparse import TFAIPArgumentParser
 from tfaip_scenario.nlp.data.ner import NERData
 from tfaip_scenario.nlp.ner.scenario import Scenario
+from tfaip_addons.util.file.ndarray_to_json import NumpyArrayEncoder
 
 
 def run(args):
@@ -47,10 +49,14 @@ def run(args):
     if args.print:
         for index in range(len(predict_sample_list)):
             print(predict_sample_list[index])
+    if args.print_weights:
+        for index in range(len(predict_sample_list)):
             print(attention_weight_list[index])
+    attention_weight_list = {"array": attention_weight_list}
 
 
-    out_file_path = args.input_json.strip(".json") + ".pred.json"
+
+    out_file_path = args.input_json[0:len(args.input_json)-5] + ".pred.json"
     if args.out is not None and os.path.isdir(args.out):
         out_file_path = os.path.join(args.out, os.path.basename(out_file_path))
     if args.out is not None and str(args.out).endswith(".json"):
@@ -59,6 +65,16 @@ def run(args):
 
     with open(out_file_path, "w") as fp:
         json.dump(predict_sample_list, fp)
+
+    weights_file_path = args.input_json[0:len(args.input_json)-5] + ".weights.json"
+    if args.weights_out is not None and os.path.isdir(args.weights_out):
+        weights_file_path = os.path.join(args.weights_out, os.path.basename(weights_file_path))
+    if args.weights_out is not None and str(args.weights_out).endswith(".json"):
+        assert os.path.isdir(os.path.dirname(args.weights_out)), f"Parent directory of {args.weights_out} does not exist!"
+        weights_file_path = args.weights_out
+
+    with open(weights_file_path, "w") as file:
+        json.dump(attention_weight_list, file, cls=NumpyArrayEncoder)
 
     return 0
 
@@ -69,6 +85,8 @@ def parse_args(args=None):
     parser.add_argument("--input_json", required=True, type=str)
     parser.add_argument("--out", default=None, type=str, help="output folder or .json-file")
     parser.add_argument("--print", default=False, action="store_true", help="print results to console too")
+    parser.add_argument("--print_weights", default=False, action="store_true", help="print attention weights to console")
+    parser.add_argument("--weights_out", default=None, type=str, help="output folder or .json-file for attention weights")
     args = parser.parse_args(args=args)
     return args
 

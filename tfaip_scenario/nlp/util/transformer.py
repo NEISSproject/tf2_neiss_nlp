@@ -209,7 +209,7 @@ class Encoder(tf.keras.layers.Layer):
             x += self.pos_encoding[:, :seq_len, :]
         # x = self.dropout(x, training=training)
 
-        attention_weight_list = []
+        attention_weight_dict = {}
         for i in range(self.num_layers):
             input_dict = {"x": x, "mask": mask}
             if self.wwa:
@@ -217,8 +217,7 @@ class Encoder(tf.keras.layers.Layer):
                 input_dict["segment_ids"] = inputs["segment_ids"]
                 input_dict["word_mask"] = inputs["word_mask"]
             x, attention_weight = self.enc_layers[i](input_dict)
-            #attention_weight_list.append(attention_weight)
-            #attention_weights = tf.reshape(tf.concat(1,attention_weight_list), [-1,attention_weight.shape()])
+            attention_weight_dict[str(i)] = attention_weight
 
         return x, attention_weight # (batch_size, input_seq_len, d_model)
 
