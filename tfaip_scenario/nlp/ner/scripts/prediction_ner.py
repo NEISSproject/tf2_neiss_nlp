@@ -34,10 +34,12 @@ def run(args):
         source_data_list = json.load(fp)
     predict_sample_list = []
     attention_weight_list = []
+    token_list = []
     for source_sample, predict_sample in zip(source_data_list, predictor.predict_raw(args.input_json.split(" "))):
         word, tags = data.prediction_to_list(
             predict_sample.inputs["sentence"], predict_sample.outputs["pred_ids"], len(source_sample)
         )
+        token_list.append(predict_sample.inputs["sentence"])
         predict_data_sample = [list(x) for x in zip(word, tags)]
         predict_sentence = []
         for source_word_tuple, prediction_word_tuple in zip(source_sample, predict_data_sample):
@@ -52,9 +54,7 @@ def run(args):
     if args.print_weights:
         for index in range(len(predict_sample_list)):
             print(attention_weight_list[index])
-    attention_weight_list = {"array": attention_weight_list}
-
-
+    attention_weight_list = {"array": attention_weight_list, "token": token_list}
 
     out_file_path = args.input_json[0:len(args.input_json)-5] + ".pred.json"
     if args.out is not None and os.path.isdir(args.out):
