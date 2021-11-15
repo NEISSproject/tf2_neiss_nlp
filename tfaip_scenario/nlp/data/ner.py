@@ -112,7 +112,7 @@ class NERData(NLPData[TDP]):
     def get_num_tags(self):
         return self.tag_string_mapper.size()
 
-    def prediction_to_list(self, sentence, pred_ids, number_of_words):
+    def prediction_to_list(self, sentence, pred_ids, number_of_words, word_list):
         assert self.params.wordwise_output
         start = int(np.argwhere(sentence == self.params.cls_token_id_)) + 1
         end = int(np.argwhere(sentence == self.params.sep_token_id_))
@@ -121,7 +121,8 @@ class NERData(NLPData[TDP]):
         # assert end_tag == end, f"Inkonsisten EOS index in tokens({end}) and tags({end_tag}!"
         tags = [self._tag_string_mapper.get_value(x) for x in pred_ids]  # [start_tag:end_tag]]
         sentence_str = self.tokenizer.decode(sentence[start:end])
-        word_list = sentence_str.split(" ")
+        if not self.params.use_hf_model:
+            word_list = sentence_str.split(" ")
         tags = tags[1 : number_of_words + 1]
         assert len(word_list) == len(tags)
         logger.debug(f"{word_list}")
