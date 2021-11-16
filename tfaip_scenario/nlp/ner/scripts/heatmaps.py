@@ -37,13 +37,16 @@ def run(args):
     for satzindex in range(len(weightList)):
         for j in range(len(weightList[satzindex])):  # layerNumber
             maprow = int(np.ceil(len(weightList[satzindex][j]) / args.maps_per_row))
-            fig, axs = plt.subplots(nrows=maprow, ncols=args.maps_per_row, figsize=(counter[satzindex], counter[satzindex] + 13))
+            fig, axs = plt.subplots(nrows=maprow, ncols=args.maps_per_row, figsize=(counter[satzindex], counter[satzindex] + 17))
             fig.suptitle("Layer " + str(j + 1))
             for i in range(len(weightList[satzindex][j])):  # headNumber
-                temparray = np.asarray(weightList[satzindex][j][i])
-                weightList[satzindex][j][i] = temparray[0:counter[satzindex], 0:counter[satzindex]]
+                '''cast last two ... as numpy.ndarray'''
+                weightList[satzindex][j][i] = np.asarray(weightList[satzindex][j][i])[0:counter[satzindex], 0:counter[satzindex]]
+                '''calculate eigenvalues'''
+                eigenvalue, _ = np.linalg.eig(weightList[satzindex][j][i])
+                '''plot matrices'''
                 axs[int(i / args.maps_per_row), i % args.maps_per_row].imshow(weightList[satzindex][j][i], interpolation=None)
-                axs[int(i / args.maps_per_row), i % args.maps_per_row].set_title("Head " + str(i + 1))
+                axs[int(i / args.maps_per_row), i % args.maps_per_row].set_title("Head " + str(i + 1) + "\nEW: " + str(eigenvalue.min()))
                 axs[int(i / args.maps_per_row), i % args.maps_per_row].set_xticks(np.arange(len(token_list_string[satzindex])))
                 axs[int(i / args.maps_per_row), i % args.maps_per_row].set_yticks(np.arange(len(token_list_string[satzindex])))
                 axs[int(i / args.maps_per_row), i % args.maps_per_row].set_xticklabels(token_list_string[satzindex])
