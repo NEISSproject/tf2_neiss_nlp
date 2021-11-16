@@ -56,7 +56,7 @@ def run(args):
             print(attention_weight_list[index])
     attention_weight_list = {"array": attention_weight_list, "token": token_list}
 
-    out_file_path = args.input_json[0:len(args.input_json)-5] + ".pred.json"
+    out_file_path = args.input_json[:len(args.input_json)-5] + ".pred.json"
     if args.out is not None and os.path.isdir(args.out):
         out_file_path = os.path.join(args.out, os.path.basename(out_file_path))
     if args.out is not None and str(args.out).endswith(".json"):
@@ -66,7 +66,7 @@ def run(args):
     with open(out_file_path, "w") as fp:
         json.dump(predict_sample_list, fp)
 
-    weights_file_path = args.input_json[0:len(args.input_json)-5] + ".weights.json"
+    weights_file_path = args.input_json[:len(args.input_json)-5] + ".weights.json"
     if args.weights_out is not None and os.path.isdir(args.weights_out):
         weights_file_path = os.path.join(args.weights_out, os.path.basename(weights_file_path))
     if args.weights_out is not None and str(args.weights_out).endswith(".json"):

@@ -14,57 +14,45 @@ def run(args):
         source_data = json.load(fp)
 
     token_array = np.asarray(source_data["token"])
-    '''for i in range(len(token_list)):
-        for j in range(len(token_list[i])):
-            if :'''
-
-
-
-    finalNumpyArray = np.asarray(source_data["array"])
-
-
     token_list_string = []
+    counter = []
     for i in range(len(token_array)):
         token_list_string.append([])
-        for j in range(len(token_array[i])):
+        counter.append(len(token_array[i]))
+        for j in range(len(token_array[i])-1, -1, -1):
             if token_array[i][j] in range(1, 29987):
-                token_list_string[i].append('"' + tokenizer.decode([token_array[i][j]]) + '"')
+                token_list_string[i] = ['"' + tokenizer.decode([token_array[i][j]]) + '"', *token_list_string[i]]
             elif token_array[i][j] == 29987:
-                token_list_string[i].append('[Start]')
+                token_list_string[i] = ['[Start]', *token_list_string[i]]
             elif token_array[i][j] == 29988:
-                token_list_string[i].append('[End]')
+                token_list_string[i] = ['[End]', *token_list_string[i]]
             elif token_array[i][j] == 0:
-                token_list_string[i].append('[None]')
+                counter[i] = j
             else:
                 print("Fail")
                 return 1
 
+    weightList = (source_data["array"])
 
-    satzNumber = 1 #finalNumpyArray.shape[0]
-    layerNumber = finalNumpyArray.shape[1]
-    headNumber = finalNumpyArray.shape[2]
-    numrows = finalNumpyArray.shape[3]
-    numcols = finalNumpyArray.shape[4]
-
-    maprow = int(np.ceil(headNumber / args.maps_per_row))
-
-
-    for satzindex in range(satzNumber):
-        fig, axs = plt.subplots(nrows=maprow, ncols=args.maps_per_row, figsize=(numcols, numrows + 13))
-        for j in range(layerNumber):
-            fig.suptitle("Layer " + str(j))
-            for i in range(headNumber):
-                axs[int(i / args.maps_per_row), i % args.maps_per_row].imshow(finalNumpyArray[satzindex][j][i], interpolation=None)
-                axs[int(i / args.maps_per_row), i % args.maps_per_row].set_title("Head " + str(i))
+    for satzindex in range(len(weightList)):
+        for j in range(len(weightList[satzindex])):  # layerNumber
+            maprow = int(np.ceil(len(weightList[satzindex][j]) / args.maps_per_row))
+            fig, axs = plt.subplots(nrows=maprow, ncols=args.maps_per_row, figsize=(counter[satzindex], counter[satzindex] + 13))
+            fig.suptitle("Layer " + str(j + 1))
+            for i in range(len(weightList[satzindex][j])):  # headNumber
+                temparray = np.asarray(weightList[satzindex][j][i])
+                weightList[satzindex][j][i] = temparray[0:counter[satzindex], 0:counter[satzindex]]
+                axs[int(i / args.maps_per_row), i % args.maps_per_row].imshow(weightList[satzindex][j][i], interpolation=None)
+                axs[int(i / args.maps_per_row), i % args.maps_per_row].set_title("Head " + str(i + 1))
                 axs[int(i / args.maps_per_row), i % args.maps_per_row].set_xticks(np.arange(len(token_list_string[satzindex])))
                 axs[int(i / args.maps_per_row), i % args.maps_per_row].set_yticks(np.arange(len(token_list_string[satzindex])))
                 axs[int(i / args.maps_per_row), i % args.maps_per_row].set_xticklabels(token_list_string[satzindex])
                 axs[int(i / args.maps_per_row), i % args.maps_per_row].set_yticklabels(token_list_string[satzindex])
                 plt.setp(axs[int(i / args.maps_per_row), i % args.maps_per_row].get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
-            plt.savefig(args.export_heatmap[0:len(args.export_heatmap) - 4] + "_layer_" + str(j) + ".pdf")
+            plt.savefig(args.export_heatmap[:len(args.export_heatmap) - 4] + "_satz_" + str(satzindex + 1) + "_layer_" + str(j + 1) + ".pdf")
 
     if args.print:
-        print(finalNumpyArray)
+        print(weightList)
 
     return 0
 
