@@ -102,6 +102,7 @@ class ModelParams(ModelBaseParams):
 
     wordwise_output_: bool = False
     wwo_mode_: str = "first"
+    hf_cache_dir_: str = None
 
 
 class Model(ModelBase[ModelParams]):
@@ -564,10 +565,10 @@ class NERBERTBase(GraphBase[ModelParams], ABC):
         if self.params.use_hf_model_:
             if self.params.use_hf_electra_model_:
                 self.pretrained_bert = TFElectraModel.from_pretrained(
-                    self.params.pretrained_hf_model_, return_dict=True
+                    self.params.pretrained_hf_model_,cache_dir=self.params.hf_cache_dir_, return_dict=True
                 )
             else:
-                self.pretrained_bert = TFBertModel.from_pretrained(self.params.pretrained_hf_model_, return_dict=True)
+                self.pretrained_bert = TFBertModel.from_pretrained(self.params.pretrained_hf_model_,cache_dir=self.params.hf_cache_dir_, return_dict=True)
 
         elif self.params.pretrained_bert:
             logger.info(f"Attempt to load pre-trained bert from saved model: {self.params.pretrained_bert}")
@@ -798,9 +799,9 @@ class NERwithHFBERT(NERBERTBase):
         self._tracked_layers = dict()
         if self.pretrained_bert is None:
             if self._params.use_hf_electra_model_:
-                self.pretrained_bert = TFElectraModel(ElectraConfig.from_pretrained(params.pretrained_hf_model_))
+                self.pretrained_bert = TFElectraModel(ElectraConfig.from_pretrained(params.pretrained_hf_model_,cache_dir=params.hf_cache_dir_))
             else:
-                self.pretrained_bert = TFBertModel(BertConfig.from_pretrained(params.pretrained_hf_model_))
+                self.pretrained_bert = TFBertModel(BertConfig.from_pretrained(params.pretrained_hf_model_,cache_dir=params.hf_cache_dir_))
         self._dropout = tf.keras.layers.Dropout(self._params.dropout_last)
         if self._params.bet_tagging_:
             # print(self.tag_vocab_size-1)

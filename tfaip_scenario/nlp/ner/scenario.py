@@ -57,6 +57,7 @@ class Scenario(ListFileScenario[ScenarioParams]):
         self._params.model.bet_tagging_ = self._params.data.bet_tagging
         self._params.model.wordwise_output_ = self._params.data.wordwise_output
         self._params.model.wwo_mode_ = self._params.data.wwo_mode
+        self._params.model.hf_cache_dir_ = self._params.data.hf_cache_dir
 
         return super(Scenario, self).create_model_and_graph()
 

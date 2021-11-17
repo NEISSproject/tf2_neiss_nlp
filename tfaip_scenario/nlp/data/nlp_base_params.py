@@ -23,7 +23,7 @@ from typing import List
 from dataclasses_json import config
 from paiargparse import pai_meta, pai_dataclass
 from tensorflow_datasets.core.features.text import SubwordTextEncoder
-from transformers import BertTokenizer, ElectraTokenizer
+from tfaip_scenario.nlp.util.hf_helper import load_hf_tokenizer
 
 from tfaip import DataBaseParams
 from tfaip.resource.resource import Resource
@@ -63,13 +63,11 @@ class NLPDataParams(DataBaseParams, ABC):
     swap_token_prob: float = 0.0
     whole_word_attention: bool = False
     paifile_input: bool = False
+    hf_cache_dir: str = None
 
     def get_tokenizer(self):
         if self.use_hf_model:
-            if self.use_hf_electra_model:
-                tokenizer = ElectraTokenizer.from_pretrained(self.pretrained_hf_model)
-            else:
-                tokenizer = BertTokenizer.from_pretrained(self.pretrained_hf_model)
+            tokenizer = load_hf_tokenizer(self.pretrained_hf_model, cache_dir=self.hf_cache_dir)
             self.cls_token_id_ = tokenizer.cls_token_id
             self.sep_token_id_ = tokenizer.sep_token_id
             self.pad_token_id_ = tokenizer.pad_token_id
