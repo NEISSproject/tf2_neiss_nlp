@@ -36,14 +36,18 @@ def run(args):
 
     for satzindex in range(len(weightList)):
         for j in range(len(weightList[satzindex])):  # layerNumber
-            maprow = int(np.ceil(len(weightList[satzindex][j]) / args.maps_per_row))
-            fig, axs = plt.subplots(nrows=maprow, ncols=args.maps_per_row, figsize=(counter[satzindex], counter[satzindex] + 17))
+            maprow = int(np.ceil((len(weightList[satzindex][j]) + 1) / args.maps_per_row))
+            fig, axs = plt.subplots(nrows=maprow, ncols=args.maps_per_row, figsize=(counter[satzindex] + 10, counter[satzindex] + 13))
+            #fig.tight_layout()
             fig.suptitle("Layer " + str(j + 1))
+            concatedHeader = np.zeros((counter[satzindex], counter[satzindex]))
             for i in range(len(weightList[satzindex][j])):  # headNumber
-                '''cast last two ... as numpy.ndarray'''
+                '''cast last two dimensions as array'''
                 weightList[satzindex][j][i] = np.asarray(weightList[satzindex][j][i])[0:counter[satzindex], 0:counter[satzindex]]
                 '''calculate eigenvalues'''
                 eigenvalue, _ = np.linalg.eig(weightList[satzindex][j][i])
+                '''Add an norm all Headers per Layer to new Heatmap'''
+                concatedHeader += weightList[satzindex][j][i]
                 '''plot matrices'''
                 axs[int(i / args.maps_per_row), i % args.maps_per_row].imshow(weightList[satzindex][j][i], interpolation=None)
                 axs[int(i / args.maps_per_row), i % args.maps_per_row].set_title("Head " + str(i + 1) + "\nEW: " + str(eigenvalue.min()))
@@ -52,6 +56,16 @@ def run(args):
                 axs[int(i / args.maps_per_row), i % args.maps_per_row].set_xticklabels(token_list_string[satzindex])
                 axs[int(i / args.maps_per_row), i % args.maps_per_row].set_yticklabels(token_list_string[satzindex])
                 plt.setp(axs[int(i / args.maps_per_row), i % args.maps_per_row].get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
+            '''plot concated Header'''
+            concatedHeader /= np.linalg.norm(concatedHeader, ord=0, axis=1)
+            eigenvalue, _ = np.linalg.eig(concatedHeader)
+            axs[int(len(weightList[satzindex][j]) / args.maps_per_row), len(weightList[satzindex][j]) % args.maps_per_row].imshow(concatedHeader, interpolation=None)
+            axs[int(len(weightList[satzindex][j]) / args.maps_per_row), len(weightList[satzindex][j]) % args.maps_per_row].set_title("Concated Header\nEW: " + str(eigenvalue.min()))
+            axs[int(len(weightList[satzindex][j]) / args.maps_per_row), len(weightList[satzindex][j]) % args.maps_per_row].set_xticks(np.arange(len(token_list_string[satzindex])))
+            axs[int(len(weightList[satzindex][j]) / args.maps_per_row), len(weightList[satzindex][j]) % args.maps_per_row].set_yticks(np.arange(len(token_list_string[satzindex])))
+            axs[int(len(weightList[satzindex][j]) / args.maps_per_row), len(weightList[satzindex][j]) % args.maps_per_row].set_xticklabels(token_list_string[satzindex])
+            axs[int(len(weightList[satzindex][j]) / args.maps_per_row), len(weightList[satzindex][j]) % args.maps_per_row].set_yticklabels(token_list_string[satzindex])
+            plt.setp(axs[int(len(weightList[satzindex][j]) / args.maps_per_row), len(weightList[satzindex][j]) % args.maps_per_row].get_xticklabels(), rotation=45, ha="right",rotation_mode="anchor")
             plt.savefig(args.export_heatmap[:len(args.export_heatmap) - 4] + "_satz_" + str(satzindex + 1) + "_layer_" + str(j + 1) + ".pdf")
 
     if args.print:
