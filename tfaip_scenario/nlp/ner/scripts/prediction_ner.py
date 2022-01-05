@@ -17,6 +17,7 @@
 # ==============================================================================
 import json
 import os
+import numpy as np
 
 
 from tfaip import PredictorParams
@@ -35,6 +36,8 @@ def run(args):
     predict_sample_list = []
     attention_weight_list = []
     token_list = []
+    prediction_id_list = []
+    probability_list = []
     for source_sample, predict_sample in zip(source_data_list, predictor.predict_raw(args.input_json.split(" "))):
         word, tags = data.prediction_to_list(
             predict_sample.inputs["sentence"], predict_sample.outputs["pred_ids"], len(source_sample)
@@ -48,13 +51,16 @@ def run(args):
             predict_sentence.append(source_word_tuple)
         predict_sample_list.append(predict_sentence)
         attention_weight_list.append(predict_sample.outputs['attention_weights'])
+        if args.probabilities:
+            prediction_id_list.append(predict_sample.outputs['pred_ids'])
+            probability_list.append(predict_sample.outputs['probabilities'])
     if args.print:
         for index in range(len(predict_sample_list)):
             print(predict_sample_list[index])
     if args.print_weights:
         for index in range(len(predict_sample_list)):
             print(attention_weight_list[index])
-    attention_weight_list = {"array": attention_weight_list, "token": token_list}
+    attention_weight_list = {"array": attention_weight_list, "token": token_list, "pred_ids": prediction_id_list, "probabilities": probability_list}
 
     out_file_path = args.input_json[:len(args.input_json)-5] + ".pred.json"
     if args.out is not None and os.path.isdir(args.out):
@@ -85,6 +91,7 @@ def parse_args(args=None):
     parser.add_argument("--input_json", required=True, type=str)
     parser.add_argument("--out", default=None, type=str, help="output folder or .json-file")
     parser.add_argument("--print", default=False, action="store_true", help="print results to console too")
+    parser.add_argument("--probabilities", default=False, action="store_true", help="stores matrix of probabilities in weights-file")
     parser.add_argument("--print_weights", default=False, action="store_true", help="print attention weights to console")
     parser.add_argument("--weights_out", default=None, type=str, help="output folder or .json-file for attention weights")
     args = parser.parse_args(args=args)

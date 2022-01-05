@@ -779,10 +779,11 @@ class NERwithMiniBERT(NERBERTBase):
                 trans_params = tf.broadcast_to(
                     trans_params, [tf.shape(pred_ids)[0], tf.shape(trans_params)[0], tf.shape(trans_params)[1]]
                 )
+                probabilities = tf.nn.softmax(final_output)
                 return_dict = {
                     "pred_ids": pred_ids,
                     "logits": final_output,
-                    "probabilities": final_output,
+                    "probabilities": probabilities,
                     "trans_params": trans_params,
                     "pred_idsfp": pred_idsfp,
                     "attention_weights": attention_weights
