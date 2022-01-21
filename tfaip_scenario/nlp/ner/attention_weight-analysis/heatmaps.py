@@ -14,12 +14,11 @@ def run(args):
 
     token_array = np.asarray(source_data["token"])
     weightlist = (source_data["array"])
-    plot(weightlist, args.maps_per_row, args.export_heatmap, token_array)
+    plot(weightlist, args.maps_per_row, args.export_heatmap, token_array, args.concat)
 
     if args.probabilities:
         probabilities_array = np.asarray(source_data["probabilities"])
         pred_id_array = np.asarray(source_data["pred_ids"])
-
 
     if args.print:
         print(weightlist)
@@ -27,12 +26,12 @@ def run(args):
     return 0
 
 
-def plot(weightlist, maps_per_row, export_heatmap, token_array):
+def plot(weightlist, maps_per_row, export_heatmap, token_array, concat):
     token_list_string, counter = decode_token(token_array)
     for satzindex in range(len(weightlist)):
         for j in range(len(weightlist[satzindex])):  # layerNumber
-            maprow = int(np.ceil((len(weightlist[satzindex][j]) + 1) / maps_per_row))
-            fig, axs = plt.subplots(nrows=maprow, ncols=maps_per_row, figsize=(counter[satzindex] + 10, counter[satzindex] + 15))
+            maprow = int(np.ceil((len(weightlist[satzindex][j]) + 1) / maps_per_row))-1
+            fig, axs = plt.subplots(nrows=maprow, ncols=maps_per_row, figsize=(counter[satzindex] + 13, counter[satzindex] + 4))
             fig.suptitle("Layer " + str(j + 1))
             concated_header = np.zeros((counter[satzindex], counter[satzindex]))
             for i in range(len(weightlist[satzindex][j])):  # headNumber
@@ -52,23 +51,24 @@ def plot(weightlist, maps_per_row, export_heatmap, token_array):
                 normstring = ""
                 for k in range(len(normen)):
                     normstring += ("\n" + str(normen[k]) + "-Norm: " + str(normvector[k]))
-                axs[int(i / maps_per_row), i % maps_per_row].set_title("Head " + str(i + 1) + "\n|EW|: " + str(np.min(eigenvalue)) + normstring)
+                axs[int(i / maps_per_row), i % maps_per_row].set_title("Head " + str(i + 1))# + "\n|EW|: " + str(np.min(eigenvalue)) + normstring)
                 axs[int(i / maps_per_row), i % maps_per_row].set_xticks(np.arange(len(token_list_string[satzindex])))
                 axs[int(i / maps_per_row), i % maps_per_row].set_yticks(np.arange(len(token_list_string[satzindex])))
                 axs[int(i / maps_per_row), i % maps_per_row].set_xticklabels(token_list_string[satzindex])
                 axs[int(i / maps_per_row), i % maps_per_row].set_yticklabels(token_list_string[satzindex])
                 plt.setp(axs[int(i / maps_per_row), i % maps_per_row].get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
-            '''plot concated Header'''
-            concated_header /= np.linalg.norm(concated_header, ord=0, axis=1)
-            eigenvalue, _ = np.linalg.eig(concated_header)
-            eigenvalue = np.abs(eigenvalue)
-            axs[int(len(weightlist[satzindex][j]) / maps_per_row), len(weightlist[satzindex][j]) % maps_per_row].imshow(concated_header, interpolation=None)
-            axs[int(len(weightlist[satzindex][j]) / maps_per_row), len(weightlist[satzindex][j]) % maps_per_row].set_title("Concated Header\nEW: " + str(np.min(eigenvalue)))
-            axs[int(len(weightlist[satzindex][j]) / maps_per_row), len(weightlist[satzindex][j]) % maps_per_row].set_xticks(np.arange(len(token_list_string[satzindex])))
-            axs[int(len(weightlist[satzindex][j]) / maps_per_row), len(weightlist[satzindex][j]) % maps_per_row].set_yticks(np.arange(len(token_list_string[satzindex])))
-            axs[int(len(weightlist[satzindex][j]) / maps_per_row), len(weightlist[satzindex][j]) % maps_per_row].set_xticklabels(token_list_string[satzindex])
-            axs[int(len(weightlist[satzindex][j]) / maps_per_row), len(weightlist[satzindex][j]) % maps_per_row].set_yticklabels(token_list_string[satzindex])
-            plt.setp(axs[int(len(weightlist[satzindex][j]) / maps_per_row), len(weightlist[satzindex][j]) % maps_per_row].get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
+            if concat:
+                '''plot concated Header'''
+                concated_header /= np.linalg.norm(concated_header, ord=0, axis=1)
+                eigenvalue, _ = np.linalg.eig(concated_header)
+                eigenvalue = np.abs(eigenvalue)
+                axs[int(len(weightlist[satzindex][j]) / maps_per_row), len(weightlist[satzindex][j]) % maps_per_row].imshow(concated_header, interpolation=None)
+                axs[int(len(weightlist[satzindex][j]) / maps_per_row), len(weightlist[satzindex][j]) % maps_per_row].set_title("Concated Header\nEW: " + str(np.min(eigenvalue)))
+                axs[int(len(weightlist[satzindex][j]) / maps_per_row), len(weightlist[satzindex][j]) % maps_per_row].set_xticks(np.arange(len(token_list_string[satzindex])))
+                axs[int(len(weightlist[satzindex][j]) / maps_per_row), len(weightlist[satzindex][j]) % maps_per_row].set_yticks(np.arange(len(token_list_string[satzindex])))
+                axs[int(len(weightlist[satzindex][j]) / maps_per_row), len(weightlist[satzindex][j]) % maps_per_row].set_xticklabels(token_list_string[satzindex])
+                axs[int(len(weightlist[satzindex][j]) / maps_per_row), len(weightlist[satzindex][j]) % maps_per_row].set_yticklabels(token_list_string[satzindex])
+                plt.setp(axs[int(len(weightlist[satzindex][j]) / maps_per_row), len(weightlist[satzindex][j]) % maps_per_row].get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
             plt.savefig(export_heatmap[:len(export_heatmap) - 4] + "_satz_" + str(satzindex + 1) + "_layer_" + str(j + 1) + ".pdf")
 
 
@@ -101,6 +101,7 @@ def parse_args(args=None):
     parser.add_argument("--maps_per_row", required=True, type=int, help="sets the number of Heatmaps per row in output")
     parser.add_argument("--probabilities", default=False, action="store_true", help="store out heatmap of probabilities")
     parser.add_argument("--print", default=False, action="store_true", help="print results to console too")
+    parser.add_argument("--concat", default=False, action="store_true", help="prints 9th Header out of all other")
     args = parser.parse_args(args=args)
     return args
 
