@@ -17,7 +17,6 @@
 # ==============================================================================
 import json
 import os
-import numpy as np
 
 
 from tfaip import PredictorParams

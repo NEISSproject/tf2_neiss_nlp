@@ -790,7 +790,8 @@ class NERwithMiniBERT(NERBERTBase):
                 }
             else:
                 pred_ids = tf.argmax(input=final_output, axis=2, output_type=tf.int32)
-                return_dict = {"pred_ids": pred_ids, "logits": final_output, "probabilities": final_output, "attention_weights": attention_weights}
+                probabilities = tf.nn.softmax(final_output)
+                return_dict = {"pred_ids": pred_ids, "logits": final_output, "probabilities": probabilities, "attention_weights": attention_weights}
         return return_dict
 
 
