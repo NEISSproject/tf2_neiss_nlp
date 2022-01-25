@@ -10,60 +10,68 @@ def run(args):
     assert str(args.input_json).endswith(".json"), "--input_json must be a .json file!"
     with open(args.input_json, "r") as fp:
         source_data = json.load(fp)
+    weightlist = source_data["array"]
+    tokenlist = source_data["token"]
+    headlist = datacleaning(weightlist, tokenlist, args)
+    kappalist = calculate_kappalist(headlist, args.select_diag)
+    calculate_metadata_and_print(kappalist, args.headnumber)
 
-    token_array = np.asarray(source_data["token"])
-    weightlist = (source_data["array"])
-    head1list = []
-    head2list = []
-    kappalist = []
+def datacleaning(weightlist, tokenlist, args):
+    headlist = []
+    token_list_array = []
     for i in range(len(weightlist)):
-        head1list.append(np.asarray(weightlist[i][5][0]))
-        head2list.append(np.asarray(weightlist[i][5][1]))
+        token_list_array.append(np.asarray(tokenlist[i]))
+        zerolist = np.where(token_list_array[i] == 0)
+        token_list_array[i] = np.delete(token_list_array[i], zerolist)
+        headlist.append(np.asarray(weightlist[i][5][args.headnumber-1]))
+        headlist[i] = np.delete(headlist[i], zerolist, axis=0)
+        headlist[i] = np.delete(headlist[i], zerolist, axis=1)
         if args.exclude_start_end:
-            head1list[i] = head1list[i][1:len(head1list[i])-1, 1:len(head1list[i])-1]
-            head2list[i] = head2list[i][1:len(head2list[i])-1, 1:len(head2list[i])-1]
+            headlist[i] = headlist[i][1:len(headlist[i])-1, 1:len(headlist[i])-1]
+            for z in range(len(headlist[i])):
+                headlist[i][z] = headlist[i][z]/np.sum(headlist[i][z])
+                headlist[i][z] = headlist[i][z]/np.sum(headlist[i][z])
+        if args.exclude_spaces:
+            if args.exclude_start_end:
+                token_list_array[i] = np.delete(token_list_array[i], [0, token_list_array[i].size - 1])
+            spacelist = np.where(token_list_array[i] == 29763)
+            headlist[i] = np.delete(headlist[i], spacelist, axis=0)
+            headlist[i] = np.delete(headlist[i], spacelist, axis=1)
+            for z in range(len(headlist[i])):
+                headlist[i][z] = headlist[i][z]/np.sum(headlist[i][z])
+    return headlist
 
-    for i in range(len(head1list)):
+
+def calculate_kappalist(headlist, diag):
+    kappalist = []
+    for i in range(len(headlist)):
         k = 0
-        for j in range(len(head1list[i])):
-            if (head1list[i][j][j] <= 0.5):
+        for j in range(max(-diag, 0), len(headlist[i]) + min(-diag, 0)):
+            if (headlist[i][j][j+diag] <= 0.5):
                 k += 1
-        kappalist.append(float(len(head1list[i])-k)/float(len(head1list[i])))
+        kappalist.append(float(len(headlist[i]) - k) / float(len(headlist[i])))
+    return(kappalist)
 
-    print(kappalist)
+
+def calculate_metadata_and_print(kappalist, h):
+    summe = 0
+    minimal = 1
+    for i in range(len(kappalist)):
+        summe += kappalist[i]
+        if kappalist[i] < minimal:
+            minimal = kappalist[i]
+    summe /= len(kappalist)
+    print("Head " + str(h) + " min =" + str(minimal) + "\nHead " + str(h) + " Durchschnitt =" + str(summe))
     return 0
-
-
-
-def decode_token(token_array):
-    tokenizer = tfds.core.features.text.SubwordTextEncoder.load_from_file("data/tokenizer/tokenizer_de")
-    token_list_string = []
-    counter = []
-    for i in range(len(token_array)):
-        token_list_string.append([])
-        counter.append(len(token_array[i]))
-        for j in range(len(token_array[i]) - 1, -1, -1):
-            if token_array[i][j] in range(1, 29987):
-                token_list_string[i] = ['"' + tokenizer.decode([token_array[i][j]]) + '"', *token_list_string[i]]
-            elif token_array[i][j] == 29987:
-                token_list_string[i] = ['[Start]', *token_list_string[i]]
-            elif token_array[i][j] == 29988:
-                token_list_string[i] = ['[End]', *token_list_string[i]]
-            elif token_array[i][j] == 0:
-                counter[i] = j
-            else:
-                print("Fail")
-                return 1
-    return token_list_string, counter
 
 
 def parse_args(args=None):
     parser = TFAIPArgumentParser()
     parser.add_argument("--input_json", required=True, type=str)
-    #parser.add_argument("--maps_per_row", required=True, type=int, help="sets the number of Heatmaps per row in output")
-    parser.add_argument("--exclude_start_end", default=False, action="store_true", help="clears the first and last row and column")
-    #parser.add_argument("--print", default=False, action="store_true", help="print results to console too")
-    #parser.add_argument("--concat", default=False, action="store_true", help="prints 9th Header out of all other")
+    parser.add_argument("--headnumber", required=True, type=int, help="select head which is regarded")
+    parser.add_argument("--exclude_start_end", default=False, action="store_true", help="deletes the first and last row and column")
+    parser.add_argument("--exclude_spaces", default=False, action="store_true", help="deletes rows and columns which representates spaces")
+    parser.add_argument("--select_diag", required=True, type=int, help="0 is Main, -1 lower secondary diagonal, 1 upper secondary diagonal")
     args = parser.parse_args(args=args)
     return args
 
