@@ -13,8 +13,8 @@ def run(args):
     weightlist = source_data["array"]
     tokenlist = source_data["token"]
     headlist = datacleaning(weightlist, tokenlist, args)
-    kappalist = calculate_kappalist(headlist, args.select_diag)
-    calculate_metadata_and_print(kappalist, args.headnumber)
+    gammalist = calculate_gammalist(headlist, args.select_diag)
+    calculate_metadata_and_print(gammalist, args.headnumber)
 
 def datacleaning(weightlist, tokenlist, args):
     headlist = []
@@ -42,26 +42,26 @@ def datacleaning(weightlist, tokenlist, args):
     return headlist
 
 
-def calculate_kappalist(headlist, diag):
-    kappalist = []
+def calculate_gammalist(headlist, diag):
+    gammalist = []
     for i in range(len(headlist)):
         k = 0
         for j in range(max(-diag, 0), len(headlist[i]) + min(-diag, 0)):
             if (headlist[i][j][j+diag] <= 0.5):
                 k += 1
-        kappalist.append(float(len(headlist[i]) - k) / float(len(headlist[i])))
-    return(kappalist)
+        gammalist.append(float(len(headlist[i]) - k) / float(len(headlist[i])))
+    return(gammalist)
 
 
-def calculate_metadata_and_print(kappalist, h):
+def calculate_metadata_and_print(gammalist, h):
     summe = 0
     minimal = 1
-    for i in range(len(kappalist)):
-        summe += kappalist[i]
-        if kappalist[i] < minimal:
-            minimal = kappalist[i]
-    summe /= len(kappalist)
-    print("Head " + str(h) + " min =" + str(minimal) + "\nHead " + str(h) + " Durchschnitt =" + str(summe))
+    for i in range(len(gammalist)):
+        summe += gammalist[i]
+        if gammalist[i] < minimal:
+            minimal = gammalist[i]
+    summe /= len(gammalist)
+    print("Head " + str(h) + " gamma_min =" + str(minimal) + "\nHead " + str(h) + " gamma_Durchschnitt =" + str(summe))
     return 0
 
 
