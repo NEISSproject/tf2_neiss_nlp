@@ -1,8 +1,5 @@
 import json
 import numpy as np
-import matplotlib.pyplot as plt
-import tensorflow_datasets as tfds
-
 from tfaip.util.tfaipargparse import TFAIPArgumentParser
 
 
@@ -15,6 +12,7 @@ def run(args):
     headlist = datacleaning(weightlist, tokenlist, args)
     gammalist = calculate_gammalist(headlist, args.select_diag)
     calculate_metadata_and_print(gammalist, args.headnumber)
+
 
 def datacleaning(weightlist, tokenlist, args):
     headlist = []
@@ -49,7 +47,7 @@ def calculate_gammalist(headlist, diag):
         for j in range(max(-diag, 0), len(headlist[i]) + min(-diag, 0)):
             if (headlist[i][j][j+diag] <= 0.5):
                 k += 1
-        gammalist.append(float(len(headlist[i]) - k) / float(len(headlist[i])))
+        gammalist.append(float(len(headlist[i]) - abs(diag) - k) / float(len(headlist[i]) - abs(diag)))
     return(gammalist)
 
 
