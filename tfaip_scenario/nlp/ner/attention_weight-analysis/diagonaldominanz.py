@@ -11,7 +11,8 @@ def run(args):
     tokenlist = source_data["token"]
     headlist = datacleaning(weightlist, tokenlist, args)
     gammalist = calculate_gammalist(headlist, args.select_diag)
-    calculate_metadata_and_print(gammalist, args.headnumber)
+    calculate_metadata_and_print_gamma(gammalist, args.headnumber)
+    calculate_metadata_and_print_ev(headlist, args.headnumber)
 
 
 def datacleaning(weightlist, tokenlist, args):
@@ -37,6 +38,7 @@ def datacleaning(weightlist, tokenlist, args):
             headlist[i] = np.delete(headlist[i], spacelist, axis=1)
             for z in range(len(headlist[i])):
                 headlist[i][z] = headlist[i][z]/np.sum(headlist[i][z])
+    #print(np.linalg.eigvals(headlist))
     return headlist
 
 
@@ -51,7 +53,7 @@ def calculate_gammalist(headlist, diag):
     return(gammalist)
 
 
-def calculate_metadata_and_print(gammalist, h):
+def calculate_metadata_and_print_gamma(gammalist, h):
     summe = 0
     minimal = 1
     for i in range(len(gammalist)):
@@ -60,6 +62,23 @@ def calculate_metadata_and_print(gammalist, h):
             minimal = gammalist[i]
     summe /= len(gammalist)
     print("Head " + str(h) + " gamma_min =" + str(minimal) + "\nHead " + str(h) + " gamma_Durchschnitt =" + str(summe))
+    return 0
+
+def calculate_metadata_and_print_ev(headlist, h):
+    summe = 0.0
+    minimal = 1.0
+    maximal = -1.0
+    evlist = []
+    for i in range(len(headlist)):
+        evlist.append(np.linalg.eigvals(headlist[i]))
+        for j in range(len(evlist[i])):
+            if evlist[i][j] < minimal:
+                minimal = evlist[i][j]
+            if evlist[i][j] > maximal:
+                maximal = evlist[i][j]
+        summe += np.mean(evlist[i])
+    summe /= len(evlist)
+    print("Head " + str(h) + " EW_min =" + str(minimal) + "\nHead " + str(h) + " EW_max =" + str(maximal) + "\nHead " + str(h) + " EW_Durchschnitt =" + str(summe))
     return 0
 
 
