@@ -1,15 +1,20 @@
 import json
 import numpy as np
+import matplotlib.pyplot as plt
 from tfaip.util.tfaipargparse import TFAIPArgumentParser
+import tfaip_scenario.nlp.ner.attention_weight_analysis.util as ut
 
 
 def run(args):
     assert str(args.input_json).endswith(".json"), "--input_json must be a .json file!"
     with open(args.input_json, "r") as fp:
         source_data = json.load(fp)
+    safedir = args.input_json[0:args.input_json.rfind("/")]
     weightlist = source_data["array"]
     tokenlist = source_data["token"]
-    headlist = datacleaning(weightlist, tokenlist, args)
+    headlist, tokenlist = datacleaning(weightlist, tokenlist, args)
+    tokenlist, _ = ut.decode_token(tokenlist)
+    plot(headlist, tokenlist, args.headnumber, safedir)
     gammalist = calculate_gammalist(headlist, args.select_diag)
     calculate_metadata_and_print_gamma(gammalist, args.headnumber)
     calculate_metadata_and_print_ev(headlist, args.headnumber)
@@ -27,19 +32,17 @@ def datacleaning(weightlist, tokenlist, args):
         headlist[i] = np.delete(headlist[i], zerolist, axis=1)
         if args.exclude_start_end:
             headlist[i] = headlist[i][1:len(headlist[i])-1, 1:len(headlist[i])-1]
-            for z in range(len(headlist[i])):
-                headlist[i][z] = headlist[i][z]/np.sum(headlist[i][z])
-                headlist[i][z] = headlist[i][z]/np.sum(headlist[i][z])
+            token_list_array[i] = np.delete(token_list_array[i], [0, token_list_array[i].size - 1])
         if args.exclude_spaces:
-            if args.exclude_start_end:
-                token_list_array[i] = np.delete(token_list_array[i], [0, token_list_array[i].size - 1])
             spacelist = np.where(token_list_array[i] == 29763)
             headlist[i] = np.delete(headlist[i], spacelist, axis=0)
             headlist[i] = np.delete(headlist[i], spacelist, axis=1)
+            token_list_array[i] = np.delete(token_list_array[i], spacelist)
+        headlist[i] /= headlist[i].max
+        if args.normalizing:
             for z in range(len(headlist[i])):
                 headlist[i][z] = headlist[i][z]/np.sum(headlist[i][z])
-    #print(np.linalg.eigvals(headlist))
-    return headlist
+    return headlist, token_list_array
 
 
 def calculate_gammalist(headlist, diag):
@@ -47,10 +50,10 @@ def calculate_gammalist(headlist, diag):
     for i in range(len(headlist)):
         k = 0
         for j in range(max(-diag, 0), len(headlist[i]) + min(-diag, 0)):
-            if (headlist[i][j][j+diag] <= 0.5):
+            if headlist[i][j][j+diag] <= 0.5:
                 k += 1
         gammalist.append(float(len(headlist[i]) - abs(diag) - k) / float(len(headlist[i]) - abs(diag)))
-    return(gammalist)
+    return gammalist
 
 
 def calculate_metadata_and_print_gamma(gammalist, h):
@@ -64,13 +67,18 @@ def calculate_metadata_and_print_gamma(gammalist, h):
     print("Head " + str(h) + " gamma_min =" + str(minimal) + "\nHead " + str(h) + " gamma_Durchschnitt =" + str(summe))
     return 0
 
+
 def calculate_metadata_and_print_ev(headlist, h):
     summe = 0.0
+    zaehler = 0.0
     minimal = 1.0
     maximal = -1.0
+    epsilon = 8.2*(10**(-15))
     evlist = []
     for i in range(len(headlist)):
         evlist.append(np.linalg.eigvals(headlist[i]))
+        if 1.0-epsilon < np.max(evlist[i]) < 1.0+epsilon:
+            zaehler += 1
         for j in range(len(evlist[i])):
             if evlist[i][j] < minimal:
                 minimal = evlist[i][j]
@@ -78,7 +86,24 @@ def calculate_metadata_and_print_ev(headlist, h):
                 maximal = evlist[i][j]
         summe += np.mean(evlist[i])
     summe /= len(evlist)
+    zaehler /= len(evlist)
     print("Head " + str(h) + " EW_min =" + str(minimal) + "\nHead " + str(h) + " EW_max =" + str(maximal) + "\nHead " + str(h) + " EW_Durchschnitt =" + str(summe))
+    print("EW 1: " + str(zaehler))
+    return 0
+
+
+def plot(headlist, tokenlist, head, safedir):
+    fig, axs = plt.subplots(nrows=1, ncols=len(headlist), figsize=(22, 6))
+    fig.suptitle("Layer 6\nHead " + str(head))
+    for satzindex in range(len(headlist)):
+        im = axs[satzindex].imshow(headlist[satzindex], interpolation=None)
+        axs[satzindex].set_xticks(np.arange(len(tokenlist[satzindex])))
+        axs[satzindex].set_yticks(np.arange(len(tokenlist[satzindex])))
+        axs[satzindex].set_xticklabels(tokenlist[satzindex])
+        axs[satzindex].set_yticklabels(tokenlist[satzindex])
+        plt.setp(axs[satzindex].get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
+    plt.colorbar(im, ax=axs, orientation='horizontal', fraction=0.1)
+    plt.savefig(safedir + "heatmap_head_" + str(head) + ".pdf")
     return 0
 
 
@@ -88,6 +113,7 @@ def parse_args(args=None):
     parser.add_argument("--headnumber", required=True, type=int, help="select head which is regarded")
     parser.add_argument("--exclude_start_end", default=False, action="store_true", help="deletes the first and last row and column")
     parser.add_argument("--exclude_spaces", default=False, action="store_true", help="deletes rows and columns which representates spaces")
+    parser.add_argument("--normalizing", default=False, action="store_true", help="normalizes rows by dividing through sum-norm")
     parser.add_argument("--select_diag", required=True, type=int, help="0 is Main, -1 lower secondary diagonal, 1 upper secondary diagonal")
     args = parser.parse_args(args=args)
     return args

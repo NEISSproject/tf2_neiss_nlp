@@ -1,5 +1,6 @@
 import json
 import numpy as np
+import tfaip_scenario.nlp.ner.attention_weight_analysis.util as ut
 import matplotlib.pyplot as plt
 import tensorflow_datasets as tfds
 
@@ -27,11 +28,11 @@ def run(args):
 
 
 def plot(weightlist, maps_per_row, export_heatmap, token_array, concat):
-    token_list_string, counter = decode_token(token_array)
+    token_list_string, counter = ut.decode_token(token_array)
     for satzindex in range(len(weightlist)):
         for j in range(len(weightlist[satzindex])):  # layerNumber
             maprow = int(np.ceil((len(weightlist[satzindex][j]) + 1) / maps_per_row))-1
-            fig, axs = plt.subplots(nrows=maprow, ncols=maps_per_row, figsize=(counter[satzindex] + 13, counter[satzindex] + 4))
+            fig, axs = plt.subplots(nrows=maprow, ncols=maps_per_row, figsize=(counter[satzindex] + 15, counter[satzindex] + 4))
             fig.suptitle("Layer " + str(j + 1))
             concated_header = np.zeros((counter[satzindex], counter[satzindex]))
             for i in range(len(weightlist[satzindex][j])):  # headNumber
@@ -47,7 +48,7 @@ def plot(weightlist, maps_per_row, export_heatmap, token_array, concat):
                 '''Add an norm all Headers per Layer to new Heatmap'''
                 concated_header += weightlist[satzindex][j][i]
                 '''plot matrices'''
-                axs[int(i / maps_per_row), i % maps_per_row].imshow(weightlist[satzindex][j][i], interpolation=None)
+                im = axs[int(i / maps_per_row), i % maps_per_row].imshow(weightlist[satzindex][j][i], interpolation=None)
                 normstring = ""
                 for k in range(len(normen)):
                     normstring += ("\n" + str(normen[k]) + "-Norm: " + str(normvector[k]))
@@ -69,29 +70,9 @@ def plot(weightlist, maps_per_row, export_heatmap, token_array, concat):
                 axs[int(len(weightlist[satzindex][j]) / maps_per_row), len(weightlist[satzindex][j]) % maps_per_row].set_xticklabels(token_list_string[satzindex])
                 axs[int(len(weightlist[satzindex][j]) / maps_per_row), len(weightlist[satzindex][j]) % maps_per_row].set_yticklabels(token_list_string[satzindex])
                 plt.setp(axs[int(len(weightlist[satzindex][j]) / maps_per_row), len(weightlist[satzindex][j]) % maps_per_row].get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
+            plt.colorbar(im, ax=axs, orientation='horizontal', fraction=0.1)
             plt.savefig(export_heatmap[:len(export_heatmap) - 4] + "_satz_" + str(satzindex + 1) + "_layer_" + str(j + 1) + ".pdf")
 
-
-def decode_token(token_array):
-    tokenizer = tfds.core.features.text.SubwordTextEncoder.load_from_file("data/tokenizer/tokenizer_de")
-    token_list_string = []
-    counter = []
-    for i in range(len(token_array)):
-        token_list_string.append([])
-        counter.append(len(token_array[i]))
-        for j in range(len(token_array[i]) - 1, -1, -1):
-            if token_array[i][j] in range(1, 29987):
-                token_list_string[i] = ['"' + tokenizer.decode([token_array[i][j]]) + '"', *token_list_string[i]]
-            elif token_array[i][j] == 29987:
-                token_list_string[i] = ['[Start]', *token_list_string[i]]
-            elif token_array[i][j] == 29988:
-                token_list_string[i] = ['[End]', *token_list_string[i]]
-            elif token_array[i][j] == 0:
-                counter[i] = j
-            else:
-                print("Fail")
-                return 1
-    return token_list_string, counter
 
 
 def parse_args(args=None):
