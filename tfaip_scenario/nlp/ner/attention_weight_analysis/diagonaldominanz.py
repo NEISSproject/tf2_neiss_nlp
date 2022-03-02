@@ -12,37 +12,12 @@ def run(args):
     safedir = args.input_json[0:args.input_json.rfind("/")]
     weightlist = source_data["array"]
     tokenlist = source_data["token"]
-    headlist, tokenlist = datacleaning(weightlist, tokenlist, args)
+    headlist, tokenlist = ut.datacleaning(weightlist, tokenlist, args)
     tokenlist, _ = ut.decode_token(tokenlist)
     plot(headlist, tokenlist, args.headnumber, safedir)
     gammalist = calculate_gammalist(headlist, args.select_diag)
     calculate_metadata_and_print_gamma(gammalist, args.headnumber)
     calculate_metadata_and_print_ev(headlist, args.headnumber)
-
-
-def datacleaning(weightlist, tokenlist, args):
-    headlist = []
-    token_list_array = []
-    for i in range(len(weightlist)):
-        token_list_array.append(np.asarray(tokenlist[i]))
-        zerolist = np.where(token_list_array[i] == 0)
-        token_list_array[i] = np.delete(token_list_array[i], zerolist)
-        headlist.append(np.asarray(weightlist[i][5][args.headnumber-1]))
-        headlist[i] = np.delete(headlist[i], zerolist, axis=0)
-        headlist[i] = np.delete(headlist[i], zerolist, axis=1)
-        if args.exclude_start_end:
-            headlist[i] = headlist[i][1:len(headlist[i])-1, 1:len(headlist[i])-1]
-            token_list_array[i] = np.delete(token_list_array[i], [0, token_list_array[i].size - 1])
-        if args.exclude_spaces:
-            spacelist = np.where(token_list_array[i] == 29763)
-            headlist[i] = np.delete(headlist[i], spacelist, axis=0)
-            headlist[i] = np.delete(headlist[i], spacelist, axis=1)
-            token_list_array[i] = np.delete(token_list_array[i], spacelist)
-        headlist[i] /= headlist[i].max
-        if args.normalizing:
-            for z in range(len(headlist[i])):
-                headlist[i][z] = headlist[i][z]/np.sum(headlist[i][z])
-    return headlist, token_list_array
 
 
 def calculate_gammalist(headlist, diag):

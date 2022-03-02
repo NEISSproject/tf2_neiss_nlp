@@ -12,6 +12,7 @@ libsass
 matplotlib!=3.4.3
 nibabel
 num2words
+numpy
 opencv-python-headless
 pandas
 pdf_reports

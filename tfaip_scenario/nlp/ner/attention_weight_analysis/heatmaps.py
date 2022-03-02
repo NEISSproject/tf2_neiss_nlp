@@ -52,7 +52,7 @@ def plot(weightlist, maps_per_row, export_heatmap, token_array, concat):
                 normstring = ""
                 for k in range(len(normen)):
                     normstring += ("\n" + str(normen[k]) + "-Norm: " + str(normvector[k]))
-                axs[int(i / maps_per_row), i % maps_per_row].set_title("Head " + str(i + 1))# + "\n|EW|: " + str(np.min(eigenvalue)) + normstring)
+                axs[int(i / maps_per_row), i % maps_per_row].set_title("Head " + str(i + 1))  # + "\n|EW|: " + str(np.min(eigenvalue)) + normstring)
                 axs[int(i / maps_per_row), i % maps_per_row].set_xticks(np.arange(len(token_list_string[satzindex])))
                 axs[int(i / maps_per_row), i % maps_per_row].set_yticks(np.arange(len(token_list_string[satzindex])))
                 axs[int(i / maps_per_row), i % maps_per_row].set_xticklabels(token_list_string[satzindex])
@@ -72,7 +72,6 @@ def plot(weightlist, maps_per_row, export_heatmap, token_array, concat):
                 plt.setp(axs[int(len(weightlist[satzindex][j]) / maps_per_row), len(weightlist[satzindex][j]) % maps_per_row].get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
             plt.colorbar(im, ax=axs, orientation='horizontal', fraction=0.1)
             plt.savefig(export_heatmap[:len(export_heatmap) - 4] + "_satz_" + str(satzindex + 1) + "_layer_" + str(j + 1) + ".pdf")
-
 
 
 def parse_args(args=None):
