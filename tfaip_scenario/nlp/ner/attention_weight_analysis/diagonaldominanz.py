@@ -12,7 +12,7 @@ def run(args):
     safedir = args.input_json[0:args.input_json.rfind("/")]
     weightlist = source_data["array"]
     tokenlist = source_data["token"]
-    headlist, tokenlist = ut.datacleaning(weightlist, tokenlist, args)
+    headlist, tokenlist, _ = ut.datacleaning(weightlist, tokenlist, args)
     tokenlist, _ = ut.decode_token(tokenlist)
     plot(headlist, tokenlist, args.headnumber, safedir)
     gammalist = calculate_gammalist(headlist, args.select_diag)
@@ -78,7 +78,7 @@ def plot(headlist, tokenlist, head, safedir):
         axs[satzindex].set_yticklabels(tokenlist[satzindex])
         plt.setp(axs[satzindex].get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
     plt.colorbar(im, ax=axs, orientation='horizontal', fraction=0.1)
-    plt.savefig(safedir + "heatmap_head_" + str(head) + ".pdf")
+    plt.savefig(safedir + "/heatmap_head_" + str(head) + ".pdf")
     return 0
 
 

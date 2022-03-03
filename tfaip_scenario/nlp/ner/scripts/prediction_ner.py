@@ -37,6 +37,8 @@ def run(args):
     token_list = []
     prediction_id_list = []
     probability_list = []
+    wwo_list = []
+    seq_len_list = []
     for source_sample, predict_sample in zip(source_data_list, predictor.predict_raw(args.input_json.split(" "))):
         word, tags = data.prediction_to_list(
             predict_sample.inputs["sentence"], predict_sample.outputs["pred_ids"], len(source_sample)
@@ -50,6 +52,8 @@ def run(args):
             predict_sentence.append(source_word_tuple)
         predict_sample_list.append(predict_sentence)
         attention_weight_list.append(predict_sample.outputs['attention_weights'])
+        wwo_list.append(predict_sample.inputs['wwo_indexes'])
+        seq_len_list.append(predict_sample.inputs['word_seq_length'])
         if args.probabilities:
             prediction_id_list.append(predict_sample.outputs['pred_ids'])
             probability_list.append(predict_sample.outputs['probabilities'])
@@ -59,7 +63,7 @@ def run(args):
     if args.print_weights:
         for index in range(len(predict_sample_list)):
             print(attention_weight_list[index])
-    attention_weight_list = {"array": attention_weight_list, "token": token_list, "pred_ids": prediction_id_list, "probabilities": probability_list}
+    attention_weight_list = {"array": attention_weight_list, "token": token_list, "pred_ids": prediction_id_list, "probabilities": probability_list, "wwo_indexes": wwo_list, "seq_len_list": seq_len_list}
 
     out_file_path = args.input_json[:len(args.input_json)-5] + ".pred.json"
     if args.out is not None and os.path.isdir(args.out):
