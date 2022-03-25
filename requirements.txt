@@ -2,4 +2,5 @@ datasets
 tfaip==1.2.6
 tensorflow-datasets~=3.0.0
 transformers>=4.0.0
+tensorflow-addons==0.14.0
 seqeval
