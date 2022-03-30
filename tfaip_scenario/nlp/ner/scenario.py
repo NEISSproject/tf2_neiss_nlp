@@ -22,12 +22,13 @@ from paiargparse import pai_dataclass
 
 from tfaip import ScenarioBaseParams
 from tfaip.model.modelbase import ModelBase
-from tfaip.scenario.listfile.listfilescenario import ListFileScenario
+#from tfaip.scenario.listfile.listfilescenario import ListFileScenario
 from tfaip.scenario.scenariobase import ScenarioBase
 from tfaip_scenario.nlp.ner.model import ModelParams
 from tfaip_scenario.nlp.data.from_datasets import FromDatasetsTrainerGeneratorParams
 from tfaip_scenario.nlp.data.ner_params import NERDataParams
 from tfaip_scenario.nlp.util.ner_eval import SeqEvalF1HugFace
+from tfaip_scenario.nlp.util.list_lav_callback import ListFileScenario
 
 
 TDataParams = TypeVar("TDataParams", bound=NERDataParams)
